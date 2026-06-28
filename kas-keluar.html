@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Kas Keluar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'tatera-green': '#115E28', 'tatera-light-green': '#39B54A' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col justify-between h-screen overflow-y-auto flex-shrink-0">
+        <div>
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-3"></div>
+                <h3 id="sidebar-username" class="font-bold text-gray-700 text-lg">Hi, User</h3>
+            </div>
+
+            <nav class="space-y-2" id="main-navigation">
+                
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i> <span>Dashboard</span>
+                </a>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-musim" onclick="toggleMenu('menu-musim', 'arrow-musim')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-seedling w-5 text-center"></i> <span>Musim Tanam</span>
+                        </div>
+                        <i id="arrow-musim" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-musim" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="tambah-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Tambah Musim Tanam</a>
+                        <a href="data-musim-tanam.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Data Musim Tanam</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-keuangan" onclick="toggleMenu('menu-keuangan', 'arrow-keuangan')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="arrow-keuangan" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-keuangan" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="saldo.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Saldo Tersedia</a>
+                        <a href="kas-masuk.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Masuk</a>
+                        <a href="kas-keluar.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Keluar</a>
+                        <a href="laporan-keuangan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Laporan Keuangan</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-analisis" onclick="toggleMenu('menu-analisis', 'arrow-analisis')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-chart-simple w-5 text-center"></i> <span>Analisis & Laporan</span>
+                        </div>
+                        <i id="arrow-analisis" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-analisis" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="grafik-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Musim</a>
+                        <a href="grafik-tahunan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Tahunan</a>
+                        <a href="ranking-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Ranking Musim</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-pakar" onclick="toggleMenu('menu-pakar', 'arrow-pakar')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-doctor w-5 text-center"></i> <span>Sistem Pakar</span>
+                        </div>
+                        <i id="arrow-pakar" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-pakar" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="konsultasi-finansial.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Konsultasi Finansial Tani</a>
+                        <a href="rekomendasi-supplier.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Rekomendasi Supplier</a>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 space-y-1">
+                    <a href="scan-nota.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-receipt w-5 text-center"></i> <span>Scan Nota</span>
+                    </a>
+                    <a href="notifikasi.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-bell w-5 text-center"></i> <span>Notifikasi</span>
+                    </a>
+                    <a href="profil.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-user w-5 text-center"></i> <span>Profil</span>
+                    </a>
+                    <a href="pengaturan.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i> <span>Pengaturan</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-100 text-red-600 font-semibold hover:bg-red-200 transition text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar</span>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="flex-1 p-8 overflow-y-auto">
+        <form id="form-kas-keluar" class="bg-white rounded-2xl border border-gray-100 shadow-sm max-w-4xl mx-auto p-10 min-h-[85vh] flex flex-col justify-between" onsubmit="simpanKasKeluar(event)">
+            <div>
+                <div class="border-b border-gray-100 pb-4 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mt-2">Tambah Kas Keluar</h3>
+                </div>
+
+                <div class="space-y-8 text-sm font-bold text-gray-700">
+                    <div class="grid grid-cols-3 items-center">
+                        <label>Tanggal</label>
+                        <input type="date" required class="col-span-2 border border-gray-200 p-3 rounded-xl font-medium focus:outline-none focus:border-green-500 text-gray-400 valid:text-black cursor-pointer">
+                    </div>
+                    <div class="grid grid-cols-3 items-center">
+                        <label>Kategori</label>
+                        <select required class="col-span-2 border border-gray-200 p-3 rounded-xl font-medium text-gray-400 valid:text-black focus:outline-none focus:border-green-500 cursor-pointer">
+                            <option value="" disabled selected hidden>Pilih kategori</option>
+                            <option value="Pembelian Pupuk">Pembelian Pupuk</option>
+                            <option value="Pembelian Benih">Pembelian Benih</option>
+                            <option value="Sewa Alat">Sewa Alat</option>
+                            <option value="Upah Tenaga Kerja">Upah Tenaga Kerja</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-3 items-center">
+                        <label>Deskripsi</label>
+                        <input type="text" placeholder="Tulis deskripsi" required class="col-span-2 border border-gray-200 p-3 rounded-xl font-medium focus:outline-none focus:border-green-500">
+                    </div>
+                    <div class="grid grid-cols-3 items-center">
+                        <label>Jumlah</label>
+                        <input type="number" placeholder="Rp 0" required class="col-span-2 border border-gray-200 p-3 rounded-xl font-medium focus:outline-none focus:border-green-500">
+                    </div>
+                    <div class="grid grid-cols-3 items-center">
+                        <label>Bukti (Opsional)</label>
+                        <input type="file" class="col-span-2 border border-gray-200 p-3 rounded-xl font-medium text-gray-400 focus:outline-none focus:border-green-500 cursor-pointer">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-8">
+                <button type="button" onclick="batalIsi()" class="px-10 py-2.5 border border-gray-300 rounded-xl font-bold text-gray-600 hover:bg-gray-50 transition">Batal</button>
+                <button type="submit" class="px-10 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold shadow-sm transition">Simpan</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Fungsi pemicu dropdown
+        function toggleMenu(menuId, arrowId) {
+            const menu = document.getElementById(menuId);
+            const arrow = document.getElementById(arrowId);
+            if (menu && arrow) {
+                menu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-90');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.split("/").pop();
+            
+            // 1. DETEKSI JIKA HALAMAN AKTIF ADALAH MENU UTAMA/STANDAR (Dashboard, Scan Nota, dll)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                    link.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                }
+            });
+
+            // 2. DETEKSI JIKA HALAMAN AKTIF ADALAH SUB-MENU (ANGGOTA)
+            const subLinks = document.querySelectorAll('.nav-sub-item');
+            subLinks.forEach(subLink => {
+                if (subLink.getAttribute('href') === currentPath) {
+                    // SET AKTIF HIJAU TUA FULL BACKGROUND PADA ANGGOTA
+                    subLink.classList.remove('text-gray-500', 'hover:text-green-600');
+                    subLink.classList.add('bg-[#0F5E27]', 'text-white', 'font-bold', 'shadow-sm');
+
+                    // Cari container penampung dropdown (id^="menu-")
+                    const parentContainer = subLink.closest('[id^="menu-"]');
+                    if (parentContainer) {
+                        parentContainer.classList.remove('hidden'); // Buka list dropdown otomatis
+                        
+                        const parentId = parentContainer.getAttribute('id');
+                        
+                        // Set tombol utama induknya di atas menjadi Hijau Terang Penuh
+                        const btnId = parentId.replace('menu-', 'btn-');
+                        const mainButton = document.getElementById(btnId);
+                        if (mainButton) {
+                            mainButton.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                            mainButton.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                        }
+
+                        // AMAN: Tangani dan munculkan kembali anak panah agar tidak hilang/hilang warna
+                        const arrowId = parentId.replace('menu-', 'arrow-');
+                        const arrowIcon = document.getElementById(arrowId);
+                        if (arrowIcon) {
+                            arrowIcon.classList.remove('text-gray-600');
+                            arrowIcon.classList.add('rotate-90', 'text-white', 'opacity-100');
+                        }
+                    }
+                }
+            });
+            
+            // Sapaan Profil
+            const nama = localStorage.getItem('user_nama_lengkap') || 'Adam Permana';
+            const usernameElement = document.getElementById('sidebar-username');
+            if (usernameElement) {
+                usernameElement.innerText = "Hi, " + nama.split(" ")[0];
+            }
+        });
+
+        // FUNGSI TOMBOL BATAL
+        function batalIsi() {
+            if(confirm("Apakah Anda yakin ingin membatalkan pengisian kas keluar?")) {
+                document.getElementById("form-kas-keluar").reset();
+            }
+        }
+
+        // FUNGSI TOMBOL SIMPAN (Menggunakan localStorage)
+       function simpanKasKeluar(event) {
+            event.preventDefault();
+            
+            const tanggal = document.querySelector('input[type="date"]').value;
+            const kategori = document.querySelector('select').value;
+            const deskripsi = document.querySelector('input[placeholder="Tulis deskripsi"]').value;
+            const jumlah = document.querySelector('input[placeholder="Rp 0"]').value;
+
+            const pengeluaranBaru = { tanggal, kategori, deskripsi, jumlah: parseFloat(jumlah) };
+
+            // 1. Simpan ke data kas keluar
+            let daftarKasKeluar = JSON.parse(localStorage.getItem('daftar_kas_keluar')) || [];
+            daftarKasKeluar.push(pengeluaranBaru);
+            localStorage.setItem('daftar_kas_keluar', JSON.stringify(daftarKasKeluar));
+            
+            // 2. TAMBAHKAN LOG NOTIFIKASI BARU
+            let daftarNotif = JSON.parse(localStorage.getItem('daftar_notifikasi')) || [];
+            daftarNotif.unshift({
+                id: Date.now(),
+                tipe: 'keuangan_keluar',
+                judul: 'Kas Keluar Berhasil Dicatat',
+                pesan: `Data pengeluaran ${kategori} (${deskripsi}) sebesar Rp ${parseFloat(jumlah).toLocaleString('id-ID')} telah berhasil direkam.`,
+                waktu: 'Baru saja',
+                belumDibaca: true
+            });
+            localStorage.setItem('daftar_notifikasi', JSON.stringify(daftarNotif));
+
+            alert("Data Kas Keluar berhasil disimpan!");
+            document.getElementById("form-kas-keluar").reset();
+            window.location.href = "saldo.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const nama = localStorage.getItem('user_nama_lengkap') || 'user';
+            const sidebaruser = document.getElementById('sidebar-username');
+            if (sidebaruser) {
+                sidebaruser.innerText = "Hi, " + nama.split(" ")[0];
+            }
+        });
+    </script>
+</body>
+</html>

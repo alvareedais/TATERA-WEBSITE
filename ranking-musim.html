@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Ranking Musim Padi (SPK SAW)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { 
+                extend: { 
+                    colors: { 
+                        'tatera-green': '#39B54A', 
+                        'tatera-dark-green': '#115E28' 
+                    } 
+                } 
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-300 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col justify-between h-screen overflow-y-auto flex-shrink-0">
+        <div>
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-3"></div>
+                <h3 id="sidebar-username" class="font-bold text-gray-700 text-lg">Hi, User</h3>
+            </div>
+
+            <nav class="space-y-2" id="main-navigation">
+                
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i> <span>Dashboard</span>
+                </a>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-musim" onclick="toggleMenu('menu-musim', 'arrow-musim')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-seedling w-5 text-center"></i> <span>Musim Tanam</span>
+                        </div>
+                        <i id="arrow-musim" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-musim" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="tambah-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Tambah Musim Tanam</a>
+                        <a href="data-musim-tanam.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Data Musim Tanam</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-keuangan" onclick="toggleMenu('menu-keuangan', 'arrow-keuangan')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="arrow-keuangan" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-keuangan" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="saldo.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Saldo Tersedia</a>
+                        <a href="kas-masuk.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Masuk</a>
+                        <a href="kas-keluar.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Keluar</a>
+                        <a href="laporan-keuangan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Laporan Keuangan</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-analisis" onclick="toggleMenu('menu-analisis', 'arrow-analisis')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-chart-simple w-5 text-center"></i> <span>Analisis & Laporan</span>
+                        </div>
+                        <i id="arrow-analisis" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-analisis" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="grafik-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Musim</a>
+                        <a href="grafik-tahunan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Tahunan</a>
+                        <a href="ranking-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Ranking Musim</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-pakar" onclick="toggleMenu('menu-pakar', 'arrow-pakar')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-doctor w-5 text-center"></i> <span>Sistem Pakar</span>
+                        </div>
+                        <i id="arrow-pakar" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-pakar" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="konsultasi-finansial.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Konsultasi Finansial Tani</a>
+                        <a href="rekomendasi-supplier.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Rekomendasi Supplier</a>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 space-y-1">
+                    <a href="scan-nota.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-receipt w-5 text-center"></i> <span>Scan Nota</span>
+                    </a>
+                    <a href="notifikasi.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-bell w-5 text-center"></i> <span>Notifikasi</span>
+                    </a>
+                    <a href="profil.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-user w-5 text-center"></i> <span>Profil</span>
+                    </a>
+                    <a href="pengaturan.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i> <span>Pengaturan</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-100 text-red-600 font-semibold hover:bg-red-200 transition text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-1 p-10 overflow-y-auto">
+        <div class="bg-white rounded-3xl p-10 shadow-sm max-w-5xl mx-auto min-h-[85vh] flex flex-col justify-start space-y-8">
+            
+            <div class="pb-4 border-b border-gray-100 flex justify-between items-center">
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800 tracking-tight">Peringkat Varietas Padi</h1>
+                    <p class="text-xs text-gray-400 font-medium mt-0.5">Sistem Pendukung Keputusan (SPK) Rekomendasi Padi Terbaik Berbasis SAW</p>
+                </div>
+                <span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-bold border border-green-200">Khusus Komoditas Padi</span>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-base font-bold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-trophy text-yellow-500"></i> Hasil Akhir Peringkat Padi Terbaik
+                    </h2>
+                </div>
+                <div class="border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-100 text-xs font-bold text-gray-500 tracking-wider">
+                                <th class="p-4 text-center w-20">Rank</th>
+                                <th class="p-4">Nama Varietas Padi</th>
+                                <th class="p-4">Klasifikasi Tanaman</th>
+                                <th class="p-4 text-right">Nilai Preferensi (V)</th>
+                                <th class="p-4 text-center">Status Rekomendasi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-saw-ranking" class="text-xs font-semibold text-gray-700 divide-y divide-gray-50">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="border border-gray-200 rounded-2xl p-5 bg-gray-50">
+                <button onclick="toggleLogikaSAW()" class="w-full flex justify-between items-center font-bold text-sm text-gray-700 focus:outline-none">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-calculator text-tatera-green"></i> Lihat Data Kriteria & Proses Matriks SAW</span>
+                    <i id="arrow-logika" class="fa-solid fa-chevron-down transition-transform duration-200"></i>
+                </button>
+                
+                <div id="box-logika-saw" class="hidden mt-5 space-y-6 pt-4 border-t border-gray-200">
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 mb-2">1. Definisi Bobot & Sifat Kriteria Padi</h4>
+                        <div class="grid grid-cols-4 gap-4 text-center">
+                            <div class="p-3 bg-white border border-gray-200 rounded-xl">
+                                <p class="text-[10px] text-gray-400 font-bold">C1: Hasil Panen (Ton/Ha)</p>
+                                <p class="text-xs font-extrabold text-gray-700 mt-1">Bobot: 40% (0.4)</p>
+                                <span class="text-[9px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-bold">Benefit</span>
+                            </div>
+                            <div class="p-3 bg-white border border-gray-200 rounded-xl">
+                                <p class="text-[10px] text-gray-400 font-bold">C2: Harga Jual Gabah</p>
+                                <p class="text-xs font-extrabold text-gray-700 mt-1">Bobot: 30% (0.3)</p>
+                                <span class="text-[9px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-bold">Benefit</span>
+                            </div>
+                            <div class="p-3 bg-white border border-gray-200 rounded-xl">
+                                <p class="text-[10px] text-gray-400 font-bold">C3: Kerentanan Hama</p>
+                                <p class="text-xs font-extrabold text-gray-700 mt-1">Bobot: 15% (0.15)</p>
+                                <span class="text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded font-bold">Cost</span>
+                            </div>
+                            <div class="p-3 bg-white border border-gray-200 rounded-xl">
+                                <p class="text-[10px] text-gray-400 font-bold">C4: Biaya Perawatan</p>
+                                <p class="text-xs font-extrabold text-gray-700 mt-1">Bobot: 15% (0.15)</p>
+                                <span class="text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded font-bold">Cost</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 mb-2">2. Matriks Keputusan Awal (X)</h4>
+                        <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+                            <table class="w-full text-left text-[11px]">
+                                <thead class="bg-gray-100 font-bold text-gray-600">
+                                    <tr>
+                                        <th class="p-2.5">Alternatif Padi</th>
+                                        <th class="p-2.5">C1 (Hasil)</th>
+                                        <th class="p-2.5">C2 (Harga)</th>
+                                        <th class="p-2.5">C3 (Hama)</th>
+                                        <th class="p-2.5">C4 (Biaya)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-saw-awal" class="divide-y divide-gray-100 font-semibold text-gray-700"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 mb-2">3. Matriks Normalisasi (R)</h4>
+                        <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+                            <table class="w-full text-left text-[11px]">
+                                <thead class="bg-gray-100 font-bold text-gray-600">
+                                    <tr>
+                                        <th class="p-2.5">Alternatif</th>
+                                        <th class="p-2.5">R1 (Hasil)</th>
+                                        <th class="p-2.5">R2 (Harga)</th>
+                                        <th class="p-2.5">R3 (Hama)</th>
+                                        <th class="p-2.5">R4 (Biaya)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-saw-normalisasi" class="divide-y divide-gray-100 font-semibold text-gray-700"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Fungsi pemicu dropdown
+        function toggleMenu(menuId, arrowId) {
+            const menu = document.getElementById(menuId);
+            const arrow = document.getElementById(arrowId);
+            if (menu && arrow) {
+                menu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-90');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.split("/").pop();
+            
+            // 1. DETEKSI JIKA HALAMAN AKTIF ADALAH MENU UTAMA/STANDAR (Dashboard, Scan Nota, dll)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                    link.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                }
+            });
+
+            // 2. DETEKSI JIKA HALAMAN AKTIF ADALAH SUB-MENU (ANGGOTA)
+            const subLinks = document.querySelectorAll('.nav-sub-item');
+            subLinks.forEach(subLink => {
+                if (subLink.getAttribute('href') === currentPath) {
+                    // SET AKTIF HIJAU TUA FULL BACKGROUND PADA ANGGOTA
+                    subLink.classList.remove('text-gray-500', 'hover:text-green-600');
+                    subLink.classList.add('bg-[#0F5E27]', 'text-white', 'font-bold', 'shadow-sm');
+
+                    // Cari container penampung dropdown (id^="menu-")
+                    const parentContainer = subLink.closest('[id^="menu-"]');
+                    if (parentContainer) {
+                        parentContainer.classList.remove('hidden'); // Buka list dropdown otomatis
+                        
+                        const parentId = parentContainer.getAttribute('id');
+                        
+                        // Set tombol utama induknya di atas menjadi Hijau Terang Penuh
+                        const btnId = parentId.replace('menu-', 'btn-');
+                        const mainButton = document.getElementById(btnId);
+                        if (mainButton) {
+                            mainButton.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                            mainButton.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                        }
+
+                        // AMAN: Tangani dan munculkan kembali anak panah agar tidak hilang/hilang warna
+                        const arrowId = parentId.replace('menu-', 'arrow-');
+                        const arrowIcon = document.getElementById(arrowId);
+                        if (arrowIcon) {
+                            arrowIcon.classList.remove('text-gray-600');
+                            arrowIcon.classList.add('rotate-90', 'text-white', 'opacity-100');
+                        }
+                    }
+                }
+            });
+            
+            // Sapaan Profil
+            const nama = localStorage.getItem('user_nama_lengkap') || 'Adam Permana';
+            const usernameElement = document.getElementById('sidebar-username');
+            if (usernameElement) {
+                usernameElement.innerText = "Hi, " + nama.split(" ")[0];
+            }
+        });
+
+        function hitungMetodeSAWPadi() {
+            const listPadi = [
+                { id: 'A1', nama: 'Padi Ciherang', jenis: 'Padi Sawah Inbrida', c1: 6.2, c2: 7200, c3: 3, c4: 2 },
+                { id: 'A2', nama: 'Padi Inpari 32', jenis: 'Padi Irigasi Rendah Hama', c1: 7.4, c2: 7000, c3: 1, c4: 3 },
+                { id: 'A3', nama: 'Padi IR 64', jenis: 'Padi Sawah Klasik', c1: 5.5, c2: 7500, c3: 4, c4: 2 },
+                { id: 'A4', nama: 'Padi Pandan Wangi', jenis: 'Padi Premium Aroma', c1: 4.8, c2: 9500, c3: 3, c4: 4 }
+            ];
+
+            const W = [0.40, 0.30, 0.15, 0.15];
+
+            const maxC1 = Math.max(...listPadi.map(p => p.c1));
+            const maxC2 = Math.max(...listPadi.map(p => p.c2));
+            const minC3 = Math.min(...listPadi.map(p => p.c3));
+            const minC4 = Math.min(...listPadi.map(p => p.c4));
+
+            let htmlAwal = '';
+            let htmlNormalisasi = '';
+            let arrayPreferensiV = [];
+
+            listPadi.forEach(padi => {
+                htmlAwal += `<tr>
+                    <td class="p-2.5 font-bold text-gray-800">${padi.id} - ${padi.nama}</td>
+                    <td class="p-2.5">${padi.c1} Ton/Ha</td>
+                    <td class="p-2.5">Rp ${padi.c2}/Kg</td>
+                    <td class="p-2.5">Skala ${padi.c3}</td>
+                    <td class="p-2.5">Skala ${padi.c4}</td>
+                </tr>`;
+
+                const r1 = padi.c1 / maxC1;
+                const r2 = padi.c2 / maxC2;
+                const r3 = minC3 / padi.c3;
+                const r4 = minC4 / padi.c4;
+
+                htmlNormalisasi += `<tr>
+                    <td class="p-2.5 font-bold text-gray-800">${padi.id}</td>
+                    <td class="p-2.5">${r1.toFixed(3)}</td>
+                    <td class="p-2.5">${r2.toFixed(3)}</td>
+                    <td class="p-2.5">${r3.toFixed(3)}</td>
+                    <td class="p-2.5">${r4.toFixed(3)}</td>
+                </tr>`;
+
+                const nilaiV = (r1 * W[0]) + (r2 * W[1]) + (r3 * W[2]) + (r4 * W[3]);
+                
+                arrayPreferensiV.push({
+                    nama: padi.nama,
+                    jenis: padi.jenis,
+                    skor: nilaiV
+                });
+            });
+
+            document.getElementById('table-saw-awal').innerHTML = htmlAwal;
+            document.getElementById('table-saw-normalisasi').innerHTML = htmlNormalisasi;
+
+            arrayPreferensiV.sort((a, b) => b.skor - a.skor);
+
+            let htmlRanking = '';
+            arrayPreferensiV.forEach((padi, index) => {
+                let badgeRankClass = "bg-gray-100 text-gray-600";
+                let rowBgClass = "";
+                let statusBadge = `<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-bold">Sangat Direkomendasikan</span>`;
+
+                if (index === 0) {
+                    badgeRankClass = "bg-yellow-500 text-white shadow-sm animate-pulse";
+                    rowBgClass = "bg-yellow-50/40";
+                } else if (index === 1) {
+                    badgeRankClass = "bg-slate-400 text-white";
+                } else if (index === 2) {
+                    badgeRankClass = "bg-amber-600 text-white";
+                } else {
+                    statusBadge = `<span class="bg-gray-100 text-gray-500 px-2 py-0.5 rounded font-bold">Cukup Layak</span>`;
+                }
+
+                htmlRanking += `<tr class="${rowBgClass} transition hover:bg-gray-50/80">
+                    <td class="p-4 text-center">
+                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-extrabold ${badgeRankClass}">
+                            ${index + 1}
+                       </span>
+                    </td>
+                    <td class="p-4 font-bold text-gray-800">${padi.nama}</td>
+                    <td class="p-4 text-gray-400 font-medium">${padi.jenis}</td>
+                    <td class="p-4 text-right font-extrabold text-tatera-dark-green text-sm">${padi.skor.toFixed(4)}</td>
+                    <td class="p-4 text-center">${statusBadge}</td>
+                </tr>`;
+            });
+
+            document.getElementById('table-saw-ranking').innerHTML = htmlRanking;
+        }
+
+        function handleLogout() {
+            if (confirm("Apakah Anda yakin ingin keluar dari Akun?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

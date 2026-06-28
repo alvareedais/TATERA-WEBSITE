@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Manajemen Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        'tatera-green': '#115E28', 
+                        'tatera-light-green': '#28a745',
+                        'tatera-blue-active': '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-300 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white p-6 flex flex-col justify-between h-screen flex-shrink-0 relative z-10">
+        <div>
+            <div class="flex items-center gap-3 mb-8 pl-2">
+                <div class="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0 flex items-center justify-center text-gray-600">
+                    <i class="fa-solid fa-user-shield text-xl"></i>
+                </div>
+                <div>
+                    <h3 id="sidebar-username" class="font-bold text-gray-800 text-sm">Hi, Super Admin</h3>
+                    <p class="text-[11px] text-gray-400 font-medium">Super Administrator</p>
+                </div>
+            </div>
+
+            <nav class="space-y-1 text-xs font-bold">
+                <a href="dashboard-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-house w-5 text-center text-sm"></i> <span>Dashboard</span>
+                </a>
+
+                <a href="manajement-admin.html" class="flex items-center space-x-3 p-3 rounded-xl bg-tatera-blue-active text-white shadow-sm transition">
+                    <i class="fa-solid fa-user-gear w-5 text-center text-sm"></i> <span>Manajemen Admin</span>
+                </a>
+
+                <a href="manajement-petani-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-users w-5 text-center text-sm"></i> <span>Manajemen Petani</span>
+                </a>
+
+                <a href="musim-tanam-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-seedling w-5 text-center text-sm"></i> <span>Musim Tanam</span>
+                </a>
+
+                <a href="keuangan-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-dollar-sign w-5 text-center text-sm"></i> <span>Keuangan</span>
+                </a>
+
+                <a href="laporan-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-sm"></i> <span>Laporan</span>
+                </a>
+
+                <a href="pengaturan-sistem-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-gear w-5 text-center text-sm"></i> <span>Pengaturan Sistem</span>
+                </a>
+                
+                <a href="notifikasi-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-bell w-5 text-center text-sm"></i> <span>Notifikasi</span>
+                </a>
+                
+                <a href="profil-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-user w-5 text-center text-sm"></i> <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <button onclick="handleLogout()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-100 text-red-600 font-bold hover:bg-red-200 transition text-xs">
+                <i class="fa-solid fa-power-off text-sm"></i> <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-grow p-8 h-screen overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 min-h-full flex flex-col">
+            
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-bold text-gray-800">Manajemen Akun Admin</h2>
+                <button onclick="openModalTambah()" class="bg-tatera-green hover:bg-emerald-800 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-2 shadow-sm transition">
+                    <i class="fa-solid fa-user-plus"></i> Tambah Admin
+                </button>
+            </div>
+
+            <div class="flex-grow overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-200 text-gray-500 text-[11px] font-bold uppercase tracking-wider bg-gray-50">
+                            <th class="py-3 px-4">Nama Lengkap</th>
+                            <th class="py-3 px-4">Email</th>
+                            <th class="py-3 px-4">Peran</th>
+                            <th class="py-3 px-4">Tanggal Gabung</th>
+                            <th class="py-3 px-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-admin-body" class="text-xs text-gray-700 divide-y divide-gray-100">
+                        </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modal-admin" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl mx-4">
+            <h3 id="modal-title" class="text-base font-bold text-tatera-green mb-4">Tambah Admin Baru</h3>
+            
+            <form onsubmit="simpanAdmin(event)" class="space-y-4">
+                <input type="hidden" id="edit-index">
+                
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-600 mb-1">Nama Lengkap</label>
+                    <input type="text" id="modal-nama" required class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-xs">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-600 mb-1">Email</label>
+                    <input type="email" id="modal-email" required class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-xs">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-600 mb-1">Password</label>
+                    <input type="password" id="modal-password" required class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-xs">
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2 text-xs font-bold">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 transition">Batal</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-tatera-green text-white hover:bg-emerald-800 transition">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Sinkronisasi nama login di sidebar
+            const namaSesi = localStorage.getItem('user_nama_lengkap');
+            if (namaSesi && document.getElementById('sidebar-username')) {
+                document.getElementById('sidebar-username').innerText = "Hi, " + namaSesi;
+            }
+
+            // Inisialisasi data dummy admin awal jika localStorage masih kosong
+            let daftarPengguna = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+            if (daftarPengguna.length === 0) {
+                daftarPengguna = [
+                    { nama: "Super Admin Tatera", email: "admin@tatera.com", role: "super_admin", password: "123", tgl_gabung: "10 Juni 2026" },
+                    { nama: "Ahmad Subarjo", email: "ahmad@tatera.com", role: "super_admin", password: "123", tgl_gabung: "15 Juni 2026" }
+                ];
+                localStorage.setItem('daftar_pengguna', JSON.stringify(daftarPengguna));
+            }
+
+            muatDataTabel();
+        });
+
+        function muatDataTabel() {
+            const tbody = document.getElementById("tabel-admin-body");
+            tbody.innerHTML = "";
+
+            const daftarPengguna = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+            
+            // Filter hanya user yang memiliki role 'super_admin' atau admin kelompok tani (jika diperlukan)
+            const daftarAdmin = daftarPengguna.filter(user => user.role === 'super_admin' || user.role === 'kelompok_tani');
+
+            daftarAdmin.forEach((admin, indeksAsli) => {
+                // Cari indeks asli di array utama 'daftar_pengguna' agar modifikasi/hapus tidak keliru
+                const indexDiArrayUtama = daftarPengguna.findIndex(u => u.email === admin.email);
+
+                const baris = `
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="py-3.5 px-4 font-semibold text-gray-800">${admin.nama}</td>
+                        <td class="py-3.5 px-4 text-gray-600">${admin.email}</td>
+                        <td class="py-3.5 px-4">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${admin.role === 'super_admin' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'}">
+                                ${admin.role === 'super_admin' ? 'Super Admin' : 'Kelompok Tani'}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-4 text-gray-500">${admin.tgl_gabung || '-'}</td>
+                        <td class="py-3.5 px-4 text-center space-x-2">
+                            <button onclick="openModalEdit(${indexDiArrayUtama})" class="text-blue-600 hover:text-blue-800 font-bold transition"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                            <button onclick="hapusAdmin(${indexDiArrayUtama})" class="text-red-600 hover:text-red-800 font-bold transition"><i class="fa-solid fa-trash"></i> Haps</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += baris;
+            });
+        }
+
+        // Modal Handlers
+        const modal = document.getElementById("modal-admin");
+
+        function openModalTambah() {
+            document.getElementById("modal-title").innerText = "Tambah Admin Baru";
+            document.getElementById("edit-index").value = "";
+            document.getElementById("modal-nama").value = "";
+            document.getElementById("modal-email").value = "";
+            document.getElementById("modal-email").disabled = false;
+            document.getElementById("modal-password").value = "";
+            modal.classList.remove("hidden");
+        }
+
+        function openModalEdit(index) {
+            const daftarPengguna = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+            const target = daftarPengguna[index];
+
+            document.getElementById("modal-title").innerText = "Edit Data Admin";
+            document.getElementById("edit-index").value = index;
+            document.getElementById("modal-nama").value = target.nama;
+            document.getElementById("modal-email").value = target.email;
+            document.getElementById("modal-email").disabled = true; // Email dikunci saat edit
+            document.getElementById("modal-password").value = target.password;
+            modal.classList.remove("hidden");
+        }
+
+        function closeModal() {
+            modal.classList.add("hidden");
+        }
+
+        function simpanAdmin(event) {
+            event.preventDefault();
+            let daftarPengguna = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+            
+            const index = document.getElementById("edit-index").value;
+            const nama = document.getElementById("modal-nama").value;
+            const email = document.getElementById("modal-email").value.trim();
+            const password = document.getElementById("modal-password").value;
+
+            if (index === "") {
+                // Proses Tambah Baru
+                const emailSama = daftarPengguna.some(user => user.email === email);
+                if (emailSama) {
+                    alert("Email ini sudah digunakan oleh akun lain!");
+                    return;
+                }
+
+                const tgl = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+                daftarPengguna.push({ nama, email, password, role: "super_admin", tgl_gabung: tgl });
+            } else {
+                // Proses Edit Update
+                daftarPengguna[index].nama = nama;
+                daftarPengguna[index].password = password;
+            }
+
+            localStorage.setItem('daftar_pengguna', JSON.stringify(daftarPengguna));
+            closeModal();
+            muatDataTabel();
+        }
+
+        function hapusAdmin(index) {
+            if (confirm("Apakah anda yakin ingin menghapus akun admin ini?")) {
+                let daftarPengguna = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+                daftarPengguna.splice(index, 1);
+                localStorage.setItem('daftar_pengguna', JSON.stringify(daftarPengguna));
+                muatDataTabel();
+            }
+        }
+
+        function handleLogout() {
+            if (confirm("Yakin ingin keluar?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

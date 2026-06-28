@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'tatera-green': '#115E28', 'tatera-light-green': '#39B54A' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+  
+    <!-- SIDEBAR -->
+    <div class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col justify-between h-screen overflow-y-auto flex-shrink-0">
+        <div>
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-3"></div>
+                <h3 id="sidebar-username" class="font-bold text-gray-700 text-lg">Hi, User</h3>
+            </div>
+
+            <nav class="space-y-2" id="main-navigation">
+                
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i> <span>Dashboard</span>
+                </a>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-musim" onclick="toggleMenu('menu-musim', 'arrow-musim')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-seedling w-5 text-center"></i> <span>Musim Tanam</span>
+                        </div>
+                        <i id="arrow-musim" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-musim" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="tambah-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Tambah Musim Tanam</a>
+                        <a href="data-musim-tanam.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Data Musim Tanam</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-keuangan" onclick="toggleMenu('menu-keuangan', 'arrow-keuangan')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="arrow-keuangan" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-keuangan" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="saldo.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Saldo Tersedia</a>
+                        <a href="kas-masuk.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Masuk</a>
+                        <a href="kas-keluar.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Keluar</a>
+                        <a href="laporan-keuangan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Laporan Keuangan</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-analisis" onclick="toggleMenu('menu-analisis', 'arrow-analisis')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-chart-simple w-5 text-center"></i> <span>Analisis & Laporan</span>
+                        </div>
+                        <i id="arrow-analisis" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-analisis" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="grafik-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Musim</a>
+                        <a href="grafik-tahunan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Tahunan</a>
+                        <a href="ranking-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Ranking Musim</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-pakar" onclick="toggleMenu('menu-pakar', 'arrow-pakar')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-doctor w-5 text-center"></i> <span>Sistem Pakar</span>
+                        </div>
+                        <i id="arrow-pakar" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-pakar" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="konsultasi-finansial.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Konsultasi Finansial Tani</a>
+                        <a href="rekomendasi-supplier.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Rekomendasi Supplier</a>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 space-y-1">
+                    <a href="scan-nota.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-receipt w-5 text-center"></i> <span>Scan Nota</span>
+                    </a>
+                    <a href="notifikasi.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-bell w-5 text-center"></i> <span>Notifikasi</span>
+                    </a>
+                    <a href="profil.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-user w-5 text-center"></i> <span>Profil</span>
+                    </a>
+                    <a href="pengaturan.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i> <span>Pengaturan</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-100 text-red-600 font-semibold hover:bg-red-200 transition text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN MAIN WRAPPER -->
+    <div class="flex-1 overflow-y-auto p-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Dashboard TATERA</h2>
+
+        <!-- GRID 4 ATAS -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            
+            <div class="bg-gradient-to-br from-tatera-green to-green-800 rounded-2xl p-5 text-white shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[125px]">
+                <div class="absolute right-[-8px] bottom-[-8px] text-white opacity-10 text-6xl pointer-events-none">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div>
+                    <span class="text-[11px] font-medium text-green-200 block mb-1">Total Saldo Saat Ini</span>
+                    <h3 id="lbl-saldo" class="text-xl font-bold tracking-wide">Rp 0</h3>
+                </div>
+                <p class="text-[9px] text-green-300 mt-2 flex items-center gap-1">
+                    <i class="fa-solid fa-circle-check"></i> Data sinkron dengan kas
+                </p>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm flex justify-between items-stretch min-h-[125px]">
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <span class="text-[11px] font-semibold text-gray-400 block mb-1">Total Pemasukan</span>
+                        <h3 id="lbl-kas-masuk" class="text-xl font-bold text-gray-700">Rp 0</h3>
+                    </div>
+                    <span class="text-[9px] text-green-500 font-bold flex items-center gap-1 mt-2">
+                        <i class="fa-solid fa-arrow-trend-up"></i> Kumulatif
+                    </span>
+                </div>
+                <div class="w-10 h-10 bg-green-50 text-tatera-light-green rounded-full flex items-center justify-center text-sm shadow-inner self-center flex-shrink-0">
+                    <i class="fa-solid fa-arrow-down"></i>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm flex justify-between items-stretch min-h-[125px]">
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <span class="text-[11px] font-semibold text-gray-400 block mb-1">Total Pengeluaran</span>
+                        <h3 id="lbl-kas-keluar" class="text-xl font-bold text-gray-700">Rp 0</h3>
+                    </div>
+                    <span class="text-[9px] text-red-500 font-bold flex items-center gap-1 mt-2">
+                        <i class="fa-solid fa-arrow-trend-down"></i> Terkendali
+                    </span>
+                </div>
+                <div class="w-10 h-10 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-sm shadow-inner self-center flex-shrink-0">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm flex justify-between items-stretch min-h-[125px]">
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <span class="text-[11px] font-semibold text-gray-400 block mb-1">Musim Tanam</span>
+                        <h3 id="lbl-musim-count" class="text-xl font-bold text-gray-700">0 Musim</h3>
+                    </div>
+                    <span class="text-[9px] text-blue-500 font-bold flex items-center gap-1 mt-2">
+                        <i class="fa-solid fa-seedling"></i> Riwayat Terbaca
+                    </span>
+                </div>
+                <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-sm shadow-inner self-center flex-shrink-0">
+                    <i class="fa-solid fa-wheat-awn"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MIDDLE GRIDS -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            
+            <!-- WIDGET PROGRESS TANAMAN BERDASARKAN MOCKUP image_7bc787.png -->
+            <div class="lg:col-span-2 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <!-- Menyesuaikan judul atas sesuai gambar -->
+                        <h3 class="font-bold text-black text-base tracking-tight">Musim Tanam Aktif</h3>
+                        <a href="data-musim-tanam.html" class="text-[11px] font-bold text-green-600 hover:underline">Lihat Semua</a>
+                    </div>
+                    
+                    <!-- Kontainer Pengisian Baris List Musim secara Dinamis -->
+                    <div id="daftar-musim-aktif" class="space-y-4">
+                    </div>
+                </div>
+            </div>                  
+
+            <!-- WIDGET NOTIFIKASI -->
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-gray-700 text-sm">Notifikasi Terbaru</h3>
+                        <a href="notifikasi.html" class="text-[11px] font-bold text-green-600 hover:underline">Lihat Semua</a>
+                    </div>
+                    <div id="widget-notifikasi-list" class="space-y-3 text-xs">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRAFIK KEUANGAN -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+            <h3 class="font-bold text-gray-700 mb-4 text-sm">Ringkasan Keuangan Bulanan (2026)</h3>
+            <div class="h-64 w-full">
+                <canvas id="financialChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Ambil data session user yang sedang login dari index.html
+        const sessionNama = localStorage.getItem('session_user_nama') || "Petani Tatera";
+        const sessionRole = localStorage.getItem('session_user_role') || "petani";
+        const sessionKelompok = localStorage.getItem('session_user_kelompok') || "Kelompok Tani";
+
+        // Suntikkan data secara otomatis ke element HTML UI Dashboard Anda
+        document.addEventListener("DOMContentLoaded", function() {
+            // Mengubah nama user di sidebar
+            const txtNamaSidebar = document.getElementById("sidebar-username");
+            if(txtNamaSidebar) txtNamaSidebar.innerText = sessionNama;
+
+            // Mengubah nama kelompok tani / peran di bawah nama user
+            const txtRoleSidebar = document.getElementById("sidebar-role");
+            if(txtRoleSidebar) {
+                txtRoleSidebar.innerText = sessionKelompok; // Menampilkan nama kelompok tani yang diinput saat daftar
+            }
+            
+            // Opsional: Anda juga bisa mengubah nama sapaan di konten utama jika ada element id "welcome-user"
+            const txtSapaanUtama = document.getElementById("welcome-user");
+            if(txtSapaanUtama) txtSapaanUtama.innerText = sessionNama;
+        });
+
+        
+        // ... (Sisa fungsi Grafik Chart.js dan fungsi handleLogout() milik Anda biarkan tetap di bawahnya) ...
+
+        function toggleMenu(menuId, arrowId) {
+            const menu = document.getElementById(menuId);
+            const arrow = document.getElementById(arrowId);
+            if (menu && arrow) {
+                menu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-90');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.split("/").pop();
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                    link.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                }
+            });
+
+            const subLinks = document.querySelectorAll('.nav-sub-item');
+            subLinks.forEach(subLink => {
+                if (subLink.getAttribute('href') === currentPath) {
+                    subLink.classList.remove('text-gray-500', 'hover:text-green-600');
+                    subLink.classList.add('bg-[#0F5E27]', 'text-white', 'font-bold', 'shadow-sm');
+
+                    const parentContainer = subLink.closest('[id^="menu-"]');
+                    if (parentContainer) {
+                        parentContainer.classList.remove('hidden');
+                        const parentId = parentContainer.getAttribute('id');
+                        
+                        const btnId = parentId.replace('menu-', 'btn-');
+                        const mainButton = document.getElementById(btnId);
+                        if (mainButton) {
+                            mainButton.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                            mainButton.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                        }
+
+                        const arrowId = parentId.replace('menu-', 'arrow-');
+                        const arrowIcon = document.getElementById(arrowId);
+                        if (arrowIcon) {
+                            arrowIcon.classList.remove('text-gray-600');
+                            arrowIcon.classList.add('rotate-90', 'text-white', 'opacity-100');
+                        }
+                    }
+                }
+            });
+            
+            const nama = localStorage.getItem('user_nama_lengkap') || 'Adam Permana';
+            const usernameElement = document.getElementById('sidebar-username');
+            if (usernameElement) {
+                usernameElement.innerText = "Hi, " + nama.split(" ")[0];
+            }
+
+            initDashboardData();
+            muatWidgetNotifikasi();
+        });
+
+        function muatWidgetNotifikasi() {
+            const widgetContainer = document.getElementById('widget-notifikasi-list');
+            const daftarNotif = JSON.parse(localStorage.getItem('daftar_notifikasi')) || [];
+
+            if (daftarNotif.length === 0) {
+                widgetContainer.innerHTML = `
+                    <div class="text-center py-6 text-gray-400">
+                        <i class="fa-solid fa-bell-slash text-xl mb-1 block text-gray-300"></i>
+                        Tidak ada notifikasi terbaru.
+                    </div>`;
+                return;
+            }
+
+            widgetContainer.innerHTML = "";
+            const notifTerbaru = daftarNotif.slice(0, 3);
+
+            notifTerbaru.forEach(notif => {
+                let statusDot = notif.belumDibaca ? 'text-green-500' : 'text-gray-300';
+                
+                let itemHTML = `
+                    <div class="flex justify-between border-b border-gray-50 pb-2.5 last:border-0">
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-circle text-[9px] ${statusDot} mt-1.5 flex-shrink-0"></i>
+                            <div>
+                                <p class="font-bold text-gray-700">${notif.judul}</p>
+                                <p class="text-gray-400 text-[11px] mt-0.5 line-clamp-2">${notif.pesan}</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] text-gray-400 whitespace-nowrap ml-2">${notif.waktu}</span>
+                    </div>
+                `;
+                widgetContainer.innerHTML += itemHTML;
+            });
+        }
+
+        function initDashboardData() {
+            const kasMasuk = JSON.parse(localStorage.getItem('daftar_kas_masuk')) || [];
+            const kasKeluar = JSON.parse(localStorage.getItem('daftar_kas_keluar')) || [];
+
+            let totalMasuk = 0;
+            let totalKeluar = 0;
+
+            let bulananMasuk = Array(12).fill(0);
+            let bulananKeluar = Array(12).fill(0);
+
+            kasMasuk.forEach(item => {
+                let nominal = parseFloat(item.jumlah) || 0;
+                totalMasuk += nominal;
+                if (item.tanggal) {
+                    const bulanIndex = new Date(item.tanggal).getMonth();
+                    if (bulanIndex >= 0 && bulanIndex <= 11) {
+                        bulananMasuk[bulanIndex] += nominal;
+                    }
+                }
+            });
+
+            kasKeluar.forEach(item => {
+                let nominal = parseFloat(item.jumlah) || 0;
+                totalKeluar += nominal;
+                if (item.tanggal) {
+                    const bulanIndex = new Date(item.tanggal).getMonth();
+                    if (bulanIndex >= 0 && bulanIndex <= 11) {
+                        bulananKeluar[bulanIndex] += nominal;
+                    }
+                }
+            });
+
+            let saldoSekarang = totalMasuk - totalKeluar;
+
+            document.getElementById('lbl-saldo').innerText = "Rp " + saldoSekarang.toLocaleString('id-ID');
+            document.getElementById('lbl-kas-masuk').innerText = "Rp " + totalMasuk.toLocaleString('id-ID');
+            document.getElementById('lbl-kas-keluar').innerText = "Rp " + totalKeluar.toLocaleString('id-ID');
+
+            // --- MANAJEMEN DAN SINKRONISASI ARRAY DATA MUSIM ---
+            let listMusim = JSON.parse(localStorage.getItem('list_musim_tanam')) || [];
+            
+            const singleNamaMusim = localStorage.getItem('dashboard_nama_musim');
+            if (singleNamaMusim && listMusim.length === 0) {
+                listMusim.push({
+                    nama: singleNamaMusim,
+                    komoditas: localStorage.getItem('dashboard_komoditas') || '-',
+                    mulai: localStorage.getItem('dashboard_tgl_mulai_raw') || '2026-05-01',
+                    panen: localStorage.getItem('dashboard_tgl_selesai_raw') || '2026-09-30'
+                });
+            }
+
+            document.getElementById('lbl-musim-count').innerText = listMusim.length + " Musim";
+            const containerMusim = document.getElementById('daftar-musim-aktif');
+            containerMusim.innerHTML = "";
+
+            if (listMusim.length === 0) {
+                containerMusim.innerHTML = `
+                    <div class="p-6 border border-dashed border-gray-200 rounded-xl text-center text-gray-400 text-xs">
+                        <i class="fa-solid fa-folder-open text-2xl mb-2 block text-gray-300"></i>
+                        Belum ada data musim tanam. Silakan tambahkan di menu Musim Tanam.
+                    </div>`;
+            } else {
+                // Ambil 2 atau 3 entri musim teratas/terakhir untuk ditampilkan di dashboard
+                const previewMusim = listMusim.slice(-3).reverse();
+                
+                previewMusim.forEach((musim) => {
+                    const tglMulai = musim.mulai ? new Date(musim.mulai) : null;
+                    const tglPanen = musim.panen ? new Date(musim.panen) : null;
+                    const tglHariIni = new Date();
+
+                    let persentase = 0;
+
+                    if (tglMulai && tglPanen && !isNaN(tglMulai) && !isNaN(tglPanen)) {
+                        let totalDurasi = tglPanen - tglMulai;
+                        let waktuBerjalan = tglHariIni - tglMulai;
+                        
+                        if (totalDurasi > 0) {
+                            persentase = Math.floor((waktuBerjalan / totalDurasi) * 100);
+                            if (persentase < 0) persentase = 0;
+                            if (persentase > 100) persentase = 100;
+                        } else {
+                            persentase = 100;
+                        }
+                    }
+
+                    // Fungsi pembentuk string nama bulan & tahun seperti pada mockup "Mei 2026 - Sep 2026"
+                    const dapatkanRentangBulanTahun = (strMulai, strPanen) => {
+                        if (!strMulai || !strPanen) return "Periode Belum Diatur";
+                        const opsi = { month: 'short', year: 'numeric' };
+                        const dMulai = new Date(strMulai);
+                        const dPanen = new Date(strPanen);
+                        if(isNaN(dMulai) || isNaN(dPanen)) return "Periode Tidak Valid";
+                        return `${dMulai.toLocaleDateString('id-ID', opsi)} - ${dPanen.toLocaleDateString('id-ID', opsi)}`;
+                    };
+
+                    const rentangTeksBulan = dapatkanRentangBulanTahun(musim.mulai, musim.panen);
+
+                    // PENERAPAN STRUKTUR BLOK LAYOUT SESUAI GAMBAR "image_7bc787.png"
+                    let rowMusim = `
+                        <div class="flex items-center justify-between p-5 border border-gray-100 rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition duration-300">
+                            
+                            <!-- Sisi Kiri: Kotak Ikon Kalender Hijau Lembut & Info Nama -->
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 rounded-2xl bg-green-100 text-tatera-green flex items-center justify-center text-xl flex-shrink-0">
+                                    <i class="fa-regular fa-calendar-lines-pen fa-calendar-days"></i>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-sm text-gray-900 tracking-tight">${musim.nama}</h4>
+                                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700">Aktif</span>
+                                    </div>
+                                    <p class="text-xs text-gray-400 font-medium">${rentangTeksBulan}</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Sisi Kanan: Progress Informasi & Indikator Horizontal Lembut -->
+                            <div class="w-48 flex flex-col items-end gap-1">
+                                <div class="text-right">
+                                    <span class="text-[11px] text-gray-400 block font-medium">Progress</span>
+                                    <span class="font-extrabold text-base text-gray-900 block mt-0.5">${persentase}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden mt-1">
+                                    <div class="bg-tatera-light-green h-1.5 rounded-full transition-all duration-700" style="width: ${persentase}%"></div>
+                                </div>
+                            </div>
+
+                        </div>`;
+                    containerMusim.innerHTML += rowMusim;
+                });
+            }
+
+            renderFinancialChart(bulananMasuk, bulananKeluar);
+        }
+
+        function renderFinancialChart(dataMasuk, dataKeluar) {
+            const ctx = document.getElementById('financialChart');
+            if (!ctx) return;
+
+            const isMasukKosong = dataMasuk.every(v => v === 0);
+            const isKeluarKosong = dataKeluar.every(v => v === 0);
+            
+            if (isMasukKosong && isKeluarKosong) {
+                dataMasuk = [1000000, 1500000, 1200000, 1900000, 2500000, 3200000, 2800000, 3500000, 4000000, 3100000, 2900000, 4200000];
+                dataKeluar = [500000, 800000, 700000, 1100000, 1500000, 2000000, 1800000, 2200000, 2500000, 1900000, 1500000, 2100000];
+            }
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                    datasets: [{
+                        label: 'Pemasukan',
+                        data: dataMasuk,
+                        borderColor: '#39B54A',
+                        backgroundColor: 'rgba(57, 181, 74, 0.05)',
+                        fill: true,
+                        tension: 0.35
+                    }, {
+                        label: 'Pengeluaran',
+                        data: dataKeluar,
+                        borderColor: '#EF4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.05)',
+                        fill: true,
+                        tension: 0.35
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { boxWidth: 12, font: { size: 11 } } }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return 'Rp ' + (value >= 1000000 ? (value / 1000000) + 'jt' : value.toLocaleString('id-ID'));
+                                },
+                                font: { size: 10 }
+                            }
+                        },
+                        x: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        function handleLogout() {
+            if (confirm("Yakin ingin keluar?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

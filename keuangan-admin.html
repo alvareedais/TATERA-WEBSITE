@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Keuangan Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        'tatera-green': '#115E28', 
+                        'tatera-light-green': '#28a745',
+                        'tatera-blue-active': '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-300 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white p-6 flex flex-col justify-between h-screen flex-shrink-0 relative z-10">
+        <div>
+            <div class="flex items-center gap-3 mb-8 pl-2">
+                <div class="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0 flex items-center justify-center text-gray-600">
+                    <i class="fa-solid fa-user-shield text-xl"></i>
+                </div>
+                <div>
+                    <h3 id="sidebar-username" class="font-bold text-gray-800 text-sm">Hi, Super Admin</h3>
+                    <p class="text-[11px] text-gray-400 font-medium">Super Administrator</p>
+                </div>
+            </div>
+
+            <nav class="space-y-1 text-xs font-bold">
+                <a href="dashboard-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-house w-5 text-center text-sm"></i> <span>Dashboard</span>
+                </a>
+
+                <a href="manajement-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-user-gear w-5 text-center text-sm"></i> <span>Manajemen Admin</span>
+                </a>
+
+                <a href="manajement-petani-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-users w-5 text-center text-sm"></i> <span>Manajemen Petani</span>
+                </a>
+
+                <a href="musim-tanam-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-seedling w-5 text-center text-sm"></i> <span>Musim Tanam</span>
+                </a>
+
+                <a href="keuangan-admin.html" class="flex items-center space-x-3 p-3 rounded-xl bg-tatera-blue-active text-white shadow-sm transition">
+                    <i class="fa-solid fa-dollar-sign w-5 text-center text-sm"></i> <span>Keuangan</span>
+                </a>
+
+                <a href="laporan-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-sm"></i> <span>Laporan</span>
+                </a>
+
+                <a href="pengaturan-sistem-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-gear w-5 text-center text-sm"></i> <span>Pengaturan Sistem</span>
+                </a>
+                
+                <a href="notifikasi-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-bell w-5 text-center text-sm"></i> <span>Notifikasi</span>
+                </a>
+                
+                <a href="profil-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-user w-5 text-center text-sm"></i> <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <button onclick="handleLogout()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-100 text-red-600 font-bold hover:bg-red-200 transition text-xs">
+                <i class="fa-solid fa-power-off text-sm"></i> <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-grow p-8 h-screen overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 min-h-full flex flex-col">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Manajemen Keuangan Global</h2>
+                    <p class="text-[11px] text-gray-400 font-medium">Monitoring perputaran dana, modal, dan omzet realisasi tani</p>
+                </div>
+                <div>
+                    <button onclick="bukaModalTransaksi()" class="bg-tatera-green hover:bg-emerald-800 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-2 shadow-sm transition">
+                        <i class="fa-solid fa-plus"></i> Catat Transaksi Global
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
+                <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 flex items-center justify-between">
+                    <div>
+                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Total Pemasukan</p>
+                        <h3 id="txt-total-masuk" class="text-xl font-black text-emerald-800 mt-1">Rp 0</h3>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    </div>
+                </div>
+
+                <div class="bg-red-50 border border-red-100 rounded-2xl p-5 flex items-center justify-between">
+                    <div>
+                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Total Pengeluaran</p>
+                        <h3 id="txt-total-keluar" class="text-xl font-black text-red-800 mt-1">Rp 0</h3>
+                    </div>
+                    <div class="w-10 h-10 bg-red-100 text-red-700 rounded-xl flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5 flex items-center justify-between">
+                    <div>
+                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Saldo Kas Bersih</p>
+                        <h3 id="txt-saldo-bersih" class="text-xl font-black text-blue-800 mt-1">Rp 0</h3>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100 mb-6">
+                <h4 class="text-xs font-bold text-gray-700 mb-3"><i class="fa-solid fa-chart-line text-tatera-green mr-1"></i> Grafik Arus Kas Masuk & Keluar</h4>
+                <div class="h-48 relative">
+                    <canvas id="chartKeuanganGlobal"></canvas>
+                </div>
+            </div>
+
+            <div class="flex-grow overflow-x-auto">
+                <div class="flex items-center justify-between mb-3">
+                    <h4 class="text-xs font-bold text-gray-700 uppercase tracking-wider">Riwayat Log Transaksi Finansial</h4>
+                </div>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-200 text-gray-500 text-[11px] font-bold uppercase tracking-wider bg-gray-50">
+                            <th class="py-3 px-4">Tanggal</th>
+                            <th class="py-3 px-4">Keterangan Aktivitas</th>
+                            <th class="py-3 px-4">Kategori</th>
+                            <th class="py-3 px-4 text-right">Jumlah</th>
+                            <th class="py-3 px-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-keuangan-body" class="text-xs text-gray-700 divide-y divide-gray-100">
+                        </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modal-keuangan" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl mx-4">
+            <h3 class="text-base font-bold text-tatera-green mb-4">Catat Transaksi Finansial</h3>
+            <form onsubmit="simpanTransaksi(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-600 mb-1">Keterangan Transaksi</label>
+                    <input type="text" id="tx-keterangan" required placeholder="Contoh: Penjualan Gabah / Subsidi Pupuk" class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-xs">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1">Jenis Kas</label>
+                        <select id="tx-jenis" class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-xs font-medium text-gray-700">
+                            <option value="Masuk">Pemasukan (Masuk)</option>
+                            <option value="Keluar">Pengeluaran (Keluar)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1">Nominal (Rp)</label>
+                        <input type="number" id="tx-nominal" required placeholder="Angka saja" class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-xs">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2 text-xs font-bold">
+                    <button type="button" onclick="tutupModalTransaksi()" class="px-4 py-2 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 transition">Batal</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-tatera-green text-white hover:bg-emerald-800 transition">Simpan Log</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let infoChart = null;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Sinkronisasi Sesi Nama Login
+            const namaSesi = localStorage.getItem('user_nama_lengkap');
+            if (namaSesi && document.getElementById('sidebar-username')) {
+                document.getElementById('sidebar-username').innerText = "Hi, " + namaSesi;
+            }
+
+            // Inisialisasi Riwayat Keuangan Awal di LocalStorage jika belum diset
+            let logKeuangan = JSON.parse(localStorage.getItem('database_keuangan_global'));
+            if (!logKeuangan) {
+                logKeuangan = [
+                    { tgl: "20 Juni 2026", ket: "Dana Hibah & Permodalan Pemerintah", jenis: "Masuk", nominal: 45000000 },
+                    { tgl: "22 Juni 2026", ket: "Pembelian Benih Unggul Varietas Pandanwangi", jenis: "Keluar", nominal: 12500000 },
+                    { tgl: "25 Juni 2026", ket: "Subsidi Pembelian Pupuk NPK Kelompok", jenis: "Keluar", nominal: 8000000 },
+                    { tgl: "27 Juni 2026", ket: "Hasil Penjualan Panen Jagung Batur", jenis: "Masuk", nominal: 18200000 }
+                ];
+                localStorage.setItem('database_keuangan_global', JSON.stringify(logKeuangan));
+            }
+
+            muatSistemKeuangan();
+        });
+
+        function muatSistemKeuangan() {
+            const tbody = document.getElementById("tabel-keuangan-body");
+            tbody.innerHTML = "";
+
+            let logKeuangan = JSON.parse(localStorage.getItem('database_keuangan_global')) || [];
+            
+            let totalMasuk = 0;
+            let totalKeluar = 0;
+
+            logKeuangan.forEach((item, index) => {
+                const nominalAngka = parseFloat(item.nominal) || 0;
+                if (item.jenis === "Masuk") {
+                    totalMasuk += nominalAngka;
+                } else {
+                    totalKeluar += nominalAngka;
+                }
+
+                const baris = `
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="py-3 px-4 text-gray-500 font-medium">${item.tgl}</td>
+                        <td class="py-3 px-4 font-semibold text-gray-800">${item.ket}</td>
+                        <td class="py-3 px-4">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${item.jenis === 'Masuk' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                Kas ${item.jenis}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-right font-bold ${item.jenis === 'Masuk' ? 'text-green-600' : 'text-red-600'}">
+                            ${item.jenis === 'Masuk' ? '+' : '-'} Rp ${nominalAngka.toLocaleString('id-ID')}
+                        </td>
+                        <td class="py-3 px-4 text-center">
+                            <button onclick="hapusTransaksi(${index})" class="text-gray-400 hover:text-red-600 transition text-xs">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += baris;
+            });
+
+            const saldoBersih = totalMasuk - totalKeluar;
+
+            // Render Nilai ke Box Atas
+            document.getElementById("txt-total-masuk").innerText = "Rp " + totalMasuk.toLocaleString('id-ID');
+            document.getElementById("txt-total-keluar").innerText = "Rp " + totalKeluar.toLocaleString('id-ID');
+            document.getElementById("txt-saldo-bersih").innerText = "Rp " + saldoBersih.toLocaleString('id-ID');
+
+            // Set Warna Teks Saldo Bersih minus/plus
+            if(saldoBersih < 0) {
+                document.getElementById("txt-saldo-bersih").className = "text-xl font-black text-red-600 mt-1";
+            } else {
+                document.getElementById("txt-saldo-bersih").className = "text-xl font-black text-blue-800 mt-1";
+            }
+
+            bikinAtauUpdateChart(totalMasuk, totalKeluar);
+        }
+
+        function bikinAtauUpdateChart(masuk, keluar) {
+            const ctx = document.getElementById('chartKeuanganGlobal').getContext('2d');
+            
+            if (infoChart) {
+                infoChart.destroy();
+            }
+
+            // Grafik tren batang komparasi perbandingan arus kas
+            infoChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pemasukan (Masuk)', 'Pengeluaran (Keluar)'],
+                    datasets: [{
+                        label: 'Total Arus Kas Finansial (Rp)',
+                        data: [masuk, keluar],
+                        backgroundColor: ['#28a745', '#ef4444'],
+                        borderRadius: 12,
+                        borderWidth: 0,
+                        maxBarThickness: 50
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'Rp ' + (value >= 1000000 ? (value / 1000000) + 'jt' : value.toLocaleString('id-ID'));
+                                },
+                                font: { size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Modal Action Trigger
+        function bukaModalTransaksi() {
+            document.getElementById("tx-keterangan").value = "";
+            document.getElementById("tx-nominal").value = "";
+            document.getElementById("modal-keuangan").classList.remove("hidden");
+        }
+
+        function tutupModalTransaksi() {
+            document.getElementById("modal-keuangan").classList.add("hidden");
+        }
+
+        function simpanTransaksi(e) {
+            e.preventDefault();
+            let logKeuangan = JSON.parse(localStorage.getItem('database_keuangan_global')) || [];
+
+            const ket = document.getElementById("tx-keterangan").value;
+            const jenis = document.getElementById("tx-jenis").value;
+            const nominal = parseInt(document.getElementById("tx-nominal").value) || 0;
+            const tgl = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            logKeuangan.push({ tgl, ket, jenis, nominal });
+            localStorage.setItem('database_keuangan_global', JSON.stringify(logKeuangan));
+
+            tutupModalTransaksi();
+            muatSistemKeuangan();
+        }
+
+        function hapusTransaksi(index) {
+            if (confirm("Hapus log catatan transaksi ini secara permanen?")) {
+                let logKeuangan = JSON.parse(localStorage.getItem('database_keuangan_global')) || [];
+                logKeuangan.splice(index, 1);
+                localStorage.setItem('database_keuangan_global', JSON.stringify(logKeuangan));
+                muatSistemKeuangan();
+            }
+        }
+
+        function handleLogout() {
+            if (confirm("Yakin ingin keluar?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

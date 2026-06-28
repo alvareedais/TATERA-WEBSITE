@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Keuangan & SPK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        'tatera-light-green': '#28a745',
+                        'tatera-bg-green': '#e8f7ec',
+                        'tatera-bg-red': '#fdecee',
+                        'tatera-bg-blue': '#edf2ff',
+                        'tatera-text-blue': '#2b6cb0'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-300 font-sans flex h-screen overflow-hidden">
+  
+    <!-- SIDEBAR LEFT -->
+    <div class="w-64 bg-white p-6 flex flex-col justify-between h-screen flex-shrink-0 relative z-10">
+        <div>
+            <!-- User Profile Section -->
+            <div class="flex items-center gap-3 mb-8 pl-2">
+                <div class="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0"></div>
+                <div>
+                    <h3 id="sidebar-username" class="font-bold text-gray-800 text-sm">Hi, Admin</h3>
+                    <p class="text-[11px] text-gray-400 font-medium">Administrator</p>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="space-y-1 text-xs">
+                <a href="dashboard_kelompok.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                    <i class="fa-solid fa-house w-5 text-center text-sm"></i> <span>Dashboard</span>
+                </a>
+
+                <a href="data-musim-kelompok.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                    <i class="fa-solid fa-seedling w-5 text-center text-sm"></i> <span>Musim Tanam</span>
+                </a>
+
+                <!-- Menu Keuangan -->
+                <div class="space-y-1">
+                    <button onclick="toggleMenuKeuangan()" class="w-full flex items-center justify-between p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-dollar-sign w-5 text-center text-sm"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="icon-chevron" class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div id="sub-menu-keuangan" class="pl-8 space-y-2 pt-1 text-[11px] transition-all duration-300">
+                        <a href="kas-masuk-kelompok.html" class="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition font-medium py-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 block"></span>
+                            <span>Kas Masuk</span>
+                        </a>
+                        <a href="kas-keluar-kelompok.html" class="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition font-medium py-1">
+                            <span class="w-2 h-2 rounded-full bg-red-500 block"></span>
+                            <span>Kas Keluar</span>
+                        </a>
+                    </div>
+                </div>
+
+                <a href="laporan-kelompok.html" class="flex items-center space-x-3 p-3 rounded-xl bg-tatera-light-green text-white font-bold shadow-sm transition">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-sm"></i> <span>Laporan</span>
+                </a>
+
+                <a href="pengaturan-sistem.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                    <i class="fa-solid fa-gear w-5 text-center text-sm"></i> <span>Pengaturan Sistem</span>
+                </a>
+                <a href="notifikasi-kelompok.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                    <i class="fa-solid fa-bell w-5 text-center text-sm"></i> <span>Notifikasi</span>
+                </a>
+                <a href="profil-kelompok.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                    <i class="fa-solid fa-user w-5 text-center text-sm"></i> <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <button onclick="handleLogout()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-100 text-red-600 font-bold hover:bg-red-200 transition text-xs">
+                <i class="fa-solid fa-power-off text-sm"></i> <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN PANEL CONTENT -->
+    <div class="flex-grow p-8 h-screen overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 min-h-full flex flex-col">
+            
+            <!-- Title Utama (Dinamis Berdasarkan Tab) -->
+            <h2 id="main-content-title" class="text-xl font-bold text-gray-800 mb-6">Keuangan</h2>
+
+            <!-- TAB SUB-MENU NAVIGASI -->
+            <div class="flex items-center space-x-12 border-b border-gray-200 pb-3 mb-6 text-xs font-bold text-gray-600">
+                <button onclick="switchSubTab('overview')" id="tab-overview" class="text-green-600 border-b-2 border-green-600 pb-3 -mb-[14px] px-1 focus:outline-none">Overview</button>
+                <a href="kas-masuk-kelompok.html" class="hover:text-gray-900 transition">Kas Masuk</a>
+                <a href="kas-keluar-kelompok.html" class="hover:text-gray-900 transition">Kas Keluar</a>
+                <button onclick="switchSubTab('grafik-musim')" id="tab-grafik-musim" class="hover:text-gray-900 transition focus:outline-none">Grafik Musim</button>
+                <button onclick="switchSubTab('spk')" id="tab-spk" class="hover:text-gray-900 transition focus:outline-none">SPK</button>
+            </div>
+
+            <!-- ================= KONTEN 1: OVERVIEW KEUANGAN ================= -->
+            <div id="konten-overview" class="flex flex-col flex-grow">
+                <!-- CARD SUMMARY GRID (3 KOLOM) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-[#e8f7ec] border border-green-200 rounded-xl p-4 flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-full border-2 border-green-500 flex items-center justify-center text-green-600 bg-white">
+                            <i class="fa-solid fa-arrow-down text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-bold text-gray-600">Total Kas Masuk</p>
+                            <p class="text-base font-black text-green-600 mt-0.5">Rp 1.250.000.000</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#fdecee] border border-red-200 rounded-xl p-4 flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-full border-2 border-red-500 flex items-center justify-center text-red-500 bg-white">
+                            <i class="fa-solid fa-arrow-up text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-bold text-gray-600">Total Kas Keluar</p>
+                            <p class="text-base font-black text-red-500 mt-0.5">Rp 800.000.000</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#edf2ff] border border-blue-200 rounded-xl p-4 flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-full border-2 border-blue-400 flex items-center justify-center text-blue-500 bg-white">
+                            <i class="fa-solid fa-wallet text-base"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-bold text-gray-600">Saldo</p>
+                            <p class="text-base font-black text-blue-600 mt-0.5">Rp 400.000.000</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTAINER GRAFIK BAR -->
+                <div class="w-full bg-white p-6 rounded-2xl border border-gray-200 flex-grow flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xs font-bold text-gray-800">Grafik Kas Masuk vs Kas Keluar</h3>
+                        <div class="relative">
+                            <select class="appearance-none pl-4 pr-8 py-1.5 border border-gray-300 rounded-lg text-[11px] font-bold text-gray-700 bg-white focus:outline-none cursor-pointer shadow-sm">
+                                <option>Mei 2026</option>
+                                <option>April 2026</option>
+                                <option>Maret 2026</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-gray-500">
+                                <i class="fa-solid fa-chevron-down text-[9px]"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-6 text-[11px] font-bold mb-4 pl-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-green-600 block"></span> <span class="text-gray-700">Kas Masuk</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-red-600 block"></span> <span class="text-gray-700">Kas Keluar</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-grow w-full relative min-h-[300px]">
+                        <canvas id="canvasKeuanganBar"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= KONTEN 2: TAB SPK (SESUAI DESAIN BARU) ================= -->
+            <div id="konten-spk" class="hidden flex-grow flex flex-col">
+                <div class="w-full bg-white rounded-xl border border-gray-200 p-6">
+                    <h3 class="text-sm font-bold text-gray-800 mb-6">Ranking Petani</h3>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-white border-b border-gray-200 text-gray-800 font-bold">
+                                    <th class="p-4 w-24">Rank</th>
+                                    <th class="p-4 text-center">Nama Petani</th>
+                                    <th class="p-4 text-right w-32">Skor</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-gray-600 font-medium">
+                                <tr class="hover:bg-gray-50/50 transition">
+                                    <td class="p-5 font-bold text-gray-900">1</td>
+                                    <td class="p-5 text-center text-gray-700">Kelompok Tani Makmur</td>
+                                    <td class="p-5 text-right font-semibold text-gray-800">92,5</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50/50 transition">
+                                    <td class="p-5 font-bold text-gray-900">2</td>
+                                    <td class="p-5 text-center text-gray-700">Kelompok Tani Sejahtera</td>
+                                    <td class="p-5 text-right font-semibold text-gray-800">85,2</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50/50 transition">
+                                    <td class="p-5 font-bold text-gray-900">3</td>
+                                    <td class="p-5 text-center text-gray-700">Kelompok Tani Maju</td>
+                                    <td class="p-5 text-right font-semibold text-gray-800">76,8</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50/50 transition">
+                                    <td class="p-5 font-bold text-gray-900">4</td>
+                                    <td class="p-5 text-center text-gray-700">Kelompok Tani Jaya</td>
+                                    <td class="p-5 text-right font-semibold text-gray-800">70,1</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50/50 transition">
+                                    <td class="p-5 font-bold text-gray-900">5</td>
+                                    <td class="p-5 text-center text-gray-700">Kelompok Tani Sukses</td>
+                                    <td class="p-5 text-right font-semibold text-gray-800">65,3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= KONTEN 3: TAB GRAFIK MUSIM (OPSIONAL) ================= -->
+            <div id="konten-grafik-musim" class="hidden flex-grow flex items-center justify-center border border-dashed border-gray-200 rounded-xl text-xs font-medium text-gray-400">
+                Konten Grafik Musim Belum Tersedia
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCRIPTS MANAGEMENTS -->
+    <script>
+        function toggleMenuKeuangan() {
+            const subMenu = document.getElementById("sub-menu-keuangan");
+            const icon = document.getElementById("icon-chevron");
+            
+            if (subMenu.classList.contains("hidden")) {
+                subMenu.classList.remove("hidden");
+                icon.classList.replace("fa-chevron-right", "fa-chevron-down");
+            } else {
+                subMenu.classList.add("hidden");
+                icon.classList.replace("fa-chevron-down", "fa-chevron-right");
+            }
+        }
+
+        // Fungsi Perpindahan Sub-Tab Interaktif
+        function switchSubTab(targetId) {
+            const tabs = ['overview', 'grafik-musim', 'spk'];
+            const titleElement = document.getElementById('main-content-title');
+
+            tabs.forEach(tab => {
+                const button = document.getElementById(`tab-${tab}`);
+                const content = document.getElementById(`konten-${tab}`);
+
+                if (tab === targetId) {
+                    // Aktifkan gaya tombol tab
+                    if(button) button.className = "text-green-600 border-b-2 border-green-600 pb-3 -mb-[14px] px-1 focus:outline-none";
+                    if(content) content.classList.remove("hidden");
+                } else {
+                    // Nonaktifkan gaya tombol tab
+                    if(button) button.className = "hover:text-gray-900 transition focus:outline-none";
+                    if(content) content.classList.add("hidden");
+                }
+            });
+
+            // Ubah Title Sesuai Tab yang Aktif
+            if (targetId === 'spk') {
+                titleElement.innerText = "Ranking Petani";
+            } else {
+                titleElement.innerText = "Keuangan";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Sinkronisasi Sesi Nama Admin
+            const namaSesi = localStorage.getItem('session_user_nama');
+            if (namaSesi && document.getElementById('sidebar-username')) {
+                document.getElementById('sidebar-username').innerText = "Hi, " + namaSesi.split(" ")[0];
+            }
+
+            // Inisialisasi CHART BAR
+            const ctxBar = document.getElementById('canvasKeuanganBar');
+            if (ctxBar) {
+                new Chart(ctxBar.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei'],
+                        datasets: [
+                            {
+                                label: 'Kas Masuk',
+                                data: [16.5, 17.2, 17.2, 17.2, 17.2], 
+                                backgroundColor: '#00b341',
+                                borderRadius: 2,
+                                barPercentage: 0.35,
+                                categoryPercentage: 0.45
+                            },
+                            {
+                                label: 'Kas Keluar',
+                                data: [7.0, 9.2, 7.5, 6.4, 7.5], 
+                                backgroundColor: '#ff0000',
+                                borderRadius: 2,
+                                barPercentage: 0.35,
+                                categoryPercentage: 0.45
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: {
+                                min: 0,
+                                max: 20,
+                                ticks: {
+                                    stepSize: 5,
+                                    callback: function(val) { return val === 0 ? '0' : val + 'M'; },
+                                    font: { size: 10, weight: 'bold' },
+                                    color: '#4a5568'
+                                },
+                                grid: { color: '#e2e8f0', drawBorder: false }
+                            },
+                            x: {
+                                ticks: { font: { size: 11, weight: 'bold' }, color: '#1a202c' },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        function handleLogout() {
+            if (confirm("Yakin ingin keluar?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Masuk</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tatera-green': '#115E28',
+                        'tatera-light-green': '#39B54A',
+                        'tatera-dark-green': '#0D471E',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans h-screen flex overflow-hidden relative">
+
+    <!-- BACKGROUND GAMBAR DI SEBELAH KANAN PENUH -->
+    <div 
+        class="absolute inset-0 w-full h-full bg-cover bg-center z-0" 
+        style="background-image: url('assests/images/background.jpeg');"
+    >
+        <!-- Overlay halus agar kontras gambar seimbang -->
+        <div class="absolute inset-0 bg-black/5"></div>
+    </div>
+
+    <!-- PANEL KIRI: HIJAU PEKAT DENGAN LENGKUKAN BESAR (Menutupi 5/12 area kiri dan melengkung) -->
+    <div class="w-5/12 bg-[#115E28] text-white flex flex-col justify-center px-16 relative z-10 rounded-r-[180px] md:rounded-r-[260px] shadow-[20px_0_40px_rgba(0,0,0,0.3)] h-full">
+        <div class="relative z-20 max-w-sm">
+            <h1 class="text-5xl font-bold mb-2 tracking-wide leading-tight">
+                Selamat Datang
+            </h1>
+            <h1 class="text-5xl font-bold text-tatera-light-green mb-6 tracking-wide">
+                Kembali!
+            </h1>
+            <p class="text-sm text-gray-200 leading-relaxed opacity-90">
+                Masuk untuk melanjutkan perjalanan anda menuju gaya hidup berkelanjutan
+            </p>
+        </div>
+    </div>
+
+    <!-- PANEL KANAN: AREA KLIPING UNTUK FORM LOGIN MELAYANG DI ATAS GAMBAR -->
+    <div class="w-7/12 flex items-center justify-center relative z-10 p-12 h-full">
+        
+        <!-- CARD LOGIN PUTIH MELAYANG -->
+        <div class="bg-white rounded-3xl p-10 w-full max-w-md shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-gray-100">
+            <p class="text-xs font-semibold text-gray-700 mb-6">
+                Masuk untuk melanjutkan ke dashboard anda
+            </p>
+
+            <form onsubmit="prosesLogin(event)" class="space-y-4">
+                <!-- EMAIL -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">
+                        Email
+                    </label>
+                    <input
+                        type="email"
+                        id="login-email"
+                        required
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-tatera-green text-sm bg-white transition"
+                    >
+                </div>
+
+                <!-- PASSWORD -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">
+                        Password
+                    </label>
+                    <div class="relative">
+                        <input
+                            type="password"
+                            id="login-password"
+                            required
+                            class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-tatera-green text-sm pr-10 bg-white transition"
+                        >
+                        <button
+                            type="button"
+                            id="toggleLoginPassword"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-tatera-green transition"
+                        >
+                            <i class="fa-regular fa-eye-slash"></i>
+                        </button>
+                    </div>
+                    <div class="text-right mt-1">
+                        <a href="javascript:void(0)" onclick="bukaModal()" class="text-xs font-semibold text-tatera-light-green hover:underline">
+                            Lupa password?
+                        </a>
+                    </div>
+                </div>
+
+                <!-- BUTTON LOGIN -->
+                <button
+                    type="submit"
+                    class="w-full bg-tatera-dark-green hover:bg-[#115E28] text-white font-medium py-3 rounded-xl transition text-sm mt-6 shadow-md"
+                >
+                    Masuk
+                </button>
+            </form>
+
+            <!-- REGISTER TAUTAN -->
+            <p class="text-center text-xs text-gray-500 mt-6">
+                Belum punya akun?
+                <a
+                    href="daftar.html"
+                    class="text-tatera-light-green font-semibold hover:underline"
+                >
+                    Daftar disini
+                </a>
+            </p>
+        </div>
+
+    </div>
+    <div id="modal-lupa-password" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl">
+            <h3 class="text-lg font-bold text-gray-800 mb-2">Lupa Password?</h3>
+            <p class="text-xs text-gray-500 mb-4">Masukkan email yang terdaftar untuk melihat password Anda.</p>
+            
+            <input type="email" id="email-reset" placeholder="contoh: user@gmail.com" class="w-full px-4 py-2 mb-4 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-tatera-green">
+            
+            <div class="flex gap-2">
+                <button onclick="tutupModal()" class="w-full py-2 bg-gray-100 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-200">Batal</button>
+                <button onclick="prosesReset()" class="w-full py-2 bg-[#115E28] text-white rounded-xl text-xs font-bold hover:bg-emerald-800">Cek Password</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk membuka modal
+        function bukaModal() {
+            document.getElementById('modal-lupa-password').classList.remove('hidden');
+        }
+
+        // Fungsi untuk menutup modal
+        function tutupModal() {
+            document.getElementById('modal-lupa-password').classList.add('hidden');
+        }
+
+        // Fungsi proses pencarian password di LocalStorage
+        function prosesReset() {
+            const emailInput = document.getElementById('email-reset').value.trim();
+            // Mengambil data dari localStorage (sesuaikan dengan key di daftar.html Anda)
+            const databasePengguna = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+            
+            const user = databasePengguna.find(u => u.email === emailInput);
+            
+            if (user) {
+                alert("Password akun Anda adalah: " + user.password);
+                tutupModal();
+            } else {
+                alert("Email tidak ditemukan. Pastikan Anda sudah mendaftar!");
+            }
+        }
+    </script>
+
+    <!-- SCRIPT LOGIKA INTEGRASI MULTI-AKTOR -->
+    <script>
+        function prosesLogin(event) {
+            event.preventDefault();
+
+            const emailInput = document.getElementById("login-email").value.trim();
+            const passwordInput = document.getElementById("login-password").value;
+
+            // 1. Ambil database array pendaftar dari localStorage
+            let databasePengguna = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+
+            // 2. Cari data pengguna yang email & password-nya cocok
+            const akunDitemukan = databasePengguna.find(user => user.email === emailInput && user.password === passwordInput);
+
+            if (akunDitemukan) {
+                // Simpan data ke session untuk dipakai di halaman dashboard
+                localStorage.setItem('session_user_nama', akunDitemukan.nama);
+                localStorage.setItem('session_user_role', akunDitemukan.role);
+                localStorage.setItem('session_user_kelompok', akunDitemukan.kelompok_tani || '');
+                localStorage.setItem('session_user_wilayah', akunDitemukan.wilayah_tugas || '');
+
+                alert(`Login berhasil! Selamat datang kembali, ${akunDitemukan.nama}.`);
+
+                // 3. ALUR LOGIKA ALIH HALAMAN AKTOR
+                if (akunDitemukan.role === 'petani') {
+                    window.location.href = "dashboard.html"; // <-- DIUBAH KE dashboard.html SESUAI FILE ANDA
+                } else if (akunDitemukan.role === 'kelompok_tani') {
+                    window.location.href = "dashboard_kelompok.html"; // Untuk Admin Tani nanti
+                } else if (akunDitemukan.role === 'super_admin') {
+                    window.location.href = "dashboard-admin.html"; // Untuk Super Admin nanti
+                } else {
+                    window.location.href = "dashboard.html";
+                }
+
+            } else {
+                // Jalur cadangan (Membaca data tunggal bawaan pendaftaran lama jika ada)
+                const savedEmail = localStorage.getItem("user_email");
+                const savedPassword = localStorage.getItem("user_password");
+                const savedRole = localStorage.getItem("user_role");
+
+                if (emailInput === savedEmail && passwordInput === savedPassword) {
+                    alert("Login berhasil!");
+                    
+                    localStorage.setItem('session_user_nama', localStorage.getItem('user_nama_lengkap'));
+                    localStorage.setItem('session_user_role', savedRole);
+                    localStorage.setItem('session_user_kelompok', localStorage.getItem('user_kelompok') || '');
+
+                    if (savedRole === 'petani') {
+                        window.location.href = "dashboard.html"; // <-- DIUBAH KE dashboard.html
+                    } else if (savedRole === 'kelompok_tani') {
+                        window.location.href = "dashboard_kelompok.html";
+                    } else if (savedRole === 'super_admin') {
+                        window.location.href = "dashboard-admin.html";
+                    } else {
+                        window.location.href = "dashboard.html";
+                    }
+                } else {
+                    alert("Email atau password salah! Mohon periksa kembali.");
+                }
+            }
+        }
+
+        // Fitur Show/Hide Password Toggle
+        const loginPassword = document.getElementById("login-password");
+        const toggleLoginPassword = document.getElementById("toggleLoginPassword");
+
+        toggleLoginPassword.addEventListener("click", () => {
+            const icon = toggleLoginPassword.querySelector("i");
+            if (loginPassword.type === "password") {
+                loginPassword.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            } else {
+                loginPassword.type = "password";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
+        });
+    </script>
+
+</body>
+</html>

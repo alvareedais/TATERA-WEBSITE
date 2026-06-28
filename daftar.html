@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Daftar Akun</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tatera-green': '#115E28',
+                        'tatera-light-green': '#39B54A'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-tatera-green h-screen flex items-center justify-end pr-24 overflow-hidden">
+
+    <!-- Ditambahkan overflow-y-auto & max-h agar form tidak terpotong di layar kecil setelah ditambah input baru -->
+    <div class="bg-white rounded-3xl p-10 w-full max-w-lg shadow-2xl overflow-y-auto max-h-[95vh]">
+
+        <div class="text-center mb-6">
+            <h2 class="text-2xl font-bold text-tatera-green">
+                Daftar
+            </h2>
+            <p class="text-xs text-gray-500 mt-1">
+                Buat akun baru untuk memulai
+            </p>
+        </div>
+
+        <form onsubmit="prosesDaftar(event)" class="space-y-4">
+
+            <!-- Nama -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">
+                    Nama Lengkap
+                </label>
+                <input
+                    type="text"
+                    id="input-nama-pendaftar"
+                    required
+                    class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-sm"
+                >
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">
+                    Email
+                </label>
+                <input
+                    type="email"
+                    id="input-email-pendaftar"
+                    required
+                    class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-sm"
+                >
+            </div>
+
+            <!-- PILIHAN AKTOR / ROLE (FITUR BARU) -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">
+                    Daftar Sebagai
+                </label>
+                <!-- Ditambahkan onchange untuk mendeteksi perubahan aktor secara realtime -->
+                <select
+                    id="input-role-pendaftar"
+                    required
+                    onchange="aturInputTambahanAktor()"
+                    class="w-full px-4 py-2 rounded-xl border border-gray-300 bg-white focus:outline-none focus:border-tatera-green text-sm"
+                >
+                    <option value="" disabled selected>-- Pilih Peran/Aktor --</option>
+                    <option value="petani">Petani</option>
+                    <option value="kelompok_tani">Kelompok Tani / Admin Tani</option>
+                    <option value="super_admin">Admin / Super Admin</option>
+                </select>
+            </div>
+
+            <!-- WADAH INPUT TAMBAHAN YANG AKAN MUNCUL SECARA DINAMIS -->
+            <div id="wadah-input-tambahan" class="space-y-4 hidden">
+                <!-- Isinya akan di-inject lewat JavaScript di bawah sesuai pilihan aktor -->
+            </div>
+
+            <!-- Password -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">
+                    Password
+                </label>
+                <div class="relative">
+                    <input
+                        type="password"
+                        id="input-password-pendaftar"
+                        required
+                        class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-sm pr-10"
+                    >
+                    <button
+                        type="button"
+                        id="togglePassword"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-tatera-green"
+                    >
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Konfirmasi Password -->
+            <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">
+                    Konfirmasi Password
+                </label>
+                <div class="relative">
+                    <input
+                        type="password"
+                        id="input-konfirmasi-password-pendaftar"
+                        required
+                        class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-sm pr-10"
+                    >
+                    <button
+                        type="button"
+                        id="toggleConfirmPassword"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-tatera-green"
+                    >
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tombol -->
+            <button
+                type="submit"
+                class="w-full bg-tatera-green hover:bg-emerald-800 text-white font-semibold py-2.5 rounded-xl transition text-sm mt-2"
+            >
+                Daftar
+            </button>
+
+        </form>
+
+        <!-- LINK KEMBALI KE LOGIN -->
+        <p class="text-center text-xs text-gray-600 mt-6">
+            Sudah punya akun?
+            <a
+                href="index.html"
+                class="text-tatera-light-green font-semibold hover:underline"
+            >
+                Masuk di sini
+            </a>
+        </p>
+
+        <!-- Divider -->
+        <div class="relative flex py-4 items-center">
+            <div class="flex-grow border-t border-gray-200"></div>
+            <span class="flex-shrink mx-4 text-gray-400 text-xs">
+                Atau daftar dengan
+            </span>
+            <div class="flex-grow border-t border-gray-200"></div>
+        </div>
+
+        <!-- Social Login -->
+<div class="grid grid-cols-2 gap-4">
+    <button type="button" onclick="alert('Fitur Login dengan Google sedang dalam pengembangan')" 
+            class="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-xl text-xs font-medium hover:bg-gray-50 transition">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">
+        Google
+    </button>
+
+    <button type="button" onclick="alert('Fitur Login dengan Facebook sedang dalam pengembangan')" 
+            class="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-xl text-xs font-medium hover:bg-gray-50 transition">
+        <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" class="w-4 h-4" alt="Facebook">
+        Facebook
+    </button>
+</div>
+
+    </div>
+
+    <script>
+        // FUNGSI BARU: Mengubah form secara dinamis berdasarkan Dropdown Peran/Aktor
+        function aturInputTambahanAktor() {
+            const role = document.getElementById('input-role-pendaftar').value;
+            const wadah = document.getElementById('wadah-input-tambahan');
+            
+            // Bersihkan wadah terlebih dahulu dan tampilkan wadah
+            wadah.innerHTML = "";
+            wadah.classList.remove('hidden');
+
+            if (role === 'petani') {
+                wadah.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Kelompok Tani</label>
+                        <input type="text" id="input-tambahan-1" required placeholder="Contoh: Tani Makmur Sejahtera" class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-sm">
+                    </div>
+                `;
+            } else if (role === 'kelompok_tani') {
+                wadah.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Organisasi / Kelompok Tani</label>
+                        <input type="text" id="input-tambahan-1" required placeholder="Contoh: Gapoktan Kebumen" class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Wilayah Liputan / Tugas (RT/RW/Desa)</label>
+                        <input type="text" id="input-tambahan-2" required placeholder="Contoh: RT 02 / RW 01, Desa Pejagoan" class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-sm">
+                    </div>
+                `;
+            } else if (role === 'super_admin') {
+                wadah.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Kode Akses Internal (PIN Super Admin)</label>
+                        <input type="password" id="input-tambahan-1" required placeholder="Masukkan PIN Otorisasi Khusus" class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green text-sm">
+                    </div>
+                `;
+            } else {
+                wadah.classList.add('hidden');
+            }
+        }
+
+        function prosesDaftar(event) {
+            event.preventDefault();
+
+            const namaInput = document.getElementById('input-nama-pendaftar').value;
+            const emailInput = document.getElementById('input-email-pendaftar').value.trim();
+            const roleInput = document.getElementById('input-role-pendaftar').value;
+            const passwordInput = document.getElementById('input-password-pendaftar').value;
+            const konfirmasiPasswordInput = document.getElementById('input-konfirmasi-password-pendaftar').value;
+
+            if(passwordInput !== konfirmasiPasswordInput){
+                alert("Konfirmasi password tidak cocok!");
+                return;
+            }
+
+            // Validasi Khusus untuk Kode Verifikasi internal Super Admin
+            if (roleInput === 'super_admin') {
+                const pinAdmin = document.getElementById('input-tambahan-1').value;
+                if (pinAdmin !== "TATERA123") { // Simulasi PIN rahasia super admin
+                    alert("Kode Akses Super Admin Salah! Pendaftaran Anda ditolak sistem.");
+                    return;
+                }
+            }
+
+            // Ambil data database lokal dari localStorage
+            let daftarPengguna = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+
+            // Validasi: Cegah email ganda terdaftar di sistem lokal
+            const emailSama = daftarPengguna.some(user => user.email === emailInput);
+            if (emailSama) {
+                alert("Email sudah terdaftar! Silakan gunakan email lain.");
+                return;
+            }
+
+            const hariIni = new Date().toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+
+            // Menyimpan objek user yang dinamis beserta perannya ke dalam array
+            const dataUserBaru = {
+                nama: namaInput,
+                email: emailInput,
+                role: roleInput,
+                password: passwordInput,
+                tgl_gabung: hariIni,
+                // Inisialisasi kolom data spesifik aktor agar tidak kosong
+                kelompok_tani: "",
+                wilayah_tugas: ""
+            };
+
+            // Ambil nilai dari input dinamis berdasarkan perannya masing-masing
+            if (roleInput === 'petani') {
+                dataUserBaru.kelompok_tani = document.getElementById('input-tambahan-1').value;
+            } else if (roleInput === 'kelompok_tani') {
+                dataUserBaru.kelompok_tani = document.getElementById('input-tambahan-1').value;
+                dataUserBaru.wilayah_tugas = document.getElementById('input-tambahan-2').value;
+            } else if (roleInput === 'super_admin') {
+                dataUserBaru.kelompok_tani = "Otoritas Pusat";
+            }
+
+            daftarPengguna.push(dataUserBaru);
+            localStorage.setItem('daftar_pengguna', JSON.stringify(daftarPengguna));
+
+            // Backup data tunggal untuk menjaga kecocokan dengan variabel lama proyekmu
+            localStorage.setItem('user_nama_lengkap', namaInput);
+            localStorage.setItem('user_email', emailInput);
+            localStorage.setItem('user_password', passwordInput);
+            localStorage.setItem('user_role', roleInput);
+            localStorage.setItem('user_tgl_gabung', hariIni);
+            localStorage.setItem('user_kelompok', dataUserBaru.kelompok_tani);
+            localStorage.setItem('user_wilayah', dataUserBaru.wilayah_tugas);
+
+            alert(`Pendaftaran berhasil sebagai ${roleInput.replace('_', ' ').toUpperCase()}!`);
+            window.location.href = 'index.html';
+        }
+
+        // Show / Hide Password
+        const passwordInput = document.getElementById("input-password-pendaftar");
+        const togglePassword = document.getElementById("togglePassword");
+
+        togglePassword.addEventListener("click", () => {
+            const icon = togglePassword.querySelector("i");
+            if(passwordInput.type === "password"){
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }else{
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
+        });
+
+        // Show / Hide Confirm Password
+        const confirmInput = document.getElementById("input-konfirmasi-password-pendaftar");
+        const toggleConfirm = document.getElementById("toggleConfirmPassword");
+
+        toggleConfirm.addEventListener("click", () => {
+            const icon = toggleConfirm.querySelector("i");
+            if(confirmInput.type === "password"){
+                confirmInput.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }else{
+                confirmInput.type = "password";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Pengaturan Sistem</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        'tatera-light-green': '#28a745',
+                        'tatera-bg-green': '#e8f7ec',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-300 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white p-6 flex flex-col justify-between h-screen flex-shrink-0 relative z-10">
+        <div>
+            <div class="flex items-center gap-3 mb-8 pl-2">
+                <div class="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0"></div>
+                <div>
+                    <h3 id="sidebar-username" class="font-bold text-gray-800 text-sm">Hi, Admin</h3>
+                    <p class="text-[11px] text-gray-400 font-medium">Administrator</p>
+                </div>
+            </div>
+
+            <nav class="space-y-1 text-xs">
+                <a href="dashboard_kelompok.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                    <i class="fa-solid fa-house w-5 text-center text-sm"></i> <span>Dashboard</span>
+                </a>
+
+                <a href="data-musim-kelompok.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                    <i class="fa-solid fa-seedling w-5 text-center text-sm"></i> <span>Musim Tanam</span>
+                </a>
+
+                <div class="space-y-1">
+                    <button onclick="toggleMenuKeuangan()" class="w-full flex items-center justify-between p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-dollar-sign w-5 text-center text-sm"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="icon-chevron" class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
+                    <div id="sub-menu-keuangan" class="hidden pl-8 space-y-2 pt-1 text-[11px] transition-all duration-300">
+                        <a href="kas-masuk-kelompok.html" class="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition font-medium py-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 block"></span>
+                            <span>Kas Masuk</span>
+                        </a>
+                        <a href="kas-keluar-kelompok.html" class="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition font-medium py-1">
+                            <span class="w-2 h-2 rounded-full bg-red-500 block"></span>
+                            <span>Kas Keluar</span>
+                        </a>
+                    </div>
+                </div>
+
+                <a href="laporan-kelompok.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-sm"></i> <span>Laporan</span>
+                </a>
+
+                <a href="pengaturan-sistem.html" class="flex items-center space-x-3 p-3 rounded-xl bg-tatera-light-green text-white font-bold shadow-sm transition">
+                    <i class="fa-solid fa-gear w-5 text-center text-sm"></i> <span>Pengaturan Sistem</span>
+                </a>
+                
+                <a href="notifikasi-kelompok.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                    <i class="fa-solid fa-bell w-5 text-center text-sm"></i> <span>Notifikasi</span>
+                </a>
+                <a href="profil-kelompok.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 font-bold transition">
+                    <i class="fa-solid fa-user w-5 text-center text-sm"></i> <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <button onclick="handleLogout()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-100 text-red-600 font-bold hover:bg-red-200 transition text-xs">
+                <i class="fa-solid fa-power-off text-sm"></i> <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-grow p-8 h-screen overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 min-h-full flex flex-col">
+            
+            <h2 class="text-xl font-bold text-gray-800 mb-6">Pengaturan Sistem</h2>
+
+            <div class="flex items-center space-x-12 border-b border-gray-200 pb-3 mb-8 text-xs font-bold text-gray-600">
+                <button onclick="switchTab('umum')" id="tab-umum" class="text-green-600 border-b-2 border-green-600 pb-3 -mb-[14px] px-1 focus:outline-none">Umum</button>
+                <button onclick="switchTab('keamanan')" id="tab-keamanan" class="hover:text-gray-900 transition pb-3 -mb-[14px] px-1 focus:outline-none">Keamanan</button>
+                <button onclick="switchTab('akses')" id="tab-akses" class="hover:text-gray-900 transition pb-3 -mb-[14px] px-1 focus:outline-none">Hak Akses</button>
+            </div>
+
+            <div class="flex-grow max-w-2xl">
+                
+                <div id="konten-umum" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-2">Nama Sistem / Aplikasi</label>
+                        <input type="text" value="TATERA" class="w-full p-3 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:border-tatera-light-green text-gray-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-2">Nama Kelompok Tani</label>
+                        <input type="text" value="Tani Makmur Sejahtera" class="w-full p-3 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:border-tatera-light-green text-gray-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-2">Alamat Sekretariat</label>
+                        <textarea rows="3" class="w-full p-3 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:border-tatera-light-green text-gray-800 resize-none">Jl. Raya Sawah Hijau No. 12, Kecamatan Tani Makmur, Kabupaten Agrikultur</textarea>
+                    </div>
+                </div>
+
+                <div id="konten-keamanan" class="space-y-5 hidden">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-2">Password Lama</label>
+                        <input type="password" placeholder="••••••••" class="w-full p-3 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:border-tatera-light-green text-gray-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-2">Password Baru</label>
+                        <input type="password" placeholder="Masukkan password baru" class="w-full p-3 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:border-tatera-light-green text-gray-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-2">Konfirmasi Password Baru</label>
+                        <input type="password" placeholder="Ulangi password baru" class="w-full p-3 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:border-tatera-light-green text-gray-800">
+                    </div>
+                </div>
+
+                <div id="konten-akses" class="space-y-5 hidden">
+                    <p class="text-xs font-semibold text-gray-500 mb-2">Daftar pengguna yang memiliki akses log in ke dalam sistem kelompok ini.</p>
+                    <div class="overflow-hidden border border-gray-200 rounded-xl">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-gray-50 border-b border-gray-200 text-gray-800 font-bold">
+                                    <th class="p-3">Nama</th>
+                                    <th class="p-3">Role</th>
+                                    <th class="p-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 font-medium text-gray-700">
+                                <tr>
+                                    <td class="p-3 font-bold text-gray-900">Admin Utama</td>
+                                    <td class="p-3">Administrator</td>
+                                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-green-100 text-green-700 text-[10px] font-bold">AKTIF</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-gray-900">Budi Santoso</td>
+                                    <td class="p-3">Bendahara</td>
+                                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-green-100 text-green-700 text-[10px] font-bold">AKTIF</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-gray-100 pt-6 mt-8 flex justify-end">
+                <button onclick="alert('Pengaturan berhasil disimpan!')" class="bg-tatera-light-green hover:bg-green-700 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-sm flex items-center gap-2 transition">
+                    <i class="fa-solid fa-floppy-disk text-sm"></i> <span>Simpan Perubahan</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function toggleMenuKeuangan() {
+            const subMenu = document.getElementById("sub-menu-keuangan");
+            const icon = document.getElementById("icon-chevron");
+            
+            if (subMenu.classList.contains("hidden")) {
+                subMenu.classList.remove("hidden");
+                icon.classList.replace("fa-chevron-right", "fa-chevron-down");
+            } else {
+                subMenu.classList.add("hidden");
+                icon.classList.replace("fa-chevron-down", "fa-chevron-right");
+            }
+        }
+
+        function switchTab(target) {
+            const tabs = ['umum', 'keamanan', 'akses'];
+            
+            tabs.forEach(tab => {
+                const button = document.getElementById(`tab-${tab}`);
+                const content = document.getElementById(`konten-${tab}`);
+                
+                if (tab === target) {
+                    button.className = "text-green-600 border-b-2 border-green-600 pb-3 -mb-[14px] px-1 focus:outline-none";
+                    content.classList.remove("hidden");
+                } else {
+                    button.className = "hover:text-gray-900 transition pb-3 -mb-[14px] px-1 focus:outline-none";
+                    content.classList.add("hidden");
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const namaSesi = localStorage.getItem('session_user_nama');
+            if (namaSesi && document.getElementById('sidebar-username')) {
+                document.getElementById('sidebar-username').innerText = "Hi, " + namaSesi.split(" ")[0];
+            }
+        });
+
+        function handleLogout() {
+            if (confirm("Yakin ingin keluar?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

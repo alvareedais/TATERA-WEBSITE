@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Grafik Tahunan</title>
+    <!-- Font Awesome untuk Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS & Chart.js -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: { 
+                extend: { 
+                    colors: { 
+                        'tatera-green': '#39B54A', 
+                        'tatera-dark-green': '#115E28' 
+                    } 
+                } 
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-300 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col justify-between h-screen overflow-y-auto flex-shrink-0">
+        <div>
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-3"></div>
+                <h3 id="sidebar-username" class="font-bold text-gray-700 text-lg">Hi, User</h3>
+            </div>
+
+            <nav class="space-y-2" id="main-navigation">
+                
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i> <span>Dashboard</span>
+                </a>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-musim" onclick="toggleMenu('menu-musim', 'arrow-musim')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-seedling w-5 text-center"></i> <span>Musim Tanam</span>
+                        </div>
+                        <i id="arrow-musim" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-musim" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="tambah-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Tambah Musim Tanam</a>
+                        <a href="data-musim-tanam.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Data Musim Tanam</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-keuangan" onclick="toggleMenu('menu-keuangan', 'arrow-keuangan')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="arrow-keuangan" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-keuangan" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="saldo.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Saldo Tersedia</a>
+                        <a href="kas-masuk.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Masuk</a>
+                        <a href="kas-keluar.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Keluar</a>
+                        <a href="laporan-keuangan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Laporan Keuangan</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-analisis" onclick="toggleMenu('menu-analisis', 'arrow-analisis')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-chart-simple w-5 text-center"></i> <span>Analisis & Laporan</span>
+                        </div>
+                        <i id="arrow-analisis" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-analisis" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="grafik-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Musim</a>
+                        <a href="grafik-tahunan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Tahunan</a>
+                        <a href="ranking-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Ranking Musim</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-pakar" onclick="toggleMenu('menu-pakar', 'arrow-pakar')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-doctor w-5 text-center"></i> <span>Sistem Pakar</span>
+                        </div>
+                        <i id="arrow-pakar" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-pakar" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="konsultasi-finansial.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Konsultasi Finansial Tani</a>
+                        <a href="rekomendasi-supplier.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Rekomendasi Supplier</a>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 space-y-1">
+                    <a href="scan-nota.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-receipt w-5 text-center"></i> <span>Scan Nota</span>
+                    </a>
+                    <a href="notifikasi.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-bell w-5 text-center"></i> <span>Notifikasi</span>
+                    </a>
+                    <a href="profil.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-user w-5 text-center"></i> <span>Profil</span>
+                    </a>
+                    <a href="pengaturan.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i> <span>Pengaturan</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-100 text-red-600 font-semibold hover:bg-red-200 transition text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar</span>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- MAIN CONTENT KANAN (100% MATCH DENGAN MOCKUP SEBELUMNYA) -->
+    <div class="flex-1 p-10 overflow-y-auto">
+        <div class="bg-white rounded-3xl p-10 shadow-sm max-w-5xl mx-auto min-h-[85vh] flex flex-col justify-start space-y-6">
+            
+            <div class="pb-4 border-b border-gray-100">
+                <h1 class="text-xl font-bold text-gray-800 tracking-tight">Grafik Tahunan</h1>
+            </div>
+
+            <div>
+                <h2 class="text-lg font-bold text-gray-800">Pendapatan vs Grafik Tahunan</h2>
+                <p id="text-tahun-dinamis" class="text-xs font-semibold text-gray-600 mt-0.5">Tahun 2026</p>
+            </div>
+
+            <!-- AREA KOTAK RINGKASAN KEUANGAN -->
+            <div class="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm relative">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-sm font-bold text-gray-800">Ringkasan Keuangan</h3>
+                    
+                    <!-- Dropdown Pilihan Sesuai Aturan Baru -->
+                    <div class="relative">
+                        <select id="select-rentang-tahunan" onchange="updateGrafikTahunan()" class="appearance-none bg-white border border-gray-300 rounded-xl px-4 py-1.5 pr-8 text-xs font-semibold text-gray-700 focus:outline-none cursor-pointer shadow-sm">
+                            <option value="semua">Semua Tahun</option>
+                            <option value="ini" selected>Tahun Ini</option>
+                            <option value="lalu">Tahun Lalu</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-gray-500 absolute right-3 top-3.5 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <!-- Canvas untuk merender Dua Garis Bersamaan -->
+                <div class="h-80 w-full">
+                    <canvas id="chartTahunanDynamic"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CODE SYSTEM UTILITY LOGIC -->
+    <script>
+        let tateraDoubleLineChart = null;
+        const listBulanSingkat = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+        // Fungsi pemicu dropdown
+        function toggleMenu(menuId, arrowId) {
+            const menu = document.getElementById(menuId);
+            const arrow = document.getElementById(arrowId);
+            if (menu && arrow) {
+                menu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-90');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.split("/").pop();
+            
+            // 1. DETEKSI JIKA HALAMAN AKTIF ADALAH MENU UTAMA/STANDAR (Dashboard, Scan Nota, dll)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                    link.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                }
+            });
+
+            // 2. DETEKSI JIKA HALAMAN AKTIF ADALAH SUB-MENU (ANGGOTA)
+            const subLinks = document.querySelectorAll('.nav-sub-item');
+            subLinks.forEach(subLink => {
+                if (subLink.getAttribute('href') === currentPath) {
+                    // SET AKTIF HIJAU TUA FULL BACKGROUND PADA ANGGOTA
+                    subLink.classList.remove('text-gray-500', 'hover:text-green-600');
+                    subLink.classList.add('bg-[#0F5E27]', 'text-white', 'font-bold', 'shadow-sm');
+
+                    // Cari container penampung dropdown (id^="menu-")
+                    const parentContainer = subLink.closest('[id^="menu-"]');
+                    if (parentContainer) {
+                        parentContainer.classList.remove('hidden'); // Buka list dropdown otomatis
+                        
+                        const parentId = parentContainer.getAttribute('id');
+                        
+                        // Set tombol utama induknya di atas menjadi Hijau Terang Penuh
+                        const btnId = parentId.replace('menu-', 'btn-');
+                        const mainButton = document.getElementById(btnId);
+                        if (mainButton) {
+                            mainButton.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                            mainButton.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                        }
+
+                        // AMAN: Tangani dan munculkan kembali anak panah agar tidak hilang/hilang warna
+                        const arrowId = parentId.replace('menu-', 'arrow-');
+                        const arrowIcon = document.getElementById(arrowId);
+                        if (arrowIcon) {
+                            arrowIcon.classList.remove('text-gray-600');
+                            arrowIcon.classList.add('rotate-90', 'text-white', 'opacity-100');
+                        }
+                    }
+                }
+            });
+            
+            // Sapaan Profil
+            const nama = localStorage.getItem('user_nama_lengkap') || 'Adam Permana';
+            const usernameElement = document.getElementById('sidebar-username');
+            if (usernameElement) {
+                usernameElement.innerText = "Hi, " + nama.split(" ")[0];
+            }
+        });
+
+        function updateGrafikTahunan() {
+            const filterValue = document.getElementById('select-rentang-tahunan').value;
+            let sumbuXLabels = [];
+            let dataKasMasuk = [];
+            let dataKasKeluar = [];
+            
+            if (filterValue === 'ini') {
+                document.getElementById('text-tahun-dinamis').innerText = "Tahun 2026";
+                sumbuXLabels = [...listBulanSingkat];
+                
+                // DATA 100% MENGIKUTI POLA TITIK PADA MOCKUP DESAIN ANDA (image_09aae1.png)
+                dataKasMasuk  = [23, 29, 35, 37, 44, 44, 52, 37]; // Garis Hijau naik konstan ke 52M lalu turun ke 37M
+                dataKasKeluar = [5, 11, 11, 18, 18, 16, 25, 19];  // Garis Merah stabil rendah di kisaran 10-25M
+                
+            } else if (filterValue === 'lalu') {
+                document.getElementById('text-tahun-dinamis').innerText = "Tahun 2025";
+                sumbuXLabels = [...listBulanSingkat];
+                
+                // Arsip dummy tahun lalu dengan pola lebih rendah
+                dataKasMasuk  = [15, 20, 22, 28, 30, 32, 38, 30, 34, 40, 35, 39];
+                dataKasKeluar = [4, 8, 7, 12, 10, 14, 18, 11, 15, 20, 16, 17];
+                
+            } else if (filterValue === 'semua') {
+                document.getElementById('text-tahun-dinamis').innerText = "Semua Tahun Berjalan (2025 - 2026)";
+                
+                // MENYAMBUNG KONTINU DARI TAHUN LALU KE TAHUN INI AGAR GRAFIK TERLIHAT BERJALAN MAJU
+                listBulanSingkat.forEach(b => sumbuXLabels.push(b + ' 25'));
+                listBulanSingkat.forEach(b => sumbuXLabels.push(b + ' 26'));
+                
+                const masuk2025 = [15, 20, 22, 28, 30, 32, 38, 30, 34, 40, 35, 39];
+                const masuk2026 = [23, 29, 35, 37, 44, 44, 52, 37, 40, 48, 55, 42];
+                dataKasMasuk = masuk2025.concat(masuk2026);
+                
+                const keluar2025 = [4, 8, 7, 12, 10, 14, 18, 11, 15, 20, 16, 17];
+                const keluar2026 = [5, 11, 11, 18, 18, 16, 25, 19, 21, 23, 28, 20];
+                dataKasKeluar = keluar2025.concat(keluar2026);
+            }
+
+            renderDoubleLineChart(sumbuXLabels, dataKasMasuk, dataKasKeluar);
+        }
+
+        function renderDoubleLineChart(labelsX, datasetMasuk, datasetKeluar) {
+            const ctx = document.getElementById('chartTahunanDynamic').getContext('2d');
+
+            if (tateraDoubleLineChart) {
+                tateraDoubleLineChart.destroy();
+            }
+
+            tateraDoubleLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labelsX,
+                    datasets: [
+                        {
+                            label: 'Kas Masuk',
+                            data: datasetMasuk,
+                            borderColor: '#39B54A',       // Garis Hijau Cerah
+                            backgroundColor: 'transparent',
+                            fill: false,
+                            tension: 0.3,                 // Kelengkungan smooth sesuai mockup
+                            borderWidth: 2,
+                            pointBackgroundColor: '#39B54A',
+                            pointBorderColor: '#39B54A',
+                            pointRadius: 5,               // Titik lingkaran bulat tebal sesuai gambar
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'Kas Keluar',
+                            data: datasetKeluar,
+                            borderColor: '#FF0000',       // Garis Merah Cerah
+                            backgroundColor: 'transparent',
+                            fill: false,
+                            tension: 0.3,
+                            borderWidth: 2,
+                            pointBackgroundColor: '#FF0000',
+                            pointBorderColor: '#FF0000',
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            display: true,
+                            position: 'top',
+                            align: 'start',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                boxWidth: 8,
+                                boxHeight: 8,
+                                padding: 25,
+                                font: { size: 13, weight: '600' }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + 'M';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 60,
+                            ticks: {
+                                stepSize: 20,
+                                callback: function(value) {
+                                    return value === 0 ? '0' : value + 'M'; // Skala Sumbu Y: 0, 20M, 40M, 60M pas dengan gambar!
+                                },
+                                font: { size: 12, weight: '500' }
+                            },
+                            grid: { color: '#E5E7EB', drawBorder: false }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 11, weight: '600' }, color: '#4B5563' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function handleLogout() {
+            if (confirm("Apakah Anda yakin ingin keluar?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

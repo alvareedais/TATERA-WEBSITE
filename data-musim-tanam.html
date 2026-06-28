@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Data Musim Tanam</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        'tatera-green': '#115E28', 
+                        'tatera-light-green': '#39B54A' 
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col justify-between h-screen overflow-y-auto flex-shrink-0">
+        <div>
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-3"></div>
+                <h3 id="sidebar-username" class="font-bold text-gray-700 text-lg">Hi, User</h3>
+            </div>
+
+            <nav class="space-y-2" id="main-navigation">
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i> <span>Dashboard</span>
+                </a>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-musim" onclick="toggleMenu('menu-musim', 'arrow-musim')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-seedling w-5 text-center"></i> <span>Musim Tanam</span>
+                        </div>
+                        <i id="arrow-musim" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-musim" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="tambah-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Tambah Musim Tanam</a>
+                        <a href="data-musim-tanam.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Data Musim Tanam</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-keuangan" onclick="toggleMenu('menu-keuangan', 'arrow-keuangan')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="arrow-keuangan" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-keuangan" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="saldo.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Saldo Tersedia</a>
+                        <a href="kas-masuk.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Masuk</a>
+                        <a href="kas-keluar.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Keluar</a>
+                        <a href="laporan-keuangan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Laporan Keuangan</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-analisis" onclick="toggleMenu('menu-analisis', 'arrow-analisis')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-chart-simple w-5 text-center"></i> <span>Analisis & Laporan</span>
+                        </div>
+                        <i id="arrow-analisis" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-analisis" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="grafik-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Musim</a>
+                        <a href="grafik-tahunan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Tahunan</a>
+                        <a href="ranking-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Ranking Musim</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-pakar" onclick="toggleMenu('menu-pakar', 'arrow-pakar')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-doctor w-5 text-center"></i> <span>Sistem Pakar</span>
+                        </div>
+                        <i id="arrow-pakar" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-pakar" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="konsultasi-finansial.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Konsultasi Finansial Tani</a>
+                        <a href="rekomendasi-supplier.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Rekomendasi Supplier</a>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 space-y-1">
+                    <a href="scan-nota.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-receipt w-5 text-center"></i> <span>Scan Nota</span>
+                    </a>
+                    <a href="notifikasi.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-bell w-5 text-center"></i> <span>Notifikasi</span>
+                    </a>
+                    <a href="profil.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-user w-5 text-center"></i> <span>Profil</span>
+                    </a>
+                    <a href="pengaturan.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i> <span>Pengaturan</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-100 text-red-600 font-semibold hover:bg-red-200 transition text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-1 p-8 overflow-y-auto">
+        <div id="wrapper-konten-utama" class="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm max-w-4xl mx-auto relative">
+            
+            <div id="box-ada-data" class="block">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex items-center space-x-3">
+                        <a href="dashboard.html" class="text-gray-600 hover:text-gray-900 transition text-lg">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
+                        <h2 id="view-nama-musim" class="text-xl font-bold text-gray-800">-</h2>
+                    </div>
+                    <a href="tambah-musim.html" class="bg-tatera-light-green hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-xl text-sm transition flex items-center space-x-2">
+                        <span>+ Tambah Baru</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center space-x-4 mb-8">
+                    <span id="view-status-badge" class="bg-green-100 text-green-600 text-xs font-bold px-3 py-1 rounded-full">Aktif</span>
+                    <span id="view-rentang-tanggal" class="text-sm text-gray-500">-</span>
+                </div>
+
+                <div class="flex space-x-12 border-b border-gray-200 pb-3 mb-8 font-semibold text-sm">
+                    <button type="button" id="tab-ringkasan" onclick="switchTab('ringkasan')" class="text-tatera-light-green border-b-2 border-tatera-light-green pb-3 transition focus:outline-none font-bold">Ringkasan</button>
+                    <button type="button" id="tab-anggaran" onclick="switchTab('anggaran')" class="text-gray-400 hover:text-gray-600 pb-3 transition focus:outline-none">Anggaran</button>
+                    <button type="button" id="tab-hasil" onclick="switchTab('hasil')" class="text-gray-400 hover:text-gray-600 pb-3 transition focus:outline-none">Hasil</button>
+                </div>
+
+                <div id="content-ringkasan" class="tab-content block">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start mb-8">
+                        <div class="md:col-span-2 space-y-4 text-sm">
+                            <div class="flex justify-between border-b border-gray-50 pb-2">
+                                <span class="font-bold text-gray-800">Komoditas</span>
+                                <span id="view-komoditas" class="font-bold text-gray-800">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-50 pb-2">
+                                <span class="font-bold text-gray-800">Luas Lahan</span>
+                                <span id="view-luas" class="font-bold text-gray-800">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-50 pb-2">
+                                <span class="font-bold text-gray-800">Varietas</span>
+                                <span id="view-varietas" class="font-bold text-gray-800">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-50 pb-2">
+                                <span class="font-bold text-gray-800">Metode Tanam</span>
+                                <span id="view-metode" class="font-bold text-gray-800">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-50 pb-2">
+                                <span class="font-bold text-gray-800">Target Produksi</span>
+                                <span id="view-target" class="font-bold text-gray-800">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-50 pb-2">
+                                <span class="font-bold text-gray-800">Realisasi Produksi</span>
+                                <span id="view-realisasi" class="font-bold text-gray-800">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-12">
+                        <div class="flex justify-between items-center mb-2 text-sm font-bold text-gray-700">
+                            <h4>Progress Umur Tanaman</h4>
+                            <span id="view-progress-text" class="text-tatera-green">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                            <div id="view-progress-bar" class="bg-tatera-light-green h-full w-[0%] rounded-full transition-all duration-500"></div>
+                        </div>
+                    </div>  
+                </div>
+                
+                <div id="content-anggaran" class="tab-content hidden">
+                    <div class="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start space-x-3">
+                        <i class="fa-solid fa-circle-info text-amber-600 mt-0.5 text-sm"></i>
+                        <p class="text-xs text-amber-800 leading-relaxed">
+                            <strong>Informasi Anggaran:</strong> Kolom rencana anggaran adalah batasan modal aman Anda. Data realisasi diambil langsung dari total kas keluar yang Anda catat pada menu Keuangan.
+                        </p>
+                    </div>
+
+                    <div class="mb-8">
+                        <div class="overflow-hidden border border-gray-200 rounded-xl">
+                            <table class="w-full text-left text-sm border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-50 border-b border-gray-200 text-gray-600 font-bold text-xs uppercase">
+                                        <th class="p-4">Kategori Biaya</th>
+                                        <th class="p-4 text-right">Rencana Anggaran</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 text-gray-700">
+                                    <tr>
+                                        <td class="p-4 flex items-center space-x-3">
+                                            <div class="bg-green-50 text-green-600 p-2 rounded-lg w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-seedling text-xs"></i></div>
+                                            <span>Benih & Pembibitan</span>
+                                        </td>
+                                        <td id="view-cost-benih" class="p-4 text-right font-semibold text-gray-800">Rp 0</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-4 flex items-center space-x-3">
+                                            <div class="bg-blue-50 text-blue-600 p-2 rounded-lg w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-flask text-xs"></i></div>
+                                            <span>Pupuk Nutrisi</span>
+                                        </td>
+                                        <td id="view-cost-pupuk" class="p-4 text-right font-semibold text-gray-800">Rp 0</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-4 flex items-center space-x-3">
+                                            <div class="bg-red-50 text-red-600 p-2 rounded-lg w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-bug-slash text-xs"></i></div>
+                                            <span>Pestisida & Obat</span>
+                                        </td>
+                                        <td id="view-cost-pestisida" class="p-4 text-right font-semibold text-gray-800">Rp 0</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-4 flex items-center space-x-3">
+                                            <div class="bg-orange-50 text-orange-600 p-2 rounded-lg w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-users text-xs"></i></div>
+                                            <span>Tenaga Kerja / Pekerja</span>
+                                        </td>
+                                        <td id="view-cost-tenaga" class="p-4 text-right font-semibold text-gray-800">Rp 0</td>
+                                    </tr>
+                                    <tr class="bg-gray-50 font-bold text-gray-800 border-t border-gray-200">
+                                        <td class="p-4 text-base">Total Batas Finansial</td>
+                                        <td id="view-cost-total" class="p-4 text-right text-base text-tatera-green">Rp 0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-hasil" class="tab-content hidden">
+                    <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-gray-200 rounded-xl p-5 flex flex-col justify-between">
+                            <div>
+                                <span class="text-xs text-gray-400 font-semibold block mb-1">Capaian Target</span>
+                                <h4 class="text-lg font-bold text-gray-800">Produksi & Hasil Tonase</h4>
+                            </div>
+                            <div class="my-6 flex items-center space-x-4">
+                                <div id="view-lingkaran-persen" class="w-16 h-16 rounded-full border-4 border-tatera-light-green border-r-gray-200 flex items-center justify-center font-bold text-sm text-gray-700">
+                                    <span id="view-teks-persen">0%</span>
+                                </div>
+                                <p id="view-status-capaian" class="text-xs text-gray-500 leading-relaxed">Belum ada data realisasi panen.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-xl p-5 flex flex-col justify-between bg-emerald-50/30">
+                            <div>
+                                <span class="text-xs text-gray-400 font-semibold block mb-1">Estimasi Nilai Jual</span>
+                                <h4 class="text-lg font-bold text-gray-800">Proyeksi Pendapatan</h4>
+                            </div>
+                            <div class="my-4">
+                                <span id="view-proyeksi-pendapatan" class="text-2xl font-black text-tatera-green block">Rp 0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center border-t border-gray-100 pt-6">
+                    <button type="button" onclick="openEditModal()" class="px-6 py-2 bg-gray-100 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-200 transition">
+                        <i class="fa-solid fa-pen-to-square mr-1.5"></i> Edit Data Musim
+                    </button>
+                    <button type="button" onclick="hapusMusim()" class="px-6 py-2 border border-red-200 text-red-500 rounded-xl text-sm font-semibold hover:bg-red-50 transition">
+                        Hapus Musim
+                    </button>
+                </div>
+            </div>
+
+            <div id="box-kosong" class="hidden text-center py-16">
+                <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 text-tatera-light-green text-3xl shadow-inner">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-700 mb-1">Belum Ada Musim Tanam Aktif</h3>
+                <p class="text-gray-400 text-xs max-w-sm mx-auto mb-6">Kamu belum membuat catatan musim tanam untuk lahanmu saat ini. Silakan buat sekarang untuk mulai mengelola kemajuan tanaman.</p>
+                <a href="tambah-musim.html" class="inline-block bg-tatera-light-green hover:bg-green-600 text-white font-semibold px-6 py-2.5 rounded-xl text-sm transition">
+                    + Buat Musim Tanam Pertama
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl m-4 overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center border-b border-gray-100 pb-3 mb-4">
+                <h3 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-pen-to-square text-tatera-light-green mr-2"></i>Edit Detail Musim Tanam</h3>
+                <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            
+            <form id="form-edit-musim" class="space-y-4 text-sm" onsubmit="event.preventDefault(); saveEditData();">                
+                <div>
+                    <label class="block text-gray-600 font-semibold mb-1">Nama Musim Tanam</label>
+                    <input type="text" id="edit-nama" class="w-full border border-gray-300 rounded-xl p-2.5 focus:border-green-500 focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-600 font-semibold mb-1">Komoditas</label>
+                        <input type="text" id="edit-komoditas" class="w-full border border-gray-300 rounded-xl p-2.5 focus:border-green-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold mb-1">Luas Lahan (Ha)</label>
+                        <input type="number" step="any" id="edit-luas" class="w-full border border-gray-300 rounded-xl p-2.5 focus:border-green-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-600 font-semibold mb-1">Varietas</label>
+                        <input type="text" id="edit-varietas" placeholder="Contoh: Impari 32" class="w-full border border-gray-300 rounded-xl p-2.5 focus:border-green-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold mb-1">Metode Tanam</label>
+                        <input type="text" id="edit-metode" placeholder="Contoh: Tabela / Transplanting" class="w-full border border-gray-300 rounded-xl p-2.5 focus:border-green-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-600 font-semibold mb-1">Target Produksi</label>
+                        <input type="text" id="edit-target" placeholder="Contoh: 10 Ton" class="w-full border border-gray-300 rounded-xl p-2.5 focus:border-green-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-semibold mb-1">Realisasi Produksi</label>
+                        <input type="text" id="edit-realisasi" placeholder="Contoh: 6.5 Ton" class="w-full border border-gray-300 rounded-xl p-2.5 focus:border-green-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-3 border-t border-gray-100 pt-4 mt-6">
+                    <button type="button" onclick="closeEditModal()" class="px-5 py-2 border border-gray-300 text-gray-600 rounded-xl font-semibold hover:bg-gray-50 transition">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-tatera-light-green hover:bg-green-600 text-white rounded-xl font-semibold transition">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu(menuId, arrowId) {
+            const menu = document.getElementById(menuId);
+            const arrow = document.getElementById(arrowId);
+            if (menu && arrow) {
+                menu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-90');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.split("/").pop();
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                    link.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                }
+            });
+
+            const subLinks = document.querySelectorAll('.nav-sub-item');
+            subLinks.forEach(subLink => {
+                if (subLink.getAttribute('href') === currentPath) {
+                    subLink.classList.remove('text-gray-500', 'hover:text-green-600');
+                    subLink.classList.add('bg-[#0F5E27]', 'text-white', 'font-bold', 'shadow-sm');
+
+                    const parentContainer = subLink.closest('[id^="menu-"]');
+                    if (parentContainer) {
+                        parentContainer.classList.remove('hidden');
+                        
+                        const parentId = parentContainer.getAttribute('id');
+                        const btnId = parentId.replace('menu-', 'btn-');
+                        const mainButton = document.getElementById(btnId);
+                        if (mainButton) {
+                            mainButton.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                            mainButton.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                        }
+
+                        const arrowId = parentId.replace('menu-', 'arrow-');
+                        const arrowIcon = document.getElementById(arrowId);
+                        if (arrowIcon) {
+                            arrowIcon.classList.remove('text-gray-600');
+                            arrowIcon.classList.add('rotate-90', 'text-white', 'opacity-100');
+                        }
+                    }
+                }
+            });
+            
+            const menuMusim = document.getElementById('menu-musim');
+            const arrowMusim = document.getElementById('arrow-musim');
+            if (menuMusim && arrowMusim) {
+                menuMusim.classList.remove('hidden');
+                arrowMusim.classList.add('rotate-90');
+            }
+
+            const nama = localStorage.getItem('user_nama_lengkap') || 'User';
+            const sidebaruser = document.getElementById('sidebar-username');
+            if (sidebaruser) {
+                sidebaruser.innerText = "Hi, " + nama.split(" ")[0];
+            }
+            
+            loadPageData();
+        });
+
+        function switchTab(tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('block');
+                content.classList.add('hidden');
+            });
+            
+            const targetContent = document.getElementById(`content-${tabName}`);
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+                targetContent.classList.add('block');
+            }
+
+            const tabs = ['ringkasan', 'anggaran', 'hasil'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (btn) {
+                    btn.className = "text-gray-400 hover:text-gray-600 pb-3 transition focus:outline-none";
+                }
+            });
+            
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            if (activeBtn) {
+                activeBtn.className = "text-tatera-light-green border-b-2 border-tatera-light-green pb-3 transition focus:outline-none font-bold";
+            }
+        }
+
+        function loadPageData() {
+            const namaMusim = localStorage.getItem('dashboard_nama_musim');
+            
+            const boxAdaData = document.getElementById('box-ada-data');
+            const boxKosong = document.getElementById('box-kosong');
+
+            if (!namaMusim) {
+                if (boxAdaData) boxAdaData.className = "hidden";
+                if (boxKosong) boxKosong.className = "block text-center py-16";
+                return;
+            } else {
+                if (boxAdaData) boxAdaData.className = "block";
+                if (boxKosong) boxKosong.className = "hidden";
+            }
+
+            const rentangTanggal = localStorage.getItem('dashboard_rentang_tanggal') || '-';
+            const komoditas = localStorage.getItem('dashboard_komoditas') || '-';
+            const luasLahan = localStorage.getItem('dashboard_luas_lahan');
+            const varietas = localStorage.getItem('dashboard_varietas') || '-';
+            const metode = localStorage.getItem('dashboard_metode') || '-';
+            const targetStr = localStorage.getItem('dashboard_target') || '-';
+            const realisasiStr = localStorage.getItem('dashboard_realisasi') || '-';
+
+            if (document.getElementById('view-nama-musim')) document.getElementById('view-nama-musim').innerText = namaMusim;
+            if (document.getElementById('view-rentang-tanggal')) document.getElementById('view-rentang-tanggal').innerText = rentangTanggal;
+            if (document.getElementById('view-komoditas')) document.getElementById('view-komoditas').innerText = komoditas;
+            if (document.getElementById('view-luas')) document.getElementById('view-luas').innerText = luasLahan ? luasLahan + ' Ha' : '-';
+            
+            const tglMulaiStr = localStorage.getItem('dashboard_tgl_mulai_raw');
+            const tglSelesaiStr = localStorage.getItem('dashboard_tgl_selesai_raw');
+            const progressBar = document.getElementById('view-progress-bar');
+            const progressText = document.getElementById('view-progress-text');
+            const badgeStatus = document.getElementById('view-status-badge');
+
+            let persentaseProgress = 0;
+
+            if (tglMulaiStr && tglSelesaiStr) {
+                const tglMulai   = new Date(tglMulaiStr);
+                const tglSelesai = new Date(tglSelesaiStr);
+                const tglHariIni = new Date();
+
+                tglMulai.setHours(0,0,0,0);
+                tglSelesai.setHours(0,0,0,0);
+                tglHariIni.setHours(0,0,0,0);
+
+                const totalDurasi = tglSelesai - tglMulai;
+                const durasiLewat = tglHariIni - tglMulai;
+
+                if (totalDurasi > 0) {
+                    persentaseProgress = Math.floor((durasiLewat / totalDurasi) * 100);
+                    if (persentaseProgress < 0) persentaseProgress = 0;
+                    if (persentaseProgress > 100) persentaseProgress = 100;
+                }
+            }
+
+            if (progressBar) progressBar.style.width = persentaseProgress + '%';
+            if (progressText) progressText.innerText = persentaseProgress + '%';
+
+            if (badgeStatus) {
+                if (persentaseProgress >= 100) {
+                    badgeStatus.innerText = 'Selesai / Panen';
+                    badgeStatus.className = "bg-blue-100 text-blue-600 text-xs font-bold px-3 py-1 rounded-full";
+                } else {
+                    badgeStatus.innerText = 'Aktif (Pertumbuhan)';
+                    badgeStatus.className = "bg-green-100 text-green-600 text-xs font-bold px-3 py-1 rounded-full";
+                }
+            }
+
+            if (document.getElementById('view-varietas')) document.getElementById('view-varietas').innerText = varietas;
+            if (document.getElementById('view-metode')) document.getElementById('view-metode').innerText = metode;
+            if (document.getElementById('view-target')) document.getElementById('view-target').innerText = targetStr;
+            if (document.getElementById('view-realisasi')) document.getElementById('view-realisasi').innerText = realisasiStr;
+
+            // KONTROL TAB HASIL (CAPAIAN TONASE & PROYEKSI FINANSIAL)
+            let targetAngka = parseFloat(targetStr.replace(/[^0-9.]/g, '')) || 0;
+            let realisasiAngka = parseFloat(realisasiStr.replace(/[^0-9.]/g, '')) || 0;
+
+            let persentaseCapaian = 0;
+            if (targetAngka > 0) {
+                persentaseCapaian = Math.floor((realisasiAngka / targetAngka) * 100);
+            }
+
+            const teksPersen = document.getElementById('view-teks-persen');
+            const lingkaranPersen = document.getElementById('view-lingkaran-persen');
+            const statusCapaian = document.getElementById('view-status-capaian');
+
+            if (teksPersen && lingkaranPersen && statusCapaian) {
+                teksPersen.innerText = persentaseCapaian + '%';
+
+                if (persentaseCapaian === 0) {
+                    lingkaranPersen.className = "w-16 h-16 rounded-full border-4 border-gray-200 flex items-center justify-center font-bold text-sm text-gray-700";
+                    statusCapaian.innerText = "Belum ada catatan realisasi panen untuk musim ini.";
+                } else if (persentaseCapaian < 100) {
+                    lingkaranPersen.className = "w-16 h-16 rounded-full border-4 border-tatera-light-green border-r-gray-200 flex items-center justify-center font-bold text-sm text-gray-700";
+                    statusCapaian.innerText = "Berjalan stabil mendekati proyeksi kuantitas awal.";
+                } else {
+                    lingkaranPersen.className = "w-16 h-16 rounded-full border-4 border-tatera-green flex items-center justify-center font-bold text-sm text-white bg-tatera-light-green";
+                    statusCapaian.innerText = "Luar biasa! Hasil panen berhasil memenuhi atau melewati target proyeksi.";
+                }
+            }
+
+            const teksPendapatan = document.getElementById('view-proyeksi-pendapatan');
+            if (teksPendapatan) {
+                let hargaPerKilo = 12000; 
+                let komoditasLower = komoditas.toLowerCase();
+                
+                if (komoditasLower.includes('padi') || komoditasLower.includes('beras')) hargaPerKilo = 13500;
+                else if (komoditasLower.includes('jagung')) hargaPerKilo = 7000;
+                else if (komoditasLower.includes('cabai') || komoditasLower.includes('cabe')) hargaPerKilo = 40000;
+                else if (komoditasLower.includes('tomat')) hargaPerKilo = 15000;
+
+                let angkaDasarUang = realisasiAngka > 0 ? realisasiAngka : targetAngka;
+                let estimasiTotalUang = angkaDasarUang * 1000 * hargaPerKilo;
+
+                const formatterUang = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 });
+                teksPendapatan.innerText = estimasiTotalUang > 0 ? formatterUang.format(estimasiTotalUang) : 'Rp 0';
+            }
+
+            // AMBIL DATA ANGGARAN RENCANA AWAL
+            const benih     = parseFloat(localStorage.getItem('dashboard_anggaran_benih')) || 0;
+            const pupuk     = parseFloat(localStorage.getItem('dashboard_anggaran_pupuk')) || 0;
+            const pestisida = parseFloat(localStorage.getItem('dashboard_anggaran_pestisida')) || 0;
+            const tenaga    = parseFloat(localStorage.getItem('dashboard_anggaran_tenaga')) || 0;
+            const total     = benih + pupuk + pestisida + tenaga;
+
+            const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 });
+            
+            if (document.getElementById('view-cost-benih')) document.getElementById('view-cost-benih').innerText = benih > 0 ? formatter.format(benih) : 'Rp 0';
+            if (document.getElementById('view-cost-pupuk')) document.getElementById('view-cost-pupuk').innerText = pupuk > 0 ? formatter.format(pupuk) : 'Rp 0';
+            if (document.getElementById('view-cost-pestisida')) document.getElementById('view-cost-pestisida').innerText = pestisida > 0 ? formatter.format(pestisida) : 'Rp 0';
+            if (document.getElementById('view-cost-tenaga')) document.getElementById('view-cost-tenaga').innerText = tenaga > 0 ? formatter.format(tenaga) : 'Rp 0';
+            if (document.getElementById('view-cost-total')) document.getElementById('view-cost-total').innerText = total > 0 ? formatter.format(total) : 'Rp 0';
+        }
+
+        function openEditModal() {
+            const modal = document.getElementById('editModal');
+            if (!modal) return;
+
+            if (document.getElementById('edit-nama')) document.getElementById('edit-nama').value = localStorage.getItem('dashboard_nama_musim') || '';
+            if (document.getElementById('edit-komoditas')) document.getElementById('edit-komoditas').value = localStorage.getItem('dashboard_komoditas') || '';
+            if (document.getElementById('edit-luas')) document.getElementById('edit-luas').value = localStorage.getItem('dashboard_luas_lahan') || '';
+            if (document.getElementById('edit-varietas')) document.getElementById('edit-varietas').value = localStorage.getItem('dashboard_varietas') || '';
+            if (document.getElementById('edit-metode')) document.getElementById('edit-metode').value = localStorage.getItem('dashboard_metode') || '';
+            if (document.getElementById('edit-target')) document.getElementById('edit-target').value = localStorage.getItem('dashboard_target') || '';
+            if (document.getElementById('edit-realisasi')) document.getElementById('edit-realisasi').value = localStorage.getItem('dashboard_realisasi') || '';
+
+            modal.classList.remove('hidden');
+            setTimeout(() => { 
+                modal.classList.remove('opacity-0');
+                modal.classList.add('opacity-100'); 
+            }, 10);
+        }
+
+        function closeEditModal() {
+            const modal = document.getElementById('editModal');
+            if (!modal) return;
+
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            setTimeout(() => { 
+                modal.classList.add('hidden'); 
+            }, 300);
+        }
+
+        function saveEditData() {
+            const nama = document.getElementById('edit-nama') ? document.getElementById('edit-nama').value.trim() : '';
+            const komoditas = document.getElementById('edit-komoditas') ? document.getElementById('edit-komoditas').value.trim() : '';
+            const luas = document.getElementById('edit-luas') ? document.getElementById('edit-luas').value.trim() : '';
+            const varietas = document.getElementById('edit-varietas') ? document.getElementById('edit-varietas').value.trim() : '';
+            const metode = document.getElementById('edit-metode') ? document.getElementById('edit-metode').value.trim() : '';
+            let target = document.getElementById('edit-target') ? document.getElementById('edit-target').value.trim() : '';
+            let realisasi = document.getElementById('edit-realisasi') ? document.getElementById('edit-realisasi').value.trim() : '';
+
+            if (nama) localStorage.setItem('dashboard_nama_musim', nama);
+            if (komoditas) localStorage.setItem('dashboard_komoditas', komoditas);
+            if (luas) localStorage.setItem('dashboard_luas_lahan', luas);
+            
+            if (target && target !== '-') {
+                if (!target.toLowerCase().includes('ton')) target = target + ' Ton';
+            } else {
+                target = '-';
+            }
+
+            if (realisasi && realisasi !== '-') {
+                if (!realisasi.toLowerCase().includes('ton')) realisasi = realisasi + ' Ton';
+            } else {
+                realisasi = '-';
+            }
+
+            localStorage.setItem('dashboard_varietas', varietas || '-');
+            localStorage.setItem('dashboard_metode', metode || '-');
+            localStorage.setItem('dashboard_target', target);
+            localStorage.setItem('dashboard_realisasi', realisasi);
+
+            loadPageData();
+            closeEditModal();
+        }
+
+        function hapusMusim() {
+            if(confirm("Yakin ingin menghapus data musim tanam ini?")) {
+                localStorage.removeItem('dashboard_nama_musim');
+                localStorage.removeItem('dashboard_komoditas');
+                localStorage.removeItem('dashboard_luas_lahan');
+                localStorage.removeItem('dashboard_varietas');
+                localStorage.removeItem('dashboard_metode');
+                localStorage.removeItem('dashboard_target');
+                localStorage.removeItem('dashboard_realisasi');
+                localStorage.removeItem('dashboard_rentang_tanggal');
+                localStorage.removeItem('dashboard_tgl_mulai_raw');
+                localStorage.removeItem('dashboard_tgl_selesai_raw');
+
+                localStorage.removeItem('dashboard_anggaran_benih');
+                localStorage.removeItem('dashboard_anggaran_pupuk');
+                localStorage.removeItem('dashboard_anggaran_pestisida');
+                localStorage.removeItem('dashboard_anggaran_tenaga');
+
+                alert("Data berhasil dihapus");
+                loadPageData();
+            }
+        }
+
+        function handleLogout() {
+            if (confirm("Yakin ingin keluar?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

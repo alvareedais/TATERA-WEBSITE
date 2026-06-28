@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Scan Nota</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'tatera-green': '#115E28', 'tatera-light-green': '#39B54A' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col justify-between h-screen overflow-y-auto flex-shrink-0">
+        <div>
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-3"></div>
+                <h3 id="sidebar-username" class="font-bold text-gray-700 text-lg">Hi, User</h3>
+            </div>
+
+            <nav class="space-y-2" id="main-navigation">
+                
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i> <span>Dashboard</span>
+                </a>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-musim" onclick="toggleMenu('menu-musim', 'arrow-musim')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-seedling w-5 text-center"></i> <span>Musim Tanam</span>
+                        </div>
+                        <i id="arrow-musim" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-musim" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="tambah-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Tambah Musim Tanam</a>
+                        <a href="data-musim-tanam.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Data Musim Tanam</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-keuangan" onclick="toggleMenu('menu-keuangan', 'arrow-keuangan')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="arrow-keuangan" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-keuangan" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="saldo.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Saldo Tersedia</a>
+                        <a href="kas-masuk.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Masuk</a>
+                        <a href="kas-keluar.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Keluar</a>
+                        <a href="laporan-keuangan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Laporan Keuangan</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-analisis" onclick="toggleMenu('menu-analisis', 'arrow-analisis')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-chart-simple w-5 text-center"></i> <span>Analisis & Laporan</span>
+                        </div>
+                        <i id="arrow-analisis" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-analisis" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="grafik-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Musim</a>
+                        <a href="grafik-tahunan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Tahunan</a>
+                        <a href="ranking-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Ranking Musim</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-pakar" onclick="toggleMenu('menu-pakar', 'arrow-pakar')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-doctor w-5 text-center"></i> <span>Sistem Pakar</span>
+                        </div>
+                        <i id="arrow-pakar" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-pakar" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="konsultasi-finansial.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Konsultasi Finansial Tani</a>
+                        <a href="rekomendasi-supplier.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Rekomendasi Supplier</a>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 space-y-1">
+                    <a href="scan-nota.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-receipt w-5 text-center"></i> <span>Scan Nota</span>
+                    </a>
+                    <a href="notifikasi.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-bell w-5 text-center"></i> <span>Notifikasi</span>
+                    </a>
+                    <a href="profil.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-user w-5 text-center"></i> <span>Profil</span>
+                    </a>
+                    <a href="pengaturan.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i> <span>Pengaturan</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-100 text-red-600 font-semibold hover:bg-red-200 transition text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-8">
+        <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] min-h-[calc(100vh-64px)] flex flex-col justify-between">
+            <div>
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-gray-900 tracking-tight">Scan dan OCR</h2>
+                    <p class="text-xs text-gray-400 mt-0.5 font-medium">Scan struk, nota atau upload file</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto space-y-4">
+                    <div onclick="bukaKameraLive()" class="border border-gray-200/80 rounded-2xl py-12 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-tatera-light-green transition bg-white shadow-[0_2px_12px_rgba(0,0,0,0.01)] group">
+                        <div class="w-12 h-12 bg-green-50 text-tatera-light-green rounded-full flex items-center justify-center text-lg shadow-inner transition group-hover:bg-green-100">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm tracking-tight">Ambil foto/Kamera</span>
+                    </div>
+
+                    <label class="w-full border border-gray-200 bg-gray-200/60 hover:bg-gray-200 text-gray-700 py-3.5 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2 cursor-pointer shadow-xs">
+                        <input type="file" accept="image/*,.pdf" class="hidden" onchange="handleFileUpload(this)">
+                        <i class="fa-solid fa-arrow-up text-xs"></i> <span>Upload File</span>
+                    </label>
+
+                    <p class="text-center text-[11px] text-gray-400 font-medium">Format didukung: JPG, PNG, PDF</p>
+                </div>
+            </div>
+
+            <div id="container-hasil-ocr" class="max-w-4xl w-full mx-auto mt-6 hidden bg-green-50/40 p-5 rounded-2xl border border-green-100">
+                <h3 class="font-bold text-tatera-green text-xs mb-3 flex items-center gap-1.5"><i class="fa-solid fa-square-poll-horizontal text-sm"></i> Hasil Ekstraksi PCD & OCR Python:</h3>
+                <div class="text-xs space-y-1.5 text-gray-700">
+                    <p><strong>Nama Toko :</strong> <span id="res-toko" class="font-semibold text-gray-900"></span></p>
+                    <p><strong>Tanggal   :</strong> <span id="res-tanggal"></span></p>
+                    <p class="mb-2"><strong>Total     :</strong> <span id="res-total" class="font-extrabold text-green-700"></span></p>
+                    <div class="border-t border-green-200/60 pt-2 font-bold text-gray-800">Rincian Barang Terdeteksi:</div>
+                    <ul id="res-barang-list" class="list-disc pl-5 space-y-1 mt-1 text-gray-600 font-medium"></ul>
+                </div>
+            </div>
+
+            <div class="max-w-4xl w-full mx-auto mt-8">
+                <h3 class="font-bold text-gray-800 text-xs tracking-tight mb-3">Riwayat Terakhir</h3>
+                <div id="riwayat-scan-list" class="space-y-3">
+                    
+                    <div class="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.01)]">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-12 bg-gray-200 rounded-md flex-shrink-0"></div>
+                            <div class="space-y-0.5">
+                                <h4 class="font-bold text-xs text-gray-800 tracking-tight">Tani Makmur</h4>
+                                <p class="text-[10px] text-gray-400 font-medium">20 Mei 2026 - Rp 1.140.000</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-green-50 text-green-500 border border-green-100/60 tracking-tight">Terdeteksi</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.01)]">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-12 bg-gray-200 rounded-md flex-shrink-0"></div>
+                            <div class="space-y-0.5">
+                                <h4 class="font-bold text-xs text-gray-800 tracking-tight">Sumber Rejeki Tani</h4>
+                                <p class="text-[10px] text-gray-400 font-medium">20 Mei 2026 - Rp 1.140.000</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-green-50 text-green-500 border border-green-100/60 tracking-tight">Terdeteksi</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalKamera" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-xl shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+                <h3 class="font-bold text-gray-900 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-video text-tatera-light-green"></i> Bidik Nota / Struk Anda
+                </h3>
+                <button onclick="tutupKameraLive()" class="text-gray-400 hover:text-gray-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="relative bg-black rounded-2xl overflow-hidden aspect-[4/3] flex items-center justify-center">
+                <video id="videoFeed" autoplay playsinline class="w-full h-full object-cover"></video>
+                <canvas id="captureCanvas" class="hidden"></canvas>
+                <div id="loadingOverlay" class="absolute inset-0 bg-black/80 hidden flex flex-col items-center justify-center text-white gap-3">
+                    <i class="fa-solid fa-spinner fa-spin text-3xl text-tatera-light-green"></i>
+                    <p class="text-xs font-semibold text-center px-4">Matriks Citra Sedang Diproses Cloud Python (Flask + OCR)...</p>
+                </div>
+            </div>
+            <div class="flex gap-3 pt-2">
+                <button onclick="tutupKameraLive()" class="flex-1 border border-gray-200 text-gray-500 py-3 rounded-xl hover:bg-gray-50 font-semibold text-xs transition">Batal</button>
+                <button onclick="ambilSnapshotFoto()" class="flex-1 bg-[#115E28] hover:bg-green-800 text-white py-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-dot"></i> Tangkap & Proses OCR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let streamKamera = null;
+
+        function toggleMenu(menuId, arrowId) {
+            const menu = document.getElementById(menuId);
+            const arrow = document.getElementById(arrowId);
+            if (menu && arrow) { menu.classList.toggle('hidden'); arrow.classList.toggle('rotate-90'); }
+        }
+
+        // Sinkronisasi status aktif item menu sidebar saat dimuat
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.split("/").pop();
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                    link.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                }
+            });
+
+            const nama = localStorage.getItem('user_nama_lengkap') || 'Adam Permana';
+            const usernameElement = document.getElementById('sidebar-username');
+            if (usernameElement) { usernameElement.innerText = "Hi, " + nama.split(" ")[0]; }
+        });
+
+        async function bukaKameraLive() {
+            if (confirm("Aplikasi TATERA memerlukan akses ke kamera untuk pemrosesan citra digital. Izinkan?")) {
+                try {
+                    streamKamera = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
+                    const video = document.getElementById('videoFeed');
+                    video.srcObject = streamKamera;
+                    document.getElementById('modalKamera').classList.remove('hidden');
+                } catch (error) {
+                    alert("Akses kamera ditolak atau tidak ditemukan.");
+                }
+            }
+        }
+
+        function tutupKameraLive() {
+            if (streamKamera) { streamKamera.getTracks().forEach(track => track.stop()); }
+            document.getElementById('modalKamera').classList.add('hidden');
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function handleFileUpload(input) {
+            if (input.files && input.files[0]) {
+                alert("File '" + input.files[0].name + "' siap diproses! Integrasikan ke engine OCR Python menggunakan FormData POST.");
+            }
+        }
+
+        function ambilSnapshotFoto() {
+            const video = document.getElementById('videoFeed');
+            const canvas = document.getElementById('captureCanvas');
+            const ctx = canvas.getContext('2d');
+
+            if (video && canvas && ctx) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const dataGambarBase64 = canvas.toDataURL('image/png');
+
+                document.getElementById('loadingOverlay').classList.remove('hidden');
+
+                // TAUTAN TERKONEKSI KE NGROK PYTHON FLASK ANDA
+                const urlColab = "https://clarinet-hulk-dislike.ngrok-free.dev/proses-ocr";
+
+                fetch(urlColab, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: dataGambarBase64 })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('container-hasil-ocr').classList.remove('hidden');
+                        document.getElementById('res-toko').innerText = data.toko;
+                        document.getElementById('res-tanggal').innerText = data.tanggal;
+                        document.getElementById('res-total').innerText = data.total;
+
+                        const ul = document.getElementById('res-barang-list');
+                        ul.innerHTML = "";
+                        if(data.barang && data.barang.length > 0) {
+                            data.barang.forEach(b => {
+                                ul.innerHTML += `<li>${b.nama} (${b.qty}x) - <span class="text-gray-900 font-medium">${b.subtotal}</span></li>`;
+                            });
+                        } else {
+                            ul.innerHTML = "<li>Tidak ada rincian barang spesifik terdeteksi</li>";
+                        }
+
+                        // Menyisipkan entri kartu riwayat baru di atas list riwayat sesuai mockup
+                        const riwayatList = document.getElementById('riwayat-scan-list');
+                        const itemBaruHTML = `
+                            <div class="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.01)] animate-fade-in">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-12 bg-green-50 text-tatera-green rounded-md flex-shrink-0 flex items-center justify-center"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                                    <div class="space-y-0.5">
+                                        <h4 class="font-bold text-xs text-gray-800 tracking-tight">${data.toko}</h4>
+                                        <p class="text-[10px] text-gray-400 font-medium">${data.tanggal} - <span class="font-bold text-gray-600">${data.total}</span></p>
+                                    </div>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-green-50 text-green-500 border border-green-100/60 tracking-tight">Terdeteksi</span>
+                            </div>`;
+                        riwayatList.insertAdjacentHTML('afterbegin', itemBaruHTML);
+
+                    } else {
+                        alert("OCR Gagal: " + data.message);
+                    }
+                    tutupKameraLive();
+                })
+                .catch(err => {
+                    alert("Koneksi gagal ke server Python Flask Cloud (ngrok).");
+                    tutupKameraLive();
+                });
+            }
+        }
+
+        function handleLogout() {
+            if (confirm("Yakin ingin keluar?")) { window.location.href = "index.html"; }
+        }
+    </script>
+</body>
+</html>

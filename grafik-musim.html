@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Grafik Musim</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: { 
+                extend: { 
+                    colors: { 
+                        'tatera-green': '#39B54A', 
+                        'tatera-dark-green': '#115E28' 
+                    } 
+                } 
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-300 font-sans flex h-screen overflow-hidden">
+
+  
+    <div class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col justify-between h-screen overflow-y-auto flex-shrink-0">
+        <div>
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-3"></div>
+                <h3 id="sidebar-username" class="font-bold text-gray-700 text-lg">Hi, User</h3>
+            </div>
+
+            <nav class="space-y-2" id="main-navigation">
+                
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i> <span>Dashboard</span>
+                </a>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-musim" onclick="toggleMenu('menu-musim', 'arrow-musim')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-seedling w-5 text-center"></i> <span>Musim Tanam</span>
+                        </div>
+                        <i id="arrow-musim" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-musim" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="tambah-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Tambah Musim Tanam</a>
+                        <a href="data-musim-tanam.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Data Musim Tanam</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-keuangan" onclick="toggleMenu('menu-keuangan', 'arrow-keuangan')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="arrow-keuangan" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-keuangan" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="saldo.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Saldo Tersedia</a>
+                        <a href="kas-masuk.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Masuk</a>
+                        <a href="kas-keluar.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Keluar</a>
+                        <a href="laporan-keuangan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Laporan Keuangan</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-analisis" onclick="toggleMenu('menu-analisis', 'arrow-analisis')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-chart-simple w-5 text-center"></i> <span>Analisis & Laporan</span>
+                        </div>
+                        <i id="arrow-analisis" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-analisis" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="grafik-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Musim</a>
+                        <a href="grafik-tahunan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Tahunan</a>
+                        <a href="ranking-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Ranking Musim</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-pakar" onclick="toggleMenu('menu-pakar', 'arrow-pakar')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-doctor w-5 text-center"></i> <span>Sistem Pakar</span>
+                        </div>
+                        <i id="arrow-pakar" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-pakar" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="konsultasi-finansial.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Konsultasi Finansial Tani</a>
+                        <a href="rekomendasi-supplier.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Rekomendasi Supplier</a>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 space-y-1">
+                    <a href="scan-nota.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-receipt w-5 text-center"></i> <span>Scan Nota</span>
+                    </a>
+                    <a href="notifikasi.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-bell w-5 text-center"></i> <span>Notifikasi</span>
+                    </a>
+                    <a href="profil.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-user w-5 text-center"></i> <span>Profil</span>
+                    </a>
+                    <a href="pengaturan.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i> <span>Pengaturan</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-100 text-red-600 font-semibold hover:bg-red-200 transition text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar</span>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="flex-1 p-10 overflow-y-auto">
+        <div class="bg-white rounded-3xl p-10 shadow-sm max-w-5xl mx-auto min-h-[85vh] flex flex-col justify-start space-y-6">
+            
+            <div class="pb-4 border-b border-gray-100">
+                <h1 class="text-xl font-bold text-gray-800 tracking-tight">Grafik Analisis Musim</h1>
+            </div>
+
+            <div>
+                <h2 class="text-lg font-bold text-gray-800">Pendapatan dan Pengeluaran</h2>
+                <p id="label-periode-musim" class="text-xs font-semibold text-gray-400 mt-0.5">Memuat data musim...</p>
+            </div>
+
+            <div class="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm relative">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-sm font-bold text-gray-800">Ringkasan Keuangan</h3>
+                    
+                    <div class="relative">
+                        <select id="select-musim-ini" onchange="updateGrafikBerdasarkanMusim()" class="appearance-none bg-white border border-gray-300 rounded-xl px-4 py-1.5 pr-8 text-xs font-semibold text-gray-700 focus:outline-none cursor-pointer shadow-sm">
+                            </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-gray-500 absolute right-3 top-3.5 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <div class="h-80 w-full">
+                    <canvas id="chartMusimDynamic"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tateraChartInstance = null;
+        const daftarNamaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        // Fungsi pemicu dropdown
+        function toggleMenu(menuId, arrowId) {
+            const menu = document.getElementById(menuId);
+            const arrow = document.getElementById(arrowId);
+            if (menu && arrow) {
+                menu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-90');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.split("/").pop();
+            
+            // 1. DETEKSI JIKA HALAMAN AKTIF ADALAH MENU UTAMA/STANDAR (Dashboard, Scan Nota, dll)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                    link.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                }
+            });
+
+            // 2. DETEKSI JIKA HALAMAN AKTIF ADALAH SUB-MENU (ANGGOTA)
+            const subLinks = document.querySelectorAll('.nav-sub-item');
+            subLinks.forEach(subLink => {
+                if (subLink.getAttribute('href') === currentPath) {
+                    // SET AKTIF HIJAU TUA FULL BACKGROUND PADA ANGGOTA
+                    subLink.classList.remove('text-gray-500', 'hover:text-green-600');
+                    subLink.classList.add('bg-[#0F5E27]', 'text-white', 'font-bold', 'shadow-sm');
+
+                    // Cari container penampung dropdown (id^="menu-")
+                    const parentContainer = subLink.closest('[id^="menu-"]');
+                    if (parentContainer) {
+                        parentContainer.classList.remove('hidden'); // Buka list dropdown otomatis
+                        
+                        const parentId = parentContainer.getAttribute('id');
+                        
+                        // Set tombol utama induknya di atas menjadi Hijau Terang Penuh
+                        const btnId = parentId.replace('menu-', 'btn-');
+                        const mainButton = document.getElementById(btnId);
+                        if (mainButton) {
+                            mainButton.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                            mainButton.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                        }
+
+                        // AMAN: Tangani dan munculkan kembali anak panah agar tidak hilang/hilang warna
+                        const arrowId = parentId.replace('menu-', 'arrow-');
+                        const arrowIcon = document.getElementById(arrowId);
+                        if (arrowIcon) {
+                            arrowIcon.classList.remove('text-gray-600');
+                            arrowIcon.classList.add('rotate-90', 'text-white', 'opacity-100');
+                        }
+                    }
+                }
+            });
+            
+            // Sapaan Profil
+            const nama = localStorage.getItem('user_nama_lengkap') || 'Adam Permana';
+            const usernameElement = document.getElementById('sidebar-username');
+            if (usernameElement) {
+                usernameElement.innerText = "Hi, " + nama.split(" ")[0];
+            }
+        });
+
+        function inisialisasiDataMusim() {
+            const dropdown = document.getElementById('select-musim-ini');
+            
+            // Mengambil database inputan musim tanam dari localStorage
+            let dataMusimTanam = JSON.parse(localStorage.getItem('database_musim_tanam')) || [];
+
+            // Jika kosong (user belum input), kita berikan fallback template data berjalan otomatis agar tidak eror
+            if (dataMusimTanam.length === 0) {
+                dataMusimTanam = [
+                    { namaMusim: "Musim Tanam 1", tanggalMulai: "2026-05-10" },
+                    { namaMusim: "Musim Tanam 2", tanggalMulai: "2026-10-15" }
+                ];
+                localStorage.setItem('database_musim_tanam', JSON.stringify(dataMusimTanam));
+            }
+
+            // Bersihkan isi dropdown, lalu isi dengan nama musim yang tersedia
+            dropdown.innerHTML = "";
+            dataMusimTanam.forEach((musim, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.innerText = musim.namaMusim;
+                dropdown.appendChild(option);
+            });
+
+            // Jalankan render grafik untuk musim pertama yang terpilih secara real-time
+            updateGrafikBerdasarkanMusim();
+        }
+
+        function updateGrafikBerdasarkanMusim() {
+            const dropdown = document.getElementById('select-musim-ini');
+            const dataMusimTanam = JSON.parse(localStorage.getItem('database_musim_tanam')) || [];
+            
+            if (dataMusimTanam.length === 0) return;
+
+            const indexTerpilih = dropdown.value || 0;
+            const musimTerpilih = dataMusimTanam[indexTerpilih];
+            
+            // Membaca tanggal mulai awal inputan secara real-time
+            const tanggalInput = new Date(musimTerpilih.tanggalMulai);
+            let bulanAwalIndex = tanggalInput.getMonth(); // Mendapatkan index bulan (0-11)
+            let tahunAwal = tanggalInput.getFullYear();
+
+            // Susun Sumbu X (5 Bulan berturut-turut maju dari awal bulan pendaftaran)
+            let sumbuXLabels = [];
+            for (let i = 0; i < 5; i++) {
+                let currentBulanIndex = (bulanAwalIndex + i) % 12;
+                // Ambil 3 huruf depan nama bulan (Contoh: Mei, Juni, Juli)
+                let namaPendekBulan = daftarNamaBulan[currentBulanIndex].substring(0, 3);
+                sumbuXLabels.push(namaPendekBulan);
+            }
+
+            // Update sub-judul teks keterangan rentang waktu musim
+            document.getElementById('label-periode-musim').innerText = `${musimTerpilih.namaMusim} - Dimulai ${daftarNamaBulan[bulanAwalIndex]} ${tahunAwal}`;
+
+            // Sediakan dummy data keuangan progresif untuk simulasi grafik batang
+            let dataKasMasuk = [15.2, 17.5, 14.8, 18.2, 19.1];
+            let dataKasKeluar = [8.5, 9.2, 6.4, 7.8, 5.0];
+
+            // Render ulang Chart.js
+            renderChartTatera(sumbuXLabels, dataKasMasuk, dataKasKeluar);
+        }
+
+        function renderChartTatera(labelsX, kasMasuk, kasKeluar) {
+            const ctx = document.getElementById('chartMusimDynamic').getContext('2d');
+
+            // Hancurkan instansi chart lama jika ada agar tidak tumpang tindih saat diganti
+            if (tateraChartInstance) {
+                tateraChartInstance.destroy();
+            }
+
+            tateraChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labelsX, // Sumbu-X dinamis sesuai awal bulan inputan
+                    datasets: [{
+                        label: 'Kas Masuk',
+                        data: kasMasuk,
+                        backgroundColor: '#00C838', // Hijau Tatera cerah
+                        barPercentage: 0.45,       // 1. DIPERLEBAR (Sebelumnya 0.25)
+                        categoryPercentage: 0.6    // Mengatur kedekatan jarak antar bar kelompok
+                    }, {
+                        label: 'Kas Keluar',
+                        data: kasKeluar,
+                        backgroundColor: '#FF0000', // Merah Solid
+                        barPercentage: 0.45,       // 1. DIPERLEBAR (Sebelumnya 0.25)
+                        categoryPercentage: 0.6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            display: true,
+                            position: 'top',
+                            align: 'start',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                padding: 20,
+                                font: { size: 12, weight: '600' }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 20,
+                            ticks: {
+                                stepSize: 5,
+                                callback: function(value) {
+                                    return value === 0 ? '0' : value + 'M';
+                                },
+                                font: { size: 11, weight: '500' }
+                            },
+                            grid: { color: '#E5E7EB', drawBorder: false }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 12, weight: '700' }, color: '#111827' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function handleLogout() {
+            if (confirm("Apakah Anda yakin ingin keluar dari Akun?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

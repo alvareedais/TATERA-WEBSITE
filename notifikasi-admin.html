@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Notifikasi Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        'tatera-green': '#115E28', 
+                        'tatera-light-green': '#28a745',
+                        'tatera-blue-active': '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-300 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white p-6 flex flex-col justify-between h-screen flex-shrink-0 relative z-10">
+        <div>
+            <div class="flex items-center gap-3 mb-8 pl-2">
+                <div class="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0 flex items-center justify-center text-gray-600">
+                    <i class="fa-solid fa-user-shield text-xl"></i>
+                </div>
+                <div>
+                    <h3 id="sidebar-username" class="font-bold text-gray-800 text-sm">Hi, Super Admin</h3>
+                    <p class="text-[11px] text-gray-400 font-medium">Super Administrator</p>
+                </div>
+            </div>
+
+            <nav class="space-y-1 text-xs font-bold">
+                <a href="dashboard-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-house w-5 text-center text-sm"></i> <span>Dashboard</span>
+                </a>
+
+                <a href="manajement-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-user-gear w-5 text-center text-sm"></i> <span>Manajemen Admin</span>
+                </a>
+
+                <a href="manajement-petani-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-users w-5 text-center text-sm"></i> <span>Manajemen Petani</span>
+                </a>
+
+                <a href="musim-tanam-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-seedling w-5 text-center text-sm"></i> <span>Musim Tanam</span>
+                </a>
+
+                <a href="keuangan-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-dollar-sign w-5 text-center text-sm"></i> <span>Keuangan</span>
+                </a>
+
+                <a href="laporan-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-sm"></i> <span>Laporan</span>
+                </a>
+
+                <a href="pengaturan-sistem-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-gear w-5 text-center text-sm"></i> <span>Pengaturan Sistem</span>
+                </a>
+                
+                <a href="notifikasi-admin.html" class="flex items-center space-x-3 p-3 rounded-xl bg-tatera-blue-active text-white shadow-sm transition">
+                    <i class="fa-solid fa-bell w-5 text-center text-sm"></i> <span>Notifikasi</span>
+                </a>
+                
+                <a href="profil-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-user w-5 text-center text-sm"></i> <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <button onclick="handleLogout()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-100 text-red-600 font-bold hover:bg-red-200 transition text-xs">
+                <i class="fa-solid fa-power-off text-sm"></i> <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-grow p-8 h-screen overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 min-h-full flex flex-col">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Pusat Pemberitahuan</h2>
+                    <p class="text-[11px] text-gray-400 font-medium">Pantau seluruh log aktivitas penting dan pengajuan masuk dari pengguna</p>
+                </div>
+                <div>
+                    <button onclick="tandaiSemuaDibaca()" class="text-xs font-bold text-tatera-blue-active hover:text-blue-800 transition flex items-center gap-1">
+                        <i class="fa-solid fa-check-double text-sm"></i> Tandai semua telah dibaca
+                    </button>
+                </div>
+            </div>
+
+            <div id="container-notifikasi" class="space-y-3 flex-grow">
+                </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Sinkronisasi Sesi Nama Login
+            const namaSesi = localStorage.getItem('user_nama_lengkap');
+            if (namaSesi && document.getElementById('sidebar-username')) {
+                document.getElementById('sidebar-username').innerText = "Hi, " + namaSesi;
+            }
+
+            // Inisialisasi Database Dummy Notifikasi Sistem jika belum ada
+            let databaseNotif = JSON.parse(localStorage.getItem('database_notifikasi_admin'));
+            if (!databaseNotif) {
+                databaseNotif = [
+                    { id: 1, tipe: 'user', icon: 'fa-user-plus', bgIcon: 'bg-blue-100 text-blue-600', judul: 'Pendaftaran Petani Baru', isi: 'Petani baru bernama "I Wayan Sugatha" dari wilayah Brebes membutuhkan verifikasi dokumen lahan segera.', waktu: '10 menit yang lalu', dibaca: false },
+                    { id: 2, tipe: 'panen', icon: 'fa-seedling', bgIcon: 'bg-emerald-100 text-emerald-600', judul: 'Laporan Tutup Musim Tanam', isi: 'Kelompok Tani "Bawang Merah Subur" mengirimkan ajuan penutupan masa panen komoditas Bawang Merah Bima.', waktu: '2 jam yang lalu', dibaca: false },
+                    { id: 3, tipe: 'keuangan', icon: 'fa-receipt', bgIcon: 'bg-amber-100 text-amber-600', judul: 'Catatan Transaksi Kelompok', isi: 'Log pemasukan sebesar Rp 18.200.000 dari penjualan Jagung Hibrida Batur berhasil dicatat ke sistem global.', waktu: '1 hari yang lalu', dibaca: true }
+                ];
+                localStorage.setItem('database_notifikasi_admin', JSON.stringify(databaseNotif));
+            }
+
+            muatNotifikasi();
+        });
+
+        function muatNotifikasi() {
+            const container = document.getElementById("container-notifikasi");
+            container.innerHTML = "";
+
+            const databaseNotif = JSON.parse(localStorage.getItem('database_notifikasi_admin')) || [];
+
+            if (databaseNotif.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 text-gray-400">
+                        <i class="fa-solid fa-bell-slash text-4xl mb-3 block"></i>
+                        <p class="font-medium text-xs">Tidak ada pemberitahuan baru saat ini</p>
+                    </div>`;
+                return;
+            }
+
+            databaseNotif.forEach((notif, index) => {
+                const statusBelumDibaca = !notif.dibaca;
+                
+                const itemHtml = `
+                    <div class="p-4 rounded-xl border transition flex items-start gap-4 ${statusBelumDibaca ? 'bg-blue-50/40 border-blue-100 shadow-sm' : 'bg-white border-gray-100'}" id="notif-item-${notif.id}">
+                        <div class="w-9 h-9 ${notif.bgIcon} rounded-xl flex-shrink-0 flex items-center justify-center text-sm">
+                            <i class="fa-solid ${notif.icon}"></i>
+                        </div>
+                        
+                        <div class="flex-grow text-xs">
+                            <div class="flex items-center justify-between gap-2 mb-0.5">
+                                <h4 class="font-bold text-gray-800 text-[13px]">${notif.judul}</h4>
+                                <span class="text-[10px] text-gray-400 font-medium">${notif.waktu}</span>
+                            </div>
+                            <p class="text-gray-500 font-medium leading-relaxed mb-2">${notif.isi}</p>
+                            
+                            <div class="flex items-center gap-3 font-bold text-[11px]">
+                                ${statusBelumDibaca ? `
+                                    <button onclick="tandaiSatuDibaca(${index})" class="text-tatera-blue-active hover:underline">
+                                        <i class="fa-solid fa-check"></i> Tandai dibaca
+                                    </button>
+                                ` : `
+                                    <span class="text-gray-400 font-semibold"><i class="fa-solid fa-circle-check"></i> Sudah dibaca</span>
+                                `}
+                                <button onclick="hapusNotifikasi(${index})" class="text-gray-400 hover:text-red-600 transition">
+                                    <i class="fa-solid fa-trash-can"></i> Hapus
+                                </button>
+                            </div>
+                        </div>
+
+                        ${statusBelumDibaca ? `<div class="w-2.5 h-2.5 bg-blue-500 rounded-full mt-1 flex-shrink-0"></div>` : ''}
+                    </div>
+                `;
+                container.innerHTML += itemHtml;
+            });
+        }
+
+        function tandaiSatuDibaca(index) {
+            let databaseNotif = JSON.parse(localStorage.getItem('database_notifikasi_admin')) || [];
+            databaseNotif[index].dibaca = true;
+            localStorage.setItem('database_notifikasi_admin', JSON.stringify(databaseNotif));
+            muatNotifikasi();
+        }
+
+        function tandaiSemuaDibaca() {
+            let databaseNotif = JSON.parse(localStorage.getItem('database_notifikasi_admin')) || [];
+            databaseNotif.forEach(notif => notif.dibaca = true);
+            localStorage.setItem('database_notifikasi_admin', JSON.stringify(databaseNotif));
+            muatNotifikasi();
+        }
+
+        function hapusNotifikasi(index) {
+            let databaseNotif = JSON.parse(localStorage.getItem('database_notifikasi_admin')) || [];
+            databaseNotif.splice(index, 1);
+            localStorage.setItem('database_notifikasi_admin', JSON.stringify(databaseNotif));
+            muatNotifikasi();
+        }
+
+        function handleLogout() {
+            if (confirm("Yakin ingin keluar?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

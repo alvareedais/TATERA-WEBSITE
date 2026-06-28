@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Manajemen Petani</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        'tatera-green': '#115E28', 
+                        'tatera-light-green': '#28a745',
+                        'tatera-blue-active': '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-300 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white p-6 flex flex-col justify-between h-screen flex-shrink-0 relative z-10">
+        <div>
+            <div class="flex items-center gap-3 mb-8 pl-2">
+                <div class="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0 flex items-center justify-center text-gray-600">
+                    <i class="fa-solid fa-user-shield text-xl"></i>
+                </div>
+                <div>
+                    <h3 id="sidebar-username" class="font-bold text-gray-800 text-sm">Hi, Super Admin</h3>
+                    <p class="text-[11px] text-gray-400 font-medium">Super Administrator</p>
+                </div>
+            </div>
+
+            <nav class="space-y-1 text-xs font-bold">
+                <a href="dashboard-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-house w-5 text-center text-sm"></i> <span>Dashboard</span>
+                </a>
+
+                <a href="manajement-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-user-gear w-5 text-center text-sm"></i> <span>Manajemen Admin</span>
+                </a>
+
+                <a href="manajement-petani-admin.html" class="flex items-center space-x-3 p-3 rounded-xl bg-tatera-blue-active text-white shadow-sm transition">
+                    <i class="fa-solid fa-users w-5 text-center text-sm"></i> <span>Manajemen Petani</span>
+                </a>
+
+                <a href="musim-tanam-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-seedling w-5 text-center text-sm"></i> <span>Musim Tanam</span>
+                </a>
+
+                <a href="keuangan-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-dollar-sign w-5 text-center text-sm"></i> <span>Keuangan</span>
+                </a>
+
+                <a href="laporan-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-sm"></i> <span>Laporan</span>
+                </a>
+
+                <a href="pengaturan-sistem-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-gear w-5 text-center text-sm"></i> <span>Pengaturan Sistem</span>
+                </a>
+                
+                <a href="notifikasi-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-bell w-5 text-center text-sm"></i> <span>Notifikasi</span>
+                </a>
+                
+                <a href="profil-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-user w-5 text-center text-sm"></i> <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <button onclick="handleLogout()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-100 text-red-600 font-bold hover:bg-red-200 transition text-xs">
+                <i class="fa-solid fa-power-off text-sm"></i> <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-grow p-8 h-screen overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 min-h-full flex flex-col">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <h2 class="text-lg font-bold text-gray-800">Manajemen Data Petani</h2>
+                <div class="relative w-full sm:w-64">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </span>
+                    <input 
+                        type="text" 
+                        id="search-petani"
+                        oninput="filterTabelPetani()"
+                        placeholder="Cari nama atau komoditas..." 
+                        class="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-tatera-blue-active transition"
+                    >
+                </div>
+            </div>
+
+            <div class="flex-grow overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-200 text-gray-500 text-[11px] font-bold uppercase tracking-wider bg-gray-50">
+                            <th class="py-3 px-4">Nama Petani</th>
+                            <th class="py-3 px-4">Email</th>
+                            <th class="py-3 px-4">Komoditas</th>
+                            <th class="py-3 px-4">Luas Lahan</th>
+                            <th class="py-3 px-4">Status Akun</th>
+                            <th class="py-3 px-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-petani-body" class="text-xs text-gray-700 divide-y divide-gray-100">
+                        </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Sinkronisasi Sesi Nama Login
+            const namaSesi = localStorage.getItem('user_nama_lengkap');
+            if (namaSesi && document.getElementById('sidebar-username')) {
+                document.getElementById('sidebar-username').innerText = "Hi, " + namaSesi;
+            }
+
+            // Tambahkan data dummy petani otomatis di localStorage jika belum ada data pendaftar sama sekali
+            let dataLokal = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+            const cekPetani = dataLokal.some(user => user.role === 'petani');
+            
+            if (!cekPetani) {
+                // Menambahkan sampel mockup data petani sesuai tampilan tabel di gambar
+                dataLokal.push(
+                    { nama: "Supardi Setiadi", email: "supardi@gmail.com", role: "petani", komoditas: "Padi Pandanwangi", lahan: "1.2 Hektar", status: "Aktif" },
+                    { nama: "Joko Widodo Tani", email: "jokotani@gmail.com", role: "petani", komoditas: "Jagung Hibrida", lahan: "0.8 Hektar", status: "Aktif" },
+                    { nama: "I Wayan Sugatha", email: "wayan@gmail.com", role: "petani", komoditas: "Bawang Merah", lahan: "2.0 Hektar", status: "Menunggu Verifikasi" }
+                );
+                localStorage.setItem('daftar_pengguna', JSON.stringify(dataLokal));
+            }
+
+            muatTabelPetani();
+        });
+
+        function muatTabelPetani() {
+            const tbody = document.getElementById("tabel-petani-body");
+            tbody.innerHTML = "";
+
+            const dataLokal = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+            
+            // Saring pengguna yang berstatus sebagai 'petani'
+            const daftarPetani = dataLokal.filter(user => user.role === 'petani' || !user.role);
+
+            if(daftarPetani.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-gray-400 font-medium">Belum ada data petani terdaftar</td></tr>`;
+                return;
+            }
+
+            daftarPetani.forEach((petani) => {
+                // Temukan index asli pendaftar di array database utama
+                const indexAsli = dataLokal.findIndex(u => u.email === petani.email);
+                
+                // Set default nilai kolom jika atribut pendaftaran awal kosong
+                const komoditas = petani.komoditas || "Belum Menanam";
+                const lahan = petani.lahan || "Belum Diisi";
+                const statusAkun = petani.status || "Aktif";
+
+                // Penentuan warna badge status sesuai gambar rancangan
+                let badgeColor = "bg-green-100 text-green-700";
+                if(statusAkun === "Menunggu Verifikasi") {
+                    badgeColor = "bg-amber-100 text-amber-700";
+                } else if(statusAkun === "Ditangguhkan") {
+                    badgeColor = "bg-red-100 text-red-700";
+                }
+
+                const baris = `
+                    <tr class="hover:bg-gray-50 transition item-petani-row">
+                        <td class="py-3.5 px-4 font-semibold text-gray-800 nama-target">${petani.nama}</td>
+                        <td class="py-3.5 px-4 text-gray-500">${petani.email}</td>
+                        <td class="py-3.5 px-4 font-medium text-gray-600 komoditas-target">${komoditas}</td>
+                        <td class="py-3.5 px-4 text-gray-600">${lahan}</td>
+                        <td class="py-3.5 px-4">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${badgeColor}">
+                                ${statusAkun}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-4 text-center space-x-2">
+                            ${statusAkun === "Menunggu Verifikasi" ? 
+                                `<button onclick="ubahStatusPetani(${indexAsli}, 'Aktif')" class="text-green-600 hover:text-green-800 font-bold transition"><i class="fa-solid fa-circle-check"></i> Verifikasi</button>` : 
+                                `<button onclick="toggleStatusAkun(${indexAsli}, '${statusAkun}')" class="text-blue-600 hover:text-blue-800 font-bold transition">
+                                    <i class="fa-solid fa-user-slash"></i> ${statusAkun === 'Aktif' ? 'Tangguhkan' : 'Aktifkan'}
+                                </button>`
+                            }
+                            <button onclick="hapusPetani(${indexAsli})" class="text-red-600 hover:text-red-800 font-bold transition"><i class="fa-solid fa-trash"></i> Hapus</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += baris;
+            });
+        }
+
+        // Fungsi Fitur Pencarian Real-Time Dinamis
+        function filterTabelPetani() {
+            const keyword = document.getElementById("search-petani").value.toLowerCase();
+            const barisTabel = document.querySelectorAll(".item-petani-row");
+
+            barisTabel.forEach(row => {
+                const nama = row.querySelector(".nama-target").innerText.toLowerCase();
+                const komoditas = row.querySelector(".komoditas-target").innerText.toLowerCase();
+
+                if (nama.includes(keyword) || komoditas.includes(keyword)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        // Aksi Mengubah Status Verifikasi Petani
+        function ubahStatusPetani(index, statusBaru) {
+            let dataLokal = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+            dataLokal[index].status = statusBaru;
+            localStorage.setItem('daftar_pengguna', JSON.stringify(dataLokal));
+            muatTabelPetani();
+        }
+
+        function toggleStatusAkun(index, statusSekarang) {
+            const konfirmasi = confirm(`Ubah status blokir/aktif akun petani ini?`);
+            if(konfirmasi) {
+                let dataLokal = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+                dataLokal[index].status = (statusSekarang === "Aktif") ? "Ditangguhkan" : "Aktifkan";
+                localStorage.setItem('daftar_pengguna', JSON.stringify(dataLokal));
+                muatTabelPetani();
+            }
+        }
+
+        // Hapus Permanen Akun Petani
+        function hapusPetani(index) {
+            if (confirm("Apakah anda yakin ingin menghapus permanen data petani ini?")) {
+                let dataLokal = JSON.parse(localStorage.getItem('daftar_pengguna')) || [];
+                dataLokal.splice(index, 1);
+                localStorage.setItem('daftar_pengguna', JSON.stringify(dataLokal));
+                muatTabelPetani();
+            }
+        }
+
+        function handleLogout() {
+            if (confirm("Yakin ingin keluar?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

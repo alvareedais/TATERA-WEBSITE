@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Tambah Musim Tanam</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'tatera-green': '#115E28', 'tatera-light-green': '#39B54A' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .step-content { display: none; }
+        .step-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+
+    <div class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col justify-between h-screen overflow-y-auto flex-shrink-0">
+        <div>
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-3"></div>
+                <h3 id="sidebar-username" class="font-bold text-gray-700 text-lg">Hi, User</h3>
+            </div>
+
+            <nav class="space-y-2" id="main-navigation">
+                
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i> <span>Dashboard</span>
+                </a>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-musim" onclick="toggleMenu('menu-musim', 'arrow-musim')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-seedling w-5 text-center"></i> <span>Musim Tanam</span>
+                        </div>
+                        <i id="arrow-musim" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-musim" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="tambah-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Tambah Musim Tanam</a>
+                        <a href="data-musim-tanam.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Data Musim Tanam</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-keuangan" onclick="toggleMenu('menu-keuangan', 'arrow-keuangan')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="arrow-keuangan" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-keuangan" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="saldo.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Saldo Tersedia</a>
+                        <a href="kas-masuk.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Masuk</a>
+                        <a href="kas-keluar.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Keluar</a>
+                        <a href="laporan-keuangan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Laporan Keuangan</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-analisis" onclick="toggleMenu('menu-analisis', 'arrow-analisis')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-chart-simple w-5 text-center"></i> <span>Analisis & Laporan</span>
+                        </div>
+                        <i id="arrow-analisis" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-analisis" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="grafik-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Musim</a>
+                        <a href="grafik-tahunan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Tahunan</a>
+                        <a href="ranking-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Ranking Musim</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-pakar" onclick="toggleMenu('menu-pakar', 'arrow-pakar')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-doctor w-5 text-center"></i> <span>Sistem Pakar</span>
+                        </div>
+                        <i id="arrow-pakar" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-pakar" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="konsultasi-finansial.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Konsultasi Finansial Tani</a>
+                        <a href="rekomendasi-supplier.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Rekomendasi Supplier</a>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 space-y-1">
+                    <a href="scan-nota.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-receipt w-5 text-center"></i> <span>Scan Nota</span>
+                    </a>
+                    <a href="notifikasi.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-bell w-5 text-center"></i> <span>Notifikasi</span>
+                    </a>
+                    <a href="profil.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-user w-5 text-center"></i> <span>Profil</span>
+                    </a>
+                    <a href="pengaturan.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i> <span>Pengaturan</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-100 text-red-600 font-semibold hover:bg-red-200 transition text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-1 p-8 overflow-y-auto">
+        <div class="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm max-w-4xl mx-auto">
+            <h2 class="text-xl font-bold text-gray-800 mb-8">Tambah Musim Tanam</h2>
+
+            <div class="flex items-center justify-between mb-12 relative px-4">
+                <div class="absolute left-0 top-1/2 w-full h-0.5 bg-gray-200 -z-10 transform -translate-y-1/2"></div>
+                
+                <div id="ind-1" class="w-10 h-10 rounded-full bg-tatera-light-green text-white flex items-center justify-center font-bold z-10">1</div>
+                <div id="ind-2" class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold z-10">2</div>
+                <div id="ind-3" class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold z-10">3</div>
+                <div id="ind-4" class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold z-10">4</div>
+            </div>
+
+            <div id="step-1" class="step-content active space-y-5">
+                <h3 class="text-base font-bold text-gray-700 mb-2">Informasi Musim Tanam</h3>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Musim Tanam</label>
+                    <input id="input-nama" type="text" placeholder="Contoh : Musim Tanam 1 2026" class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Tanggal Mulai</label>
+                        <input id="input-tanggal-mulai" type="date" class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm text-gray-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Tanggal Selesai</label>
+                        <input id="input-tanggal-selesai" type="date" class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm text-gray-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Komunitas / Komoditas</label>
+                    <input id="input-komunitas" type="text" placeholder="Pilih Komunitas" class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Deskripsi (Opsional)</label>
+                    <textarea id="input-deskripsi" rows="3" placeholder="Tulis Deskripsi Singkat..." class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div id="step-2" class="step-content space-y-5">
+                <h3 class="text-base font-bold text-gray-700 mb-2">Rencana Tanam</h3>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Luas Lahan (Ha)</label>
+                    <input id="input-luas-lahan" type="number" placeholder="Masukkan Luas Lahan" class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Metode Tanam</label>
+                    <input id="input-metode-tanam" type="text" placeholder="Pilih Metode Tanam" class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Target Produksi (Ton)</label>
+                    <input id="input-target-produksi" type="number" placeholder="Masukkan Target" class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
+                </div>
+            </div>
+
+            <div id="step-3" class="step-content space-y-5">
+                <h3 class="text-base font-bold text-gray-700 mb-2">Anggaran</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-gray-600">Benih</span>
+                        <input id="input-benih" type="number" placeholder="Rp 0" class="w-48 px-4 py-1.5 rounded-xl border border-gray-300 text-sm text-right">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-gray-600">Pupuk</span>
+                        <input id="input-pupuk" type="number" placeholder="Rp 0" class="w-48 px-4 py-1.5 rounded-xl border border-gray-300 text-sm text-right">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-gray-600">Pestisida</span>
+                        <input id="input-pestisida" type="number" placeholder="Rp 0" class="w-48 px-4 py-1.5 rounded-xl border border-gray-300 text-sm text-right">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-gray-600">Tenaga Kerja</span>
+                        <input id="input-tenaga-kerja" type="number" placeholder="Rp 0" class="w-48 px-4 py-1.5 rounded-xl border border-gray-300 text-sm text-right">
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-4" class="step-content text-center py-8 space-y-6">
+                <div class="w-20 h-20 bg-green-100 text-tatera-light-green rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm">✓</div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800">Berhasil</h3>
+                    <p class="text-xs text-gray-400 mt-1">Musim Tanam Berhasil Ditambahkan</p>
+                </div>
+                <div class="bg-gray-50 rounded-2xl p-6 text-left max-w-md mx-auto space-y-3 text-xs">
+                    <div class="flex justify-between"><span class="text-gray-400">Nama Musim Tanam</span><span id="summary-nama" class="font-bold text-gray-700">-</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Komoditas</span><span id="summary-komoditas" class="font-bold text-gray-700">-</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Luas Lahan</span><span id="summary-luas" class="font-bold text-gray-700">-</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Total Anggaran</span><span id="summary-total" class="font-bold text-tatera-green">Rp 0</span></div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center mt-12 border-t border-gray-100 pt-6">
+                <button id="btn-back" type="button" onclick="changeStep(-1)" class="px-6 py-2 border border-gray-300 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-50 hidden">Kembali</button>
+                <div class="flex-1"></div>
+                <button id="btn-next" type="button" onclick="changeStep(1)" class="px-6 py-2 bg-tatera-light-green hover:bg-green-600 text-white rounded-xl text-sm font-semibold">Lanjut</button>
+                <a href="data-musim-tanam.html" id="btn-finish" class="px-6 py-2 bg-tatera-light-green hover:bg-green-600 text-white rounded-xl text-sm font-semibold hidden">Selesai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi pemicu dropdown
+        function toggleMenu(menuId, arrowId) {
+            const menu = document.getElementById(menuId);
+            const arrow = document.getElementById(arrowId);
+            if (menu && arrow) {
+                menu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-90');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.split("/").pop();
+            
+            // 1. DETEKSI JIKA HALAMAN AKTIF ADALAH MENU UTAMA/STANDAR (Dashboard, Scan Nota, dll)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                    link.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                }
+            });
+
+            // 2. DETEKSI JIKA HALAMAN AKTIF ADALAH SUB-MENU (ANGGOTA)
+            const subLinks = document.querySelectorAll('.nav-sub-item');
+            subLinks.forEach(subLink => {
+                if (subLink.getAttribute('href') === currentPath) {
+                    // SET AKTIF HIJAU TUA FULL BACKGROUND PADA ANGGOTA
+                    subLink.classList.remove('text-gray-500', 'hover:text-green-600');
+                    subLink.classList.add('bg-[#0F5E27]', 'text-white', 'font-bold', 'shadow-sm');
+
+                    // Cari container penampung dropdown (id^="menu-")
+                    const parentContainer = subLink.closest('[id^="menu-"]');
+                    if (parentContainer) {
+                        parentContainer.classList.remove('hidden'); // Buka list dropdown otomatis
+                        
+                        const parentId = parentContainer.getAttribute('id');
+                        
+                        // Set tombol utama induknya di atas menjadi Hijau Terang Penuh
+                        const btnId = parentId.replace('menu-', 'btn-');
+                        const mainButton = document.getElementById(btnId);
+                        if (mainButton) {
+                            mainButton.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                            mainButton.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                        }
+
+                        // AMAN: Tangani dan munculkan kembali anak panah agar tidak hilang/hilang warna
+                        const arrowId = parentId.replace('menu-', 'arrow-');
+                        const arrowIcon = document.getElementById(arrowId);
+                        if (arrowIcon) {
+                            arrowIcon.classList.remove('text-gray-600');
+                            arrowIcon.classList.add('rotate-90', 'text-white', 'opacity-100');
+                        }
+                    }
+                }
+            });
+            
+            // Sapaan Profil
+            const nama = localStorage.getItem('user_nama_lengkap') || 'Adam Permana';
+            const usernameElement = document.getElementById('sidebar-username');
+            if (usernameElement) {
+                usernameElement.innerText = "Hi, " + nama.split(" ")[0];
+            }
+        });
+
+        // --- 2. Logika Penyeleksian Hijau Otomatis Sesuai Halaman Aktif ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPage = window.location.pathname.split("/").pop();
+            
+            // Cek menu utama (Non Dropdown)
+            const activeMainItem = document.querySelector(`.nav-item[data-page="${currentPage}"]`);
+            if (activeMainItem) {
+                activeMainItem.className = "flex items-center space-x-3 p-3 rounded-lg bg-green-500 text-white font-semibold transition";
+            }
+
+            // Cek sub-menu dropdown yang aktif
+            const activeSubItem = document.querySelector(`.nav-sub-item[data-page="${currentPage}"]`);
+            if (activeSubItem) {
+                // Beri style teks hijau tebal pada sub-menu aktif
+                activeSubItem.className = "block text-green-600 font-bold py-1.5 text-sm";
+
+                // Ambil ID container dropdown target
+                const groupId = activeSubItem.getAttribute('data-group');
+                const btnId = groupId.replace('menu-', 'btn-');
+                const arrowId = groupId.replace('menu-', 'arrow-');
+
+                // Buka container menu dropdown-nya
+                const groupMenu = document.getElementById(groupId);
+                if (groupMenu) {
+                    groupMenu.classList.remove('hidden');
+                    groupMenu.classList.add('border-l-2', 'border-green-500');
+                }
+
+                // Putar panah indikator
+                const arrow = document.getElementById(arrowId);
+                if (arrow) arrow.classList.add('rotate-90');
+
+                // Beri warna background hijau penuh pada tombol menu induk dropdown
+                const groupBtn = document.getElementById(btnId);
+                if (groupBtn) {
+                    groupBtn.className = "w-full flex items-center justify-between p-3 rounded-lg bg-green-500 text-white font-semibold transition shadow-sm";
+                }
+            }
+
+            // Sinkronisasi Nama User di Sidebar dari LocalStorage
+            const nama = localStorage.getItem('user_nama_lengkap') || 'user';
+            const sidebaruser = document.getElementById('sidebar-username');
+            if (sidebaruser) {
+                sidebaruser.innerText = "Hi, " + nama.split(" ")[0];
+            }
+        });
+
+        // --- 3. Logika Form Multi-Step (Lanjut / Kembali) ---
+        let currentStep = 1;
+
+        function changeStep(direction) {
+            const activeStep = document.getElementById(`step-${currentStep}`);
+            if (activeStep) activeStep.classList.remove('active');
+            
+            const activeInd = document.getElementById(`ind-${currentStep}`);
+            if (activeInd) {
+                activeInd.classList.remove('bg-tatera-light-green', 'text-white');
+                activeInd.classList.add('bg-gray-200', 'text-gray-600');
+            }
+
+            currentStep += direction;
+
+            const nextStep = document.getElementById(`step-${currentStep}`);
+            if (nextStep) nextStep.classList.add('active');
+            
+            const nextInd = document.getElementById(`ind-${currentStep}`);
+            if (nextInd) {
+                nextInd.classList.remove('bg-gray-200', 'text-gray-600');
+                nextInd.classList.add('bg-tatera-light-green', 'text-white');
+            }
+
+            // Jika sampai di Step 4 (Ringkasan), jalankan kalkulasi & penyimpanan data
+            if (currentStep === 4) {
+                updateSummaryWithDummy();
+            }
+
+            const btnBack = document.getElementById('btn-back');
+            const btnNext = document.getElementById('btn-next');
+            const btnFinish = document.getElementById('btn-finish');
+
+            if (currentStep === 1 || currentStep === 4) {
+                btnBack.classList.add('hidden');
+            } else {
+                btnBack.classList.remove('hidden');
+            }
+
+            if (currentStep === 4) {
+                btnNext.classList.add('hidden');
+                btnFinish.classList.remove('hidden');
+            } else {
+                btnNext.classList.remove('hidden');
+                btnFinish.classList.add('hidden');
+            }
+        }
+
+        // --- 4. Fungsi Update Ringkasan Berdasarkan ID Tepat + Simpan ke Storage ---
+        function updateSummaryWithDummy() {
+            const namaMusim  = document.getElementById('input-nama').value.trim() || 'Musim Tanam Baru';
+            const komoditas  = document.getElementById('input-komunitas').value.trim() || '-';
+            const luasLahan  = document.getElementById('input-luas-lahan').value.trim() || '0';
+            const metodeTanam = document.getElementById('input-metode-tanam').value.trim() || '-';
+            const targetProd  = document.getElementById('input-target-produksi').value.trim();
+            
+            const tglMulaiRaw   = document.getElementById('input-tanggal-mulai').value;
+            const tglSelesaiRaw = document.getElementById('input-tanggal-selesai').value;
+
+            function formatBulanTahunSafe(dateString) {
+                if (!dateString) return '...';
+                const parts = dateString.split('-');
+                if (parts.length !== 3) return '...';
+                
+                const tahun = parts[0];
+                const indexBulan = parseInt(parts[1], 10) - 1;
+                
+                const daftarBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+                const bulanTeks = daftarBulan[indexBulan] || '...';
+                
+                return `${bulanTeks} ${tahun}`;
+            }
+
+            const rentangTanggal = `${formatBulanTahunSafe(tglMulaiRaw)} - ${formatBulanTahunSafe(tglSelesaiRaw)}`;
+            
+            const benih     = parseFloat(document.getElementById('input-benih').value) || 0;
+            const pupuk     = parseFloat(document.getElementById('input-pupuk').value) || 0;
+            const pestisida = parseFloat(document.getElementById('input-pestisida').value) || 0;
+            const tenaga    = parseFloat(document.getElementById('input-tenaga-kerja').value) || 0;
+            const totalAnggaran = benih + pupuk + pestisida + tenaga;
+
+            const formatter = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0
+            });
+
+            // Tampilkan data di kotak Ringkasan Step 4
+            document.getElementById('summary-nama').innerText = namaMusim;
+            document.getElementById('summary-komoditas').innerText = komoditas;
+            document.getElementById('summary-luas').innerText = luasLahan + ' Ha';
+            document.getElementById('summary-total').innerText = totalAnggaran > 0 ? formatter.format(totalAnggaran) : 'Rp 0';
+
+            // ================= SIMPAN DATA KE LOCALSTORAGE =================
+            localStorage.setItem('dashboard_nama_musim', namaMusim);
+            localStorage.setItem('dashboard_komoditas', komoditas);
+            localStorage.setItem('dashboard_luas_lahan', luasLahan);
+            localStorage.setItem('dashboard_rentang_tanggal', rentangTanggal); 
+
+            // Tambahkan ini di dalam fungsi updateSummaryWithDummy() berkas tambah-musim.html
+            localStorage.setItem('dashboard_tgl_mulai_raw', tglMulaiRaw);
+            localStorage.setItem('dashboard_tgl_selesai_raw', tglSelesaiRaw);
+            
+            // Perbaikan: Menyimpan Metode & Target agar terbaca di halaman data musim
+            localStorage.setItem('dashboard_metode', metodeTanam);
+            localStorage.setItem('dashboard_target', targetProd ? targetProd + ' Ton' : '-');
+            
+            // Perbaikan: Inisialisasi default awal saat tambah musim baru
+            localStorage.setItem('dashboard_varietas', '-');
+            localStorage.setItem('dashboard_realisasi', '-');
+
+            // Perbaikan: Menyimpan rincian anggaran agar tabel anggaran terisi
+            localStorage.setItem('dashboard_anggaran_benih', benih);
+            localStorage.setItem('dashboard_anggaran_pupuk', pupuk);
+            localStorage.setItem('dashboard_anggaran_pestisida', pestisida);
+            localStorage.setItem('dashboard_anggaran_tenaga', tenaga);
+        }
+    </script>
+</body>
+</html>

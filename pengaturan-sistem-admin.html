@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Pengaturan Sistem</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        'tatera-green': '#115E28', 
+                        'tatera-light-green': '#28a745',
+                        'tatera-blue-active': '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-300 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white p-6 flex flex-col justify-between h-screen flex-shrink-0 relative z-10">
+        <div>
+            <div class="flex items-center gap-3 mb-8 pl-2">
+                <div class="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0 flex items-center justify-center text-gray-600">
+                    <i class="fa-solid fa-user-shield text-xl"></i>
+                </div>
+                <div>
+                    <h3 id="sidebar-username" class="font-bold text-gray-800 text-sm">Hi, Super Admin</h3>
+                    <p class="text-[11px] text-gray-400 font-medium">Super Administrator</p>
+                </div>
+            </div>
+
+            <nav class="space-y-1 text-xs font-bold">
+                <a href="dashboard-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-house w-5 text-center text-sm"></i> <span>Dashboard</span>
+                </a>
+
+                <a href="manajement-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-user-gear w-5 text-center text-sm"></i> <span>Manajemen Admin</span>
+                </a>
+
+                <a href="manajement-petani-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-users w-5 text-center text-sm"></i> <span>Manajemen Petani</span>
+                </a>
+
+                <a href="musim-tanam-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-seedling w-5 text-center text-sm"></i> <span>Musim Tanam</span>
+                </a>
+
+                <a href="keuangan-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-dollar-sign w-5 text-center text-sm"></i> <span>Keuangan</span>
+                </a>
+
+                <a href="laporan-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-sm"></i> <span>Laporan</span>
+                </a>
+
+                <a href="pengaturan-sistem-admin.html" class="flex items-center space-x-3 p-3 rounded-xl bg-tatera-blue-active text-white shadow-sm transition">
+                    <i class="fa-solid fa-gear w-5 text-center text-sm"></i> <span>Pengaturan Sistem</span>
+                </a>
+                
+                <a href="notifikasi-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-bell w-5 text-center text-sm"></i> <span>Notifikasi</span>
+                </a>
+                
+                <a href="profil-admin.html" class="flex items-center space-x-3 p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-user w-5 text-center text-sm"></i> <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <button onclick="handleLogout()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-100 text-red-600 font-bold hover:bg-red-200 transition text-xs">
+                <i class="fa-solid fa-power-off text-sm"></i> <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-grow p-8 h-screen overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 min-h-full flex flex-col justify-between">
+            
+            <div>
+                <div class="mb-6">
+                    <h2 class="text-lg font-bold text-gray-800">Pengaturan Sistem</h2>
+                    <p class="text-[11px] text-gray-400 font-medium">Kelola konfigurasi dasar aplikasi dan pemeliharaan basis data lokal</p>
+                </div>
+
+                <form id="form-pengaturan" onsubmit="simpanPengaturan(event)" class="max-w-2xl space-y-5 text-xs">
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-gray-600 mb-1">Nama Aplikasi / Sistem</label>
+                            <input type="text" id="sys-nama" required class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green font-semibold text-gray-800">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-600 mb-1">Batas Minimal Kas Darurat (Rp)</label>
+                            <input type="number" id="sys-kas-min" required class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-tatera-green font-semibold text-gray-800">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-gray-600 mb-1">Zona Waktu Sistem</label>
+                            <select id="sys-timezone" class="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white focus:outline-none focus:border-tatera-green font-medium text-gray-700">
+                                <option value="Asia/Jakarta">Waktu Indonesia Barat (WIB) - GMT+7</option>
+                                <option value="Asia/Makassar">Waktu Indonesia Tengah (WITA) - GMT+8</option>
+                                <option value="Asia/Jayapura">Waktu Indonesia Timur (WIT) - GMT+9</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-600 mb-1">Mode Pemeliharaan (Maintenance)</label>
+                            <select id="sys-maintenance" class="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white focus:outline-none focus:border-tatera-green font-medium text-gray-700">
+                                <option value="Nonaktif">Nonaktif (Sistem Terbuka Umum)</option>
+                                <option value="Aktif">Aktif (Hanya Admin yang Bisa Masuk)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="border-gray-100 my-4">
+
+                    <div>
+                        <h4 class="font-bold text-gray-700 mb-2 uppercase tracking-wider text-[11px]">Utilitas Pencadangan & Pemulihan Basis Data</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="p-4 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-between">
+                                <div>
+                                    <h5 class="font-bold text-gray-800">Cadangkan Data</h5>
+                                    <p class="text-[10px] text-gray-400">Unduh seluruh berkas konfigurasi TATERA</p>
+                                </div>
+                                <button type="button" onclick="prosesBackup()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition flex items-center gap-1">
+                                    <i class="fa-solid fa-download"></i> Backup
+                                </button>
+                            </div>
+
+                            <div class="p-4 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-between">
+                                <div>
+                                    <h5 class="font-bold text-gray-800">Pulihkan Sistem</h5>
+                                    <p class="text-[10px] text-gray-400">Unggah berkas JSON cadangan lokal</p>
+                                </div>
+                                <button type="button" onclick="prosesRestore()" class="px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl transition flex items-center gap-1">
+                                    <i class="fa-solid fa-upload"></i> Restore
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="flex justify-end border-t border-gray-100 pt-4 mt-6">
+                <button type="submit" form="form-pengaturan" class="bg-tatera-green hover:bg-emerald-800 text-white font-bold py-2.5 px-6 rounded-xl text-xs shadow-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Seluruh Perubahan
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Sinkronisasi Sesi Nama Login
+            const namaSesi = localStorage.getItem('user_nama_lengkap');
+            if (namaSesi && document.getElementById('sidebar-username')) {
+                document.getElementById('sidebar-username').innerText = "Hi, " + namaSesi;
+            }
+
+            // Muat nilai konfigurasi default dari LocalStorage jika ada
+            document.getElementById("sys-nama").value = localStorage.getItem("sys_config_nama") || "TATERA (Sistem Tata Kelola Pertanian)";
+            document.getElementById("sys-kas-min").value = localStorage.getItem("sys_config_kas_min") || "5000000";
+            document.getElementById("sys-timezone").value = localStorage.getItem("sys_config_timezone") || "Asia/Jakarta";
+            document.getElementById("sys-maintenance").value = localStorage.getItem("sys_config_maintenance") || "Nonaktif";
+        });
+
+        function simpanPengaturan(event) {
+            event.preventDefault();
+
+            const namaApp = document.getElementById("sys-nama").value;
+            const kasMin = document.getElementById("sys-kas-min").value;
+            const timezone = document.getElementById("sys-timezone").value;
+            const maintenance = document.getElementById("sys-maintenance").value;
+
+            // Simpan variabel konfigurasi sistem global
+            localStorage.setItem("sys_config_nama", namaApp);
+            localStorage.setItem("sys_config_kas_min", kasMin);
+            localStorage.setItem("sys_config_timezone", timezone);
+            localStorage.setItem("sys_config_maintenance", maintenance);
+
+            alert("Konfigurasi sistem berhasil diperbarui dan disimpan!");
+        }
+
+        function prosesBackup() {
+            // Simulasi mengekstrak seluruh isi LocalStorage menjadi string JSON
+            const dataSistem = JSON.stringify(localStorage);
+            const blob = new Blob([dataSistem], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "tatera_database_backup_2026.json";
+            link.click();
+            
+            alert("Basis data lokal berhasil dikompilasi! Berkas 'tatera_database_backup_2026.json' telah diunduh.");
+        }
+
+        function prosesRestore() {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = ".json";
+            
+            input.onchange = function(event) {
+                const berkas = event.target.files[0];
+                const pembaca = new FileReader();
+                
+                pembaca.onload = function(e) {
+                    try {
+                        const dataTerbaca = JSON.parse(e.target.result);
+                        // Bersihkan penyimpanan lama dan ganti dengan cadangan baru
+                        localStorage.clear();
+                        for (const kunci in dataTerbaca) {
+                            localStorage.setItem(kunci, dataTerbaca[kunci]);
+                        }
+                        alert("Restorasi sukses! Sistem akan memuat ulang halaman.");
+                        window.location.reload();
+                    } catch (kesalahan) {
+                        alert("Gagal memulihkan sistem: Format berkas JSON cadangan tidak valid!");
+                    }
+                };
+                
+                pembaca.readAsText(berkas);
+            };
+            
+            input.click();
+        }
+
+        function handleLogout() {
+            if (confirm("Yakin ingin keluar?")) {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Profil</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        'tatera-green': '#115E28', 
+                        'tatera-light-green': '#39B54A' 
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+  
+    <div class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col justify-between h-screen overflow-y-auto flex-shrink-0">
+        <div>
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-3"></div>
+                <h3 id="sidebar-username" class="font-bold text-gray-700 text-lg">Hi, User</h3>
+            </div>
+
+            <nav class="space-y-2" id="main-navigation">
+                
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i> <span>Dashboard</span>
+                </a>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-musim" onclick="toggleMenu('menu-musim', 'arrow-musim')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-seedling w-5 text-center"></i> <span>Musim Tanam</span>
+                        </div>
+                        <i id="arrow-musim" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-musim" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="tambah-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Tambah Musim Tanam</a>
+                        <a href="data-musim-tanam.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Data Musim Tanam</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-keuangan" onclick="toggleMenu('menu-keuangan', 'arrow-keuangan')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="arrow-keuangan" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-keuangan" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="saldo.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Saldo Tersedia</a>
+                        <a href="kas-masuk.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Masuk</a>
+                        <a href="kas-keluar.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Kas Keluar</a>
+                        <a href="laporan-keuangan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Laporan Keuangan</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-analisis" onclick="toggleMenu('menu-analisis', 'arrow-analisis')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-chart-simple w-5 text-center"></i> <span>Analisis & Laporan</span>
+                        </div>
+                        <i id="arrow-analisis" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-analisis" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="grafik-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Musim</a>
+                        <a href="grafik-tahunan.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Grafik Tahunan</a>
+                        <a href="ranking-musim.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Ranking Musim</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-pakar" onclick="toggleMenu('menu-pakar', 'arrow-pakar')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-doctor w-5 text-center"></i> <span>Sistem Pakar</span>
+                        </div>
+                        <i id="arrow-pakar" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-pakar" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="konsultasi-finansial.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Konsultasi Finansial Tani</a>
+                        <a href="rekomendasi-supplier.html" class="nav-sub-item block text-gray-500 hover:text-green-600 py-2 px-3 text-sm font-semibold transition rounded-md">Rekomendasi Supplier</a>
+                    </div>
+                </div>
+                
+                <div class="pt-2 border-t border-gray-100 space-y-1">
+                    <a href="scan-nota.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-receipt w-5 text-center"></i> <span>Scan Nota</span>
+                    </a>
+                    <a href="notifikasi.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-bell w-5 text-center"></i> <span>Notifikasi</span>
+                    </a>
+                    <a href="profil.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-user w-5 text-center"></i> <span>Profil</span>
+                    </a>
+                    <a href="pengaturan.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i> <span>Pengaturan</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-100 text-red-600 font-semibold hover:bg-red-200 transition text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar</span>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+
+
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-4xl mx-auto">
+                
+                <div class="bg-gradient-to-r from-tatera-green to-emerald-800 rounded-2xl p-8 text-white relative overflow-hidden shadow-sm mb-8">
+                    <div class="absolute right-0 bottom-0 opacity-10 pointer-events-none">
+                        <i class="fa-solid fa-seedling text-[200px] translate-x-12 translate-y-12"></i>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6 relative z-10">
+                        <div class="w-24 h-24 bg-white/20 backdrop-blur-md rounded-2xl border-2 border-white/30 flex items-center justify-center text-3xl font-bold flex-shrink-0 shadow-inner">
+                            <i class="fa-solid fa-user-gear text-white"></i>
+                        </div>
+                        <div class="text-center md:text-left pt-2">
+                            <h2 class="text-2xl font-black mb-1">Halo, <span id="view-banner-nama">Adam</span>!</h2>
+                            <p class="text-emerald-100 text-sm mb-4">Kelola informasi data diri Anda untuk penyesuaian sistem kalkulasi pertanian Tatera.</p>
+                            <button onclick="openEditModal()" class="px-5 py-2 bg-white text-tatera-green hover:bg-emerald-50 text-xs font-bold rounded-xl transition shadow-sm inline-flex items-center space-x-2">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <span>Edit Informasi Profil</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-gray-800 mb-6 flex items-center space-x-2">
+                        <i class="fa-solid fa-address-card text-tatera-light-green"></i>
+                        <span>Informasi Pribadi Akun</span>
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-1 p-3 bg-gray-50/50 border border-gray-100 rounded-xl">
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Nama Lengkap</span>
+                            <p id="view-profile-nama" class="text-sm font-bold text-gray-700">-</p>
+                        </div>
+                        
+                        <div class="space-y-1 p-3 bg-gray-50/50 border border-gray-100 rounded-xl">
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Email</span>
+                            <p id="view-profile-email" class="text-sm font-medium text-gray-600">-</p>
+                        </div>
+
+                        <div class="space-y-1 p-3 bg-gray-50/50 border border-gray-100 rounded-xl">
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Nomor Telepon / WA</span>
+                            <p id="view-profile-telepon" class="text-sm font-medium text-gray-600">-</p>
+                        </div>
+
+                        <div class="space-y-1 p-3 bg-gray-50/50 border border-gray-100 rounded-xl">
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Tanggal Bergabung</span>
+                            <p id="view-profile-gabung" class="text-sm font-medium text-gray-600">-</p>
+                        </div>
+
+                        <div class="space-y-1 p-3 bg-gray-50/50 border border-gray-100 rounded-xl md:col-span-2">
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Alamat Lahan / Tempat Tinggal</span>
+                            <p id="view-profile-alamat" class="text-sm font-medium text-gray-600 leading-relaxed">-</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="modal-edit-profil" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl w-full max-w-lg p-6 mx-4 shadow-xl transform scale-95 transition-transform duration-300">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center space-x-2">
+                    <i class="fa-solid fa-user-pen text-tatera-green"></i>
+                    <span>Ubah Data Profil</span>
+                </h3>
+                <button onclick="closeEditModal()" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-100 rounded-full transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <form id="form-edit-profil" onsubmit="simpanPerubahan(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Nama Lengkap</label>
+                    <input id="input-profile-nama" type="text" required class="w-full px-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-tatera-green">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Email</label>
+                    <input id="input-profile-email" type="email" required class="w-full px-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-tatera-green">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Nomor Telepon / WA</label>
+                    <input id="input-profile-telepon" type="text" required class="w-full px-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-tatera-green">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Alamat Lahan / Tempat Tinggal</label>
+                    <textarea id="input-profile-alamat" rows="3" required class="w-full px-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-tatera-green resize-none"></textarea>
+                </div>
+                
+                <div class="flex items-center justify-end space-x-3 border-t border-gray-100 pt-4 mt-6">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 border border-gray-200 text-gray-500 rounded-xl text-sm font-semibold hover:bg-gray-50 transition">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-tatera-light-green hover:bg-green-600 text-white rounded-xl text-sm font-semibold transition shadow-sm">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi pemicu dropdown
+        function toggleMenu(menuId, arrowId) {
+            const menu = document.getElementById(menuId);
+            const arrow = document.getElementById(arrowId);
+            if (menu && arrow) {
+                menu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-90');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.split("/").pop();
+            
+            // 1. DETEKSI JIKA HALAMAN AKTIF ADALAH MENU UTAMA/STANDAR (Dashboard, Scan Nota, dll)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                    link.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                }
+            });
+
+            // 2. DETEKSI JIKA HALAMAN AKTIF ADALAH SUB-MENU (ANGGOTA)
+            const subLinks = document.querySelectorAll('.nav-sub-item');
+            subLinks.forEach(subLink => {
+                if (subLink.getAttribute('href') === currentPath) {
+                    // SET AKTIF HIJAU TUA FULL BACKGROUND PADA ANGGOTA
+                    subLink.classList.remove('text-gray-500', 'hover:text-green-600');
+                    subLink.classList.add('bg-[#0F5E27]', 'text-white', 'font-bold', 'shadow-sm');
+
+                    // Cari container penampung dropdown (id^="menu-")
+                    const parentContainer = subLink.closest('[id^="menu-"]');
+                    if (parentContainer) {
+                        parentContainer.classList.remove('hidden'); // Buka list dropdown otomatis
+                        
+                        const parentId = parentContainer.getAttribute('id');
+                        
+                        // Set tombol utama induknya di atas menjadi Hijau Terang Penuh
+                        const btnId = parentId.replace('menu-', 'btn-');
+                        const mainButton = document.getElementById(btnId);
+                        if (mainButton) {
+                            mainButton.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                            mainButton.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                        }
+
+                        // AMAN: Tangani dan munculkan kembali anak panah agar tidak hilang/hilang warna
+                        const arrowId = parentId.replace('menu-', 'arrow-');
+                        const arrowIcon = document.getElementById(arrowId);
+                        if (arrowIcon) {
+                            arrowIcon.classList.remove('text-gray-600');
+                            arrowIcon.classList.add('rotate-90', 'text-white', 'opacity-100');
+                        }
+                    }
+                }
+            });
+            
+            // Sapaan Profil
+            const nama = localStorage.getItem('user_nama_lengkap') || 'Adam Permana';
+            const usernameElement = document.getElementById('sidebar-username');
+            if (usernameElement) {
+                usernameElement.innerText = "Hi, " + nama.split(" ")[0];
+            }
+        });
+
+
+        function loadProfileData() {
+
+            const nama =
+                localStorage.getItem('user_nama_lengkap') ||
+                'Adam Permana';
+
+            const email =
+                localStorage.getItem('user_email') ||
+                'adam.tatera@gmail.com';
+
+            const telepon =
+                localStorage.getItem('user_telepon') ||
+                '0812-3456-7890';
+
+            const alamat =
+                localStorage.getItem('user_alamat') ||
+                'Jl. Tani Makmur No. 12, Sleman, Yogyakarta';
+
+            const tglGabung =
+                localStorage.getItem('user_tgl_gabung') ||
+                '15 Juni 2026';
+
+            document.getElementById('view-profile-nama').innerText = nama;
+            document.getElementById('view-profile-email').innerText = email;
+            document.getElementById('view-profile-telepon').innerText = telepon;
+            document.getElementById('view-profile-alamat').innerText = alamat;
+            document.getElementById('view-profile-gabung').innerText = tglGabung;
+
+            document.getElementById('view-banner-nama').innerText =
+                nama.split(" ")[0];
+
+            document.getElementById('sidebar-username').innerText =
+                "Hi, " + nama.split(" ")[0];
+        }
+
+        function openEditModal() {
+
+            const modal =
+                document.getElementById('modal-edit-profil');
+
+            document.getElementById('input-profile-nama').value =
+                document.getElementById('view-profile-nama').innerText;
+
+            document.getElementById('input-profile-email').value =
+                document.getElementById('view-profile-email').innerText;
+
+            document.getElementById('input-profile-telepon').value =
+                document.getElementById('view-profile-telepon').innerText;
+
+            document.getElementById('input-profile-alamat').value =
+                document.getElementById('view-profile-alamat').innerText;
+
+            modal.classList.remove('hidden');
+
+            setTimeout(() => {
+
+                modal.classList.remove('opacity-0');
+
+                modal.querySelector('.transform')
+                    .classList.remove('scale-95');
+
+            }, 20);
+        }
+
+        function closeEditModal() {
+
+            const modal =
+                document.getElementById('modal-edit-profil');
+
+            modal.classList.add('opacity-0');
+
+            modal.querySelector('.transform')
+                .classList.add('scale-95');
+
+            setTimeout(() => {
+
+                modal.classList.add('hidden');
+
+            }, 300);
+        }
+        // Simpan Data hasil ketikan form baru
+        function simpanPerubahan(event) {
+            event.preventDefault(); // cegah reload halaman otomatis
+
+            const namaBaru = document.getElementById('edit-nama').value.trim();
+            const emailBaru = document.getElementById('edit-email').value.trim();
+            const teleponBaru = document.getElementById('edit-telepon').value.trim();
+            const alamatBaru = document.getElementById('edit-alamat').value.trim();
+
+            // Kunci data ke memori komputer lokal
+            localStorage.setItem('user_nama_lengkap', namaBaru);
+            localStorage.setItem('user_email', emailBaru);
+            localStorage.setItem('user_telepon', teleponBaru);
+            localStorage.setItem('user_alamat', alamatBaru);
+
+            // Perbarui nama di sidebar secara instan
+            refreshTampilanSidebar();
+            
+            alert("Informasi akun berhasil disimpan!");
+            closeEditModal();
+        }
+
+        function handleLogout() {
+
+            if (
+                confirm(
+                    "Apakah Anda yakin ingin keluar dari sistem?"
+                )
+            ) {
+
+                window.location.href = "index.html";
+
+            }
+        }
+    </script>
+</body>
+</html>

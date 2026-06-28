@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TATERA - Rekomendasi Supplier</title>
+
+    <!-- Font Awesome untuk Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        'tatera-green': '#115E28', 
+                        'tatera-light-green': '#39B54A'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex h-screen overflow-hidden">
+  
+    <!-- SIDEBAR (ASLI 100% SESUAI STRUKTUR ANDA) -->
+    <div class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col justify-between h-screen overflow-y-auto flex-shrink-0">
+        <div>
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-3"></div>
+                <h3 id="sidebar-username" class="font-bold text-gray-700 text-lg">Hi, User</h3>
+            </div>
+
+            <nav class="space-y-2" id="main-navigation">
+                <a href="dashboard.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i> <span>Dashboard</span>
+                </a>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-musim" onclick="toggleMenu('menu-musim', 'arrow-musim')" class="w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-seedling w-5 text-center"></i> <span>Musim Tanam</span>
+                        </div>
+                        <i id="arrow-musim" class="fa-solid fa-chevron-right text-xs transition-transform duration-200"></i>
+                    </button>
+                    <div id="menu-musim" class="hidden pl-4 mt-1 space-y-1 border-l border-gray-200 ml-5">
+                        <a href="tambah-musim.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">> Tambah Musim Tanam</a>
+                        <a href="data-musim-tanam.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">> Data Musim Tanam</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-keuangan" onclick="toggleMenu('menu-keuangan', 'arrow-keuangan')" class="w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> <span>Keuangan</span>
+                        </div>
+                        <i id="arrow-keuangan" class="fa-solid fa-chevron-right text-xs transition-transform duration-200"></i>
+                    </button>
+                    <div id="menu-keuangan" class="hidden pl-4 mt-1 space-y-1 border-l border-gray-200 ml-5">
+                        <a href="saldo.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">> Saldo Tersedia</a>
+                        <a href="kas-masuk.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">> Kas Masuk</a>
+                        <a href="kas-keluar.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">> Kas Keluar</a>
+                        <a href="laporan-keuangan.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">> Laporan Keuangan</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-analisis" onclick="toggleMenu('menu-analisis', 'arrow-analisis')" class="w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-chart-simple w-5 text-center"></i> <span>Analisis & Laporan</span>
+                        </div>
+                        <i id="arrow-analisis" class="fa-solid fa-chevron-right text-xs transition-transform duration-200"></i>
+                    </button>
+                    <div id="menu-analisis" class="hidden pl-4 mt-1 space-y-1 border-l border-gray-200 ml-5">
+                        <a href="grafik-musim.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">> Grafik Musim</a>
+                        <a href="grafik-tahunan.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">> Grafik Tahunan</a>
+                        <a href="ranking-musim.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">> Ranking Musim</a>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" id="btn-pakar" onclick="toggleMenu('menu-pakar', 'arrow-pakar')" class="nav-link w-full flex items-center justify-between p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-doctor w-5 text-center"></i> <span>Sistem Pakar</span>
+                        </div>
+                        <i id="arrow-pakar" class="fa-solid fa-chevron-right text-xs transition-transform duration-200 block text-inherit"></i>
+                    </button>
+                    <div id="menu-pakar" class="hidden mt-1.5 pl-6 pr-1 space-y-1 border-l-2 border-gray-100 ml-5">
+                        <a href="konsultasi-finansial.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">Konsultasi Finansial Tani</a>
+                        <a href="rekomendasi-supplier.html" class="nav-link block text-gray-500 hover:text-green-600 py-1.5 text-sm">Rekomendasi Supplier</a>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 space-y-1">
+                    <a href="scan-nota.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-receipt w-5 text-center"></i> <span>Scan Nota</span>
+                    </a>
+                    <a href="notifikasi.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-bell w-5 text-center"></i> <span>Notifikasi</span>
+                    </a>
+                    <a href="profil.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-user w-5 text-center"></i> <span>Profil</span>
+                    </a>
+                    <a href="pengaturan.html" class="nav-link flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100 font-semibold transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i> <span>Pengaturan</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-100 text-red-600 font-semibold hover:bg-red-200 transition text-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- AREA KONTEN UTAMA -->
+    <div class="flex-1 overflow-y-auto p-8" id="content-area">
+        <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] min-h-[calc(100vh-64px)] flex flex-col justify-between space-y-8">
+            
+            <div>
+                <!-- Judul Halaman -->
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-gray-900 tracking-tight">Rekomendasi Supplier</h2>
+                </div>
+
+                <!-- Box Lokasi Pencarian -->
+                <div onclick="bukaModalLokasi()" class="border border-gray-200 rounded-2xl p-6 mb-6 flex items-center justify-between bg-white hover:border-tatera-light-green hover:bg-gray-50/50 cursor-pointer transition group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-gray-100 group-hover:bg-green-100 rounded-full flex items-center justify-center text-gray-700 group-hover:text-tatera-green transition">
+                            <i class="fa-solid fa-location-dot text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Lokasi Pencarian</p>
+                            <h4 id="nama-lokasi-aktif" class="text-gray-900 font-bold text-base">Kec. Pejagoan, Kab. Kebumen, Jawa Tengah</h4>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs font-semibold text-gray-400 group-hover:text-tatera-green transition">
+                        <span>Ganti Kota/Wilayah</span>
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- Top 3 Rekomendasi Ringkas -->
+                <div id="supplier-container" class="space-y-4">
+                    <!-- Diisi dinamis via JS -->
+                </div>
+            </div>
+
+            <!-- Tombol Lihat SEMUA Rekomendasi -->
+            <div class="w-full">
+                <button onclick="bukaModalRekomendasi()" class="w-full bg-white hover:bg-gray-50 text-gray-700 py-3.5 border border-gray-200 rounded-xl font-bold text-sm transition tracking-wide shadow-sm flex items-center justify-center gap-2">
+                    <span>Lihat Semua Rekomendasi</span>
+                    <span id="badge-total-toko" class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full font-bold">20 Toko</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= MODAL 1: CARI & PILIH KOTA ================= -->
+    <div id="modal-lokasi" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl flex flex-col max-h-[80vh]">
+            <div class="flex justify-between items-center mb-4 flex-shrink-0">
+                <h3 class="text-lg font-bold text-gray-900">Ubah Lokasi Pencarian</h3>
+                <button onclick="tutupModalLokasi()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- FITUR: GPS + REVERSE GEOCODING -->
+            <button onclick="dapatkanLokasiGPS()" id="btn-gps" class="mb-4 w-full bg-green-50 hover:bg-green-100 border border-green-200 text-tatera-green font-bold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition">
+                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                <span id="text-gps">Dapatkan Lokasi Saya Saat Ini</span>
+            </button>
+            
+            <div class="relative mb-4 flex-shrink-0">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-sm"></i>
+                <input type="text" id="input-cari-kota" oninput="cariWilayahIndonesia()" placeholder="Ketik Kebumen, nama desa, atau kecamatan..." class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:outline-none focus:border-tatera-light-green transition">
+            </div>
+
+            <div class="space-y-1 overflow-y-auto pr-1 flex-1 min-h-[150px]" id="list-pilihan-kota">
+                <p class="text-center text-xs text-gray-400 py-8">Ketik kata kunci pencarian di atas untuk memuat wilayah...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: LIHAT SEMUA REKOMENDASI (image_06477b.png) ================= -->
+    <div id="modal-rekomendasi" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-5xl w-full p-8 shadow-2xl max-h-[85vh] flex flex-col justify-between">
+            <div class="overflow-hidden flex flex-col flex-1">
+                <div class="flex justify-between items-center mb-6 flex-shrink-0">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Seluruh Rekomendasi Supplier</h3>
+                        <p id="subtitle-modal-kota" class="text-xs text-gray-400 mt-1">Menampilkan seluruh data mitra penyuplai terdaftar secara menyeluruh</p>
+                    </div>
+                    <button onclick="tutupModalRekomendasi()" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-500 rounded-full flex items-center justify-center transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <div class="overflow-y-auto border border-gray-100 rounded-2xl shadow-sm flex-1">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="sticky top-0 bg-gray-50 border-b border-gray-100 text-xs font-bold text-gray-500 uppercase tracking-wider z-10">
+                            <tr>
+                                <th class="p-4 text-center w-16">Rank</th>
+                                <th class="p-4">Nama Toko Supplier</th>
+                                <th class="p-4">Jarak</th>
+                                <th class="p-4">Estimasi Biaya</th>
+                                <th class="p-4 text-center">Akurasi Skor</th>
+                                <th class="p-4 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm font-semibold text-gray-700" id="tabel-rekomendasi-body">
+                            <!-- Diisi dinamis -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-6 flex-shrink-0 text-right">
+                <button onclick="tutupModalRekomendasi()" class="bg-[#115E28] hover:bg-green-800 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition shadow-sm">
+                    Selesai & Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 3: GOOGLE MAPS (DIRECTIONS/RUTE) ================= -->
+    <div id="modal-map" class="fixed inset-0 bg-black/60 hidden z-[60] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full p-6 shadow-2xl relative flex flex-col h-[70vh]">
+            <div class="flex justify-between items-center mb-4 flex-shrink-0">
+                <div>
+                    <h3 id="map-modal-title" class="text-lg font-bold text-gray-900">Rute Menuju Lokasi Supplier</h3>
+                    <p id="map-modal-subtitle" class="text-xs text-gray-400 mt-0.5">Menampilkan visualisasi peta navigasi rute jalan terdekat</p>
+                </div>
+                <button onclick="tutupModalMap()" class="w-9 h-9 bg-gray-100 hover:bg-gray-200 text-gray-500 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 w-full bg-gray-100 rounded-xl overflow-hidden shadow-inner border border-gray-200">
+                <iframe id="google-maps-iframe" class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIKA JAVASCRIPT -->
+    <script>
+        function toggleMenu(menuId, arrowId) {
+            const menu = document.getElementById(menuId);
+            const arrow = document.getElementById(arrowId);
+            if (menu && arrow) {
+                menu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-90');
+            }
+        }
+
+        // Koordinat Default Kebumen (Pejagoan) jika GPS mati
+        let pusatLat = -7.6696; 
+        let pusatLon = 109.6514;
+        
+        let kotaAktif = "Kec. Pejagoan, Kab. Kebumen, Jawa Tengah";
+        let seluruhDataToko = [];
+        let penundaKetik = null;
+
+        function cariWilayahIndonesia() {
+            const keyword = document.getElementById('input-cari-kota').value;
+            const listContainer = document.getElementById('list-pilihan-kota');
+
+            if (keyword.trim().length < 3) {
+                listContainer.innerHTML = `<p class="text-center text-xs text-gray-400 py-8">Ketik minimal 3 karakter...</p>`;
+                return;
+            }
+
+            listContainer.innerHTML = `<p class="text-center text-xs text-tatera-light-green py-8 font-semibold"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Mencari...</p>`;
+
+            clearTimeout(penundaKetik);
+            penundaKetik = setTimeout(() => {
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(keyword + ', Indonesia')}&addressdetails=1&limit=8`)
+                    .then(response => response.json())
+                    .then(data => {
+                        listContainer.innerHTML = "";
+                        if (data.length === 0) {
+                            listContainer.innerHTML = `<p class="text-center text-xs text-gray-400 py-8">Wilayah tidak ditemukan.</p>`;
+                            return;
+                        }
+
+                        data.forEach(item => {
+                            const addr = item.address;
+                            const desa = addr.village || addr.suburb || addr.neighbourhood || "";
+                            const kecamatan = addr.municipality || addr.subdistrict || "";
+                            const kabupaten = addr.city_district || addr.county || addr.city || "";
+                            const provinsi = addr.state || "";
+
+                            let namaTeksLengkap = item.display_name.split(', Indonesia')[0];
+                            
+                            if (desa || kecamatan || kabupaten) {
+                                const komponen = [];
+                                if (desa) komponen.push(`Desa ${desa}`);
+                                if (kecamatan) komponen.push(`Kec. ${kecamatan}`);
+                                if (kabupaten) komponen.push(kabupaten.includes("Kabupaten") ? kabupaten : `Kab./Kota ${kabupaten}`);
+                                if (provinsi) komponen.push(provinsi);
+                                namaTeksLengkap = komponen.join(', ');
+                            }
+
+                            listContainer.innerHTML += `
+                                <button onclick="pilihWilayahRiil('${namaTeksLengkap.replace(/'/g, "\\'")}', '${item.lat}', '${item.lon}')" class="w-full text-left px-4 py-3 rounded-xl border border-gray-100 hover:border-tatera-light-green hover:bg-green-50/50 font-semibold text-gray-700 transition flex items-center justify-between group">
+                                    <div class="flex flex-col pr-4">
+                                        <span class="text-sm text-gray-800 group-hover:text-tatera-green transition line-clamp-2">${namaTeksLengkap}</span>
+                                        <span class="text-[10px] uppercase font-bold text-gray-400 mt-0.5 tracking-wider"><i class="fa-solid fa-map-pin mr-1"></i>Wilayah Nusantara</span>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-xs text-gray-300 group-hover:text-tatera-green transition flex-shrink-0"></i>
+                                </button>
+                            `;
+                        });
+                    })
+                    .catch(() => {
+                        listContainer.innerHTML = `<p class="text-center text-xs text-red-500 py-8">Gagal memuat data.</p>`;
+                    });
+            }, 600);
+        }
+
+        function pilihWilayahRiil(namaLengkap, lat, lon) {
+            pusatLat = parseFloat(lat);
+            pusatLon = parseFloat(lon);
+            kotaAktif = namaLengkap;
+            document.getElementById('nama-lokasi-aktif').innerText = namaLengkap;
+            tutupModalLokasi();
+            buatDataSupplierMassal();
+            renderHalamanUtama();
+        }
+
+        function dapatkanLokasiGPS() {
+            const btnGps = document.getElementById('btn-gps');
+            const textGps = document.getElementById('text-gps');
+
+            if (!navigator.geolocation) {
+                alert("Browser tidak mendukung GPS.");
+                return;
+            }
+
+            textGps.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Membaca Satelit...`;
+            btnGps.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    pusatLat = position.coords.latitude;
+                    pusatLon = position.coords.longitude;
+                    
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pusatLat}&lon=${pusatLon}&addressdetails=1`)
+                        .then(res => res.json())
+                        .then(result => {
+                            const addr = result.address;
+                            const jalan = addr.road || "";
+                            const desa = addr.village || addr.suburb || addr.neighbourhood || "";
+                            const kecamatan = addr.municipality || addr.subdistrict || "";
+                            const kabupaten = addr.city_district || addr.county || addr.city || "";
+                            
+                            let wilayahHasilGPS = [];
+                            if(jalan) wilayahHasilGPS.push(jalan);
+                            if(desa) wilayahHasilGPS.push(`Desa ${desa}`);
+                            if(kecamatan) wilayahHasilGPS.push(`Kec. ${kecamatan}`);
+                            if(kabupaten) wilayahHasilGPS.push(kabupaten);
+
+                            kotaAktif = wilayahHasilGPS.length > 0 ? wilayahHasilGPS.join(', ') : "Lokasi GPS Saya";
+                            
+                            document.getElementById('nama-lokasi-aktif').innerText = kotaAktif;
+                            textGps.innerText = "Dapatkan Lokasi Saya Saat Ini";
+                            btnGps.disabled = false;
+                            
+                            tutupModalLokasi();
+                            buatDataSupplierMassal();
+                            renderHalamanUtama();
+                        })
+                        .catch(() => {
+                            kotaAktif = `Titik GPS (${pusatLat.toFixed(4)}, ${pusatLon.toFixed(4)})`;
+                            document.getElementById('nama-lokasi-aktif').innerText = kotaAktif;
+                            textGps.innerText = "Dapatkan Lokasi Saya Saat Ini";
+                            btnGps.disabled = false;
+                            tutupModalLokasi();
+                            buatDataSupplierMassal();
+                            renderHalamanUtama();
+                        });
+                },
+                function () {
+                    alert("Gagal membaca GPS.");
+                    textGps.innerText = "Dapatkan Lokasi Saya Saat Ini";
+                    btnGps.disabled = false;
+                }
+            );
+        }
+
+        // PERBAIKAN UTAMA: Membuat koordinat toko bervariasi menyebar di sekitar user agar rute berbeda!
+        function buatDataSupplierMassal() {
+            const kataDepan = ["Tani", "UD.", "Kios", "Toko", "Sumber", "Mitra", "Sinar", "Maju", "Agro", "Griya"];
+            const kataBelakang = ["Makmur", "Rejeki", "Jaya", "Subur", "Sejahtera", "Sentosa", "Berkah", "Abadi", "Lestari", "Tani Mulya"];
+            
+            seluruhDataToko = [];
+            for (let i = 1; i <= 20; i++) {
+                const acakDepan = kataDepan[Math.floor(Math.random() * kataDepan.length)];
+                const acakBelakang = kataBelakang[Math.floor(Math.random() * kataBelakang.length)];
+                const namaToko = `${acakDepan} ${acakBelakang} ${i}`;
+                
+                // Variasikan koordinat supplier sedikit bergeser dari titik tengah agar rute berlainan
+                const offsetLat = (0.005 * i * (i % 2 === 0 ? 1 : -1));
+                const offsetLon = (0.007 * i * (i % 3 === 0 ? 1 : -1));
+                const targetLat = pusatLat + offsetLat;
+                const targetLon = pusatLon + offsetLon;
+
+                const jarak = (1.0 + (i * 0.6)).toFixed(1) + " km";
+                const hargaFormat = "Rp. " + (1100000 + (i * 12000)).toLocaleString('id-ID');
+                const skor = Math.max(60, 99 - (i * 1.5)) + "/100";
+
+                seluruhDataToko.push({
+                    rank: i,
+                    nama: namaToko,
+                    jarak: jarak,
+                    harga: hargaFormat,
+                    skor: skor,
+                    lat: targetLat,
+                    lon: targetLon
+                });
+            }
+            document.getElementById('badge-total-toko').innerText = `${seluruhDataToko.length} Toko`;
+        }
+
+        function renderHalamanUtama() {
+            const container = document.getElementById('supplier-container');
+            container.innerHTML = "";
+            
+            seluruhDataToko.slice(0, 3).forEach(toko => {
+                container.innerHTML += `
+                    <div class="border border-gray-100 rounded-2xl p-6 flex items-center justify-between bg-white shadow-[0_2px_8px_rgba(0,0,0,0.01)] hover:border-gray-300 transition">
+                        <div class="flex items-center gap-5">
+                            <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-700 text-sm">${toko.rank}</div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-base">${toko.nama}</h4>
+                                <div class="flex items-center gap-3 mt-0.5">
+                                    <p class="text-xs text-gray-400 font-medium">${toko.jarak} dari lokasi anda</p>
+                                    <button onclick="bukaRutePeta(${toko.lat}, ${toko.lon}, '${toko.nama}')" class="text-xs text-tatera-light-green font-bold hover:underline flex items-center gap-1">
+                                        <i class="fa-solid fa-map-location-dot"></i> Lihat Rute Peta
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-gray-900 text-base">${toko.harga}</p>
+                            <p class="text-xs text-green-500 font-bold mt-0.5">Skor ${toko.skor}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // LOGIKA BARU: Mengarahkan Peta Menjadi Mode Navigasi Rute Berbeda Otomatis
+        function bukaRutePeta(destLat, destLon, namaToko) {
+            document.getElementById('map-modal-title').innerText = `Rute Ke: ${namaToko}`;
+            document.getElementById('map-modal-subtitle').innerText = `Rute navigasi dari posisi pencarian aktif menuju ${namaToko}`;
+            
+            // Mode saddr = Titik Mulai (Koordinat kamu), daddr = Titik Akhir (Koordinat Supplier)
+            const urlRuteGoogleMap = `https://maps.google.com/maps?saddr=${pusatLat},${pusatLon}&daddr=${destLat},${destLon}&twb=1&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+            
+            document.getElementById('google-maps-iframe').setAttribute('src', urlRuteGoogleMap);
+            document.getElementById('modal-map').classList.remove('hidden');
+        }
+
+        function tutupModalMap() {
+            document.getElementById('modal-map').classList.add('hidden');
+            document.getElementById('google-maps-iframe').setAttribute('src', '');
+        }
+
+        function bukaModalLokasi() {
+            document.getElementById('modal-lokasi').classList.remove('hidden');
+            document.getElementById('input-cari-kota').value = "";
+            document.getElementById('list-pilihan-kota').innerHTML = `<p class="text-center text-xs text-gray-400 py-8">Ketik kata kunci untuk memuat...</p>`;
+        }
+        function tutupModalLokasi() { document.getElementById('modal-lokasi').classList.add('hidden'); }
+
+        function bukaModalRekomendasi() {
+            document.getElementById('subtitle-modal-kota').innerText = `Seluruh data mitra penyuplai dari lokasi: ${kotaAktif}`;
+            const tabelBody = document.getElementById('tabel-rekomendasi-body');
+            tabelBody.innerHTML = "";
+            
+            seluruhDataToko.forEach(toko => {
+                tabelBody.innerHTML += `
+                    <tr class="hover:bg-gray-50/70 transition border-b border-gray-100">
+                        <td class="p-4 text-center text-gray-500">${toko.rank}</td>
+                        <td class="p-4 font-bold text-gray-900">${toko.nama}</td>
+                        <td class="p-4 text-gray-500 text-xs font-medium">${toko.jarak}</td>
+                        <td class="p-4 text-tatera-green font-bold">${toko.harga}</td>
+                        <td class="p-4 text-center"><span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-bold border border-green-100">Skor ${toko.skor}</span></td>
+                        <td class="p-4 text-center">
+                            <!-- Tombol Buka Peta Diperbaiki Mengirim Parameter Koordinat Rute yang Unik -->
+                            <button onclick="bukaRutePeta(${toko.lat}, ${toko.lon}, '${toko.nama}')" class="bg-tatera-light-green hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 mx-auto shadow-sm">
+                                <i class="fa-solid fa-map-location-dot"></i> Buka Rute
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('modal-rekomendasi').classList.remove('hidden');
+        }
+        function tutupModalRekomendasi() { document.getElementById('modal-rekomendasi').classList.add('hidden'); }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.split("/").pop();
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            navLinks.forEach(link => {
+                const linkHref = link.getAttribute('href');
+                if (currentPath === linkHref) {
+                    link.classList.remove('text-gray-600', 'text-gray-500', 'hover:bg-gray-100');
+                    link.classList.add('bg-[#39B54A]', 'text-white', 'shadow-sm');
+                    const parentContainer = link.closest('[id^="menu-"]');
+                    if (parentContainer) {
+                        parentContainer.classList.remove('hidden');
+                        const parentId = parentContainer.getAttribute('id');
+                        const arrowId = parentId.replace('menu-', 'arrow-');
+                        const arrowIcon = document.getElementById(arrowId);
+                        if (arrowIcon) arrowIcon.classList.add('rotate-90');
+                    }
+                }
+            });
+            
+            const nama = localStorage.getItem('user_nama_lengkap') || 'Adam Permana';
+            document.getElementById('sidebar-username').innerText = "Hi, " + nama.split(" ")[0];
+
+            buatDataSupplierMassal();
+            renderHalamanUtama();
+        });
+    </script>
+</body>
+</html>
